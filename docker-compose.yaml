@@ -1,0 +1,12 @@
+version: '3.5'
+services:
+  lua:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        LUA_VERSION: 5.4.3
+    tty: true
+    working_dir: /app
+    volumes:
+     - ./:/app
