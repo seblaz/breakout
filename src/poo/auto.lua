@@ -1,3 +1,7 @@
+--- El problema de esta implementación es que crea una nueva función
+--- `auto.velocidadMaxima` cada vez que se crea un nuevo auto. Esto es poco
+--- performante por el uso de memoria.
+
 local function nuevoAuto(nombre)
 
     local auto = {
