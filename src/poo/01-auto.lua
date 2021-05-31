@@ -1,7 +1,3 @@
---- El problema de esta implementación es que crea una nueva función
---- `auto.velocidadMaxima` cada vez que se crea un nuevo auto. Esto es poco
---- performante por el uso de memoria.
-
 local function nuevoAuto(nombre)
 
     local auto = {
@@ -24,3 +20,12 @@ print(auto.velocidadMaxima(), auto.nombreCompleto())
 
 local auto2 = nuevoAuto('fiat 601')
 print(auto2.velocidadMaxima(), auto2.nombreCompleto())
+
+--- El problema de esta implementación es que crea una nueva función
+--- `auto.velocidadMaxima` cada vez que se crea un nuevo auto. Esto es poco
+--- performante por el uso de memoria. Esto lo podemos evidenciar así:
+
+-- Son funciones distintas
+print(auto.velocidadMaxima)
+print(auto2.velocidadMaxima)
+
