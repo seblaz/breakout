@@ -32,6 +32,17 @@ function Auto:nombreCompleto()
     return self.nombre
 end
 
+--local Auto = {
+--    initialize = function(self, nombre)
+--        self.nombre = nombre
+--    end,
+--    velocidadMaxima = function()
+--        return 100
+--    end
+--}
+--
+--setmetatable(Auto, { __index = Object })
+
 -- Ferrari
 local Ferrari = Auto:new()
 
