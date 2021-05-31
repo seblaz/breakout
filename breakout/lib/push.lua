@@ -58,6 +58,8 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, settings)
     ["end"] = self.finish
   }
 
+  self:resize(RWIDTH, RHEIGHT)
+
   return self
 end
 
