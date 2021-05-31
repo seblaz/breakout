@@ -1,4 +1,4 @@
---- Clase Object para simplificar.
+--- Prototipo Object para simplificar.
 
 -- Object
 local Object = {}
@@ -13,7 +13,7 @@ end
 
 function Object:initialize() end
 
-function Object:parent()
+function Object:proto()
     return getmetatable(getmetatable(self))
 end
 
@@ -37,7 +37,7 @@ local Ferrari = Auto:new()
 
 -- Redefinición y llamada al método de la clase anterior
 function Ferrari:velocidadMaxima()
-    return 200 + self:parent():velocidadMaxima()
+    return 200 + self:proto():velocidadMaxima()
 end
 
 local auto = Auto:new('fiat 600')
