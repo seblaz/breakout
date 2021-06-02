@@ -29,7 +29,7 @@ require 'src/model/Paddle'
 
 -- a basic StateMachine class which will allow us to transition to and from
 -- game states smoothly and avoid monolithic code in one file
-require 'src/model/StateMachine'
+require 'src/scene/Scene'
 
 -- utility functions, mainly for splitting our sprite sheet into various Quads
 -- of differing sizes for paddles, balls, bricks, etc.
@@ -38,12 +38,12 @@ require 'src/model/Util'
 -- each of the individual states our game can be in at once; each state has
 -- its own update and render methods that can be called by our state machine
 -- each frame, to avoid bulky code in main.lua
-require 'src/states/BaseState'
-require 'src/states/EnterHighScoreState'
-require 'src/states/GameOverState'
-require 'src/states/HighScoreState'
-require 'src/states/PaddleSelectState'
-require 'src/states/PlayState'
-require 'src/states/ServeState'
-require 'src/states/StartState'
-require 'src/states/VictoryState'
+require 'src/scene/Base'
+require 'src/scene/EnterHighScore'
+require 'src/scene/GameOver'
+require 'src/scene/HighScore'
+require 'src/scene/PaddleSelect'
+require 'src/scene/Play'
+require 'src/scene/Serve'
+require 'src/scene/Start'
+require 'src/scene/Victory'

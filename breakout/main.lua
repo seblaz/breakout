@@ -108,7 +108,7 @@ function love.load()
     -- 4. 'play' (the ball is in play, bouncing between paddles)
     -- 5. 'victory' (the current level is over, with a victory jingle)
     -- 6. 'game-over' (the player has lost; display score and allow restart)
-    gStateMachine = StateMachine {
+    gStateMachine = Scene {
         ['start'] = function() return StartState() end,
         ['play'] = function() return PlayState() end,
         ['serve'] = function() return ServeState() end,
