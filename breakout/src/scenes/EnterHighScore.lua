@@ -10,7 +10,9 @@
     Screen that allows us to input a new high score in the form of three characters, arcade-style.
 ]]
 
-EnterHighScoreState = Class{__includes = BaseState}
+local Base = require 'src/scenes/Base'
+
+EnterHighScore = Base()
 
 -- individual chars of our string
 local chars = {
@@ -22,13 +24,13 @@ local chars = {
 -- char we're currently changing
 local highlightedChar = 1
 
-function EnterHighScoreState:enter(params)
+function EnterHighScore:enter(params)
     self.highScores = params.highScores
     self.score = params.score
     self.scoreIndex = params.scoreIndex
 end
 
-function EnterHighScoreState:update(dt)
+function EnterHighScore:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         -- update scores table
         local name = string.char(chars[1]) .. string.char(chars[2]) .. string.char(chars[3])
@@ -82,7 +84,7 @@ function EnterHighScoreState:update(dt)
     end
 end
 
-function EnterHighScoreState:render()
+function EnterHighScore:render()
     love.graphics.setFont(gFonts['medium'])
     love.graphics.printf('Your score: ' .. tostring(self.score), 0, 30,
         VIRTUAL_WIDTH, 'center')

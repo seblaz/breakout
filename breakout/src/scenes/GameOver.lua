@@ -12,14 +12,16 @@
     to the StartState.
 ]]
 
-GameOverState = Class{__includes = BaseState}
+local Base = require 'src/scenes/Base'
 
-function GameOverState:enter(params)
+GameOver = Base()
+
+function GameOver:enter(params)
     self.score = params.score
     self.highScores = params.highScores
 end
 
-function GameOverState:update(dt)
+function GameOver:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         -- see if score is higher than any in the high scores table
         local highScore = false
@@ -54,7 +56,7 @@ function GameOverState:update(dt)
     end
 end
 
-function GameOverState:render()
+function GameOver:render()
     love.graphics.setFont(gFonts['large'])
     love.graphics.printf('GAME OVER', 0, VIRTUAL_HEIGHT / 3, VIRTUAL_WIDTH, 'center')
     love.graphics.setFont(gFonts['medium'])

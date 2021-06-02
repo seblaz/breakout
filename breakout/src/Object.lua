@@ -1,10 +1,9 @@
 local Object = {}
 
 function Object:new(...)
-    local object = {}
     self.__index = self
     self.__call = self.new
-    setmetatable(object, self)
+    local object = setmetatable({}, self)
     object:initialize(...)
     return object
 end

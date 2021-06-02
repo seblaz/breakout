@@ -14,9 +14,11 @@
     well as the level we're on.
 ]]
 
-ServeState = Class{__includes = BaseState}
+local Base = require 'src/scenes/Base'
 
-function ServeState:enter(params)
+Serve = Base()
+
+function Serve:enter(params)
     -- grab game state from params
     self.paddle = params.paddle
     self.bricks = params.bricks
@@ -31,7 +33,7 @@ function ServeState:enter(params)
     self.ball.skin = math.random(7)
 end
 
-function ServeState:update(dt)
+function Serve:update(dt)
     -- have the ball track the player
     self.paddle:update(dt)
     self.ball.x = self.paddle.x + (self.paddle.width / 2) - 4
@@ -56,7 +58,7 @@ function ServeState:update(dt)
     end
 end
 
-function ServeState:render()
+function Serve:render()
     self.paddle:render()
     self.ball:render()
 

@@ -108,15 +108,15 @@ function love.load()
     -- 4. 'play' (the ball is in play, bouncing between paddles)
     -- 5. 'victory' (the current level is over, with a victory jingle)
     -- 6. 'game-over' (the player has lost; display score and allow restart)
-    gStateMachine = Scene {
-        ['start'] = function() return StartState() end,
-        ['play'] = function() return PlayState() end,
-        ['serve'] = function() return ServeState() end,
-        ['game-over'] = function() return GameOverState() end,
-        ['victory'] = function() return VictoryState() end,
-        ['high-scores'] = function() return HighScoreState() end,
-        ['enter-high-score'] = function() return EnterHighScoreState() end,
-        ['paddle-select'] = function() return PaddleSelectState() end
+    gStateMachine = Scenes {
+        ['start'] = function() return Start() end,
+        ['play'] = function() return Play() end,
+        ['serve'] = function() return Serve() end,
+        ['game-over'] = function() return GameOver() end,
+        ['victory'] = function() return Victory() end,
+        ['high-scores'] = function() return HighScore() end,
+        ['enter-high-score'] = function() return EnterHighScore() end,
+        ['paddle-select'] = function() return PaddleSelect() end
     }
     gStateMachine:change('start', {
         highScores = loadHighScores()

@@ -15,10 +15,13 @@
     ourselves in the actual classes.
 ]]
 
-BaseState = Class{}
+local Object = require 'src/Object'
 
-function BaseState:init() end
-function BaseState:enter() end
-function BaseState:exit() end
-function BaseState:update(dt) end
-function BaseState:render() end
+local Base = Object()
+
+function Base:enter() end
+function Base:exit() end
+function Base:update() end
+function Base:render() end
+
+return Base

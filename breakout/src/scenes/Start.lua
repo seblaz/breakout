@@ -15,16 +15,18 @@
 -- the "__includes" bit here means we're going to inherit all of the methods
 -- that BaseState has, so it will have empty versions of all StateMachine methods
 -- even if we don't override them ourselves; handy to avoid superfluous code!
-StartState = Class{__includes = BaseState}
+local Base = require 'src/scenes/Base'
+
+Start = Base()
 
 -- whether we're highlighting "Start" or "High Scores"
 local highlighted = 1
 
-function StartState:enter(params)
+function Start:enter(params)
     self.highScores = params.highScores
 end
 
-function StartState:update(dt)
+function Start:update(dt)
     -- toggle highlighted option if we press an arrow key up or down
     if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
         highlighted = highlighted == 1 and 2 or 1
@@ -52,7 +54,7 @@ function StartState:update(dt)
     end
 end
 
-function StartState:render()
+function Start:render()
     -- title
     love.graphics.setFont(gFonts['large'])
     love.graphics.printf("BREAKOUT", 0, VIRTUAL_HEIGHT / 3,

@@ -11,9 +11,11 @@
     Very similar to the ServeState, except here we increment the level 
 ]]
 
-VictoryState = Class{__includes = BaseState}
+local Base = require 'src/scenes/Base'
 
-function VictoryState:enter(params)
+Victory = Base()
+
+function Victory:enter(params)
     self.level = params.level
     self.score = params.score
     self.highScores = params.highScores
@@ -23,7 +25,7 @@ function VictoryState:enter(params)
     self.recoverPoints = params.recoverPoints
 end
 
-function VictoryState:update(dt)
+function Victory:update(dt)
     self.paddle:update(dt)
 
     -- have the ball track the player
@@ -44,7 +46,7 @@ function VictoryState:update(dt)
     end
 end
 
-function VictoryState:render()
+function Victory:render()
     self.paddle:render()
     self.ball:render()
 

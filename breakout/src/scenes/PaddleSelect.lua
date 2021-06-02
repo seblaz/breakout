@@ -12,19 +12,21 @@
     Enter to begin.
 ]]
 
-PaddleSelectState = Class{__includes = BaseState}
+local Base = require 'src/scenes/Base'
 
-function PaddleSelectState:enter(params)
+PaddleSelect = Base()
+
+function PaddleSelect:enter(params)
     self.highScores = params.highScores
 end
 
-function PaddleSelectState:init()
+function PaddleSelect:initialize()
     -- the paddle we're highlighting; will be passed to the ServeState
     -- when we press Enter
     self.currentPaddle = 1
 end
 
-function PaddleSelectState:update(dt)
+function PaddleSelect:update(dt)
     if love.keyboard.wasPressed('left') then
         if self.currentPaddle == 1 then
             gSounds['no-select']:play()
@@ -61,7 +63,7 @@ function PaddleSelectState:update(dt)
     end
 end
 
-function PaddleSelectState:render()
+function PaddleSelect:render()
     -- instructions
     love.graphics.setFont(gFonts['medium'])
     love.graphics.printf("Select your paddle with left and right!", 0, VIRTUAL_HEIGHT / 4,

@@ -10,13 +10,15 @@
     Represents the screen where we can view all high scores previously recorded.
 ]]
 
-HighScoreState = Class{__includes = BaseState}
+local Base = require 'src/scenes/Base'
 
-function HighScoreState:enter(params)
+HighScore = Base()
+
+function HighScore:enter(params)
     self.highScores = params.highScores
 end
 
-function HighScoreState:update(dt)
+function HighScore:update(dt)
     -- return to the start screen if we press escape
     if love.keyboard.wasPressed('escape') then
         gSounds['wall-hit']:play()
@@ -27,7 +29,7 @@ function HighScoreState:update(dt)
     end
 end
 
-function HighScoreState:render()
+function HighScore:render()
     love.graphics.setFont(gFonts['large'])
     love.graphics.printf('High Scores', 0, 20, VIRTUAL_WIDTH, 'center')
 

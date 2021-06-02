@@ -14,13 +14,15 @@
     Over screen if at 0 health or the Serve screen otherwise.
 ]]
 
-PlayState = Class{__includes = BaseState}
+local Base = require 'src/scenes/Base'
+
+Play = Base()
 
 --[[
     We initialize what's in our PlayState via a state table that we pass between
     states as we go from playing to serving.
 ]]
-function PlayState:enter(params)
+function Play:enter(params)
     self.paddle = params.paddle
     self.bricks = params.bricks
     self.health = params.health
@@ -36,7 +38,7 @@ function PlayState:enter(params)
     self.ball.dy = math.random(-50, -60)
 end
 
-function PlayState:update(dt)
+function Play:update(dt)
     if self.paused then
         if love.keyboard.wasPressed('space') then
             self.paused = false
@@ -197,7 +199,7 @@ function PlayState:update(dt)
     end
 end
 
-function PlayState:render()
+function Play:render()
     -- render bricks
     for k, brick in pairs(self.bricks) do
         brick:render()
@@ -221,7 +223,7 @@ function PlayState:render()
     end
 end
 
-function PlayState:checkVictory()
+function Play:checkVictory()
     for k, brick in pairs(self.bricks) do
         if brick.inPlay then
             return false
