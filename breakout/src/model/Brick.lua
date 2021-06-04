@@ -69,10 +69,6 @@ function Brick:update(dt)
     self.view2:update(dt)
 end
 
-function Brick:render()
-    self.view1:render()
-end
-
 --[[
     Need a separate render function for our particles so it can be called after all bricks are drawn;
     otherwise, some bricks would render over other bricks' particle systems.

@@ -16,6 +16,8 @@
 
 local Base = require 'src/scenes/Base'
 local table = require 'table'
+local BrickView = require 'src/views/Brick'
+local BrickCloud = require 'src/views/BrickCloud'
 
 Play = Base()
 
@@ -38,7 +40,7 @@ function Play:enter(params)
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
 
-    self.views = {unpack(self.bricks)}
+    self.views = table.map(self.bricks, BrickView)
     table.insert(self.views, self.paddle)
     table.insert(self.views, self.ball)
 end

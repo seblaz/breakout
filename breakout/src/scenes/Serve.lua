@@ -15,6 +15,7 @@
 ]]
 
 local Base = require 'src/scenes/Base'
+local BrickView = require 'src/views/Brick'
 
 Serve = Base()
 
@@ -31,6 +32,7 @@ function Serve:enter(params)
     -- init new ball (random color for fun)
     self.ball = Ball()
     self.ball.skin = math.random(7)
+    self.views = table.map(self.bricks, BrickView)
 end
 
 function Serve:update(dt)
@@ -62,8 +64,8 @@ function Serve:render()
     self.paddle:render()
     self.ball:render()
 
-    for k, brick in pairs(self.bricks) do
-        brick:render()
+    for k, view in pairs(self.views) do
+        view:render()
     end
 
     renderScore(self.score)
