@@ -20,9 +20,9 @@ local BrickCloud = require 'src/views/BrickCloud'
 Brick = Class{}
 
 
-function Brick:init(x, y)
-    -- tier is the number of hits required to destroy the brick.
-    self.tier = 1
+function Brick:init(x, y, level)
+    -- level is the number of hits required to destroy the brick.
+    self._level = level
 
     self.x = x
     self.y = y
@@ -48,8 +48,8 @@ function Brick:hit()
 
     -- if we're at a higher tier than the base, we need to go down a tier
     -- if we're already at the lowest color, else just go down a color
-    if self.tier ~= 0 then
-        self.tier = self.tier - 1
+    if self._level ~= 0 then
+        self._level = self._level - 1
     end
 
     -- play a second layer sound if the brick is destroyed
@@ -59,8 +59,12 @@ function Brick:hit()
     end
 end
 
+function Brick:level()
+    return self._level
+end
+
 function Brick:in_play()
-    return self.tier ~= 0
+    return self._level ~= 0
 end
 
 function Brick:update(dt)

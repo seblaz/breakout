@@ -89,7 +89,7 @@ function Play:update(dt)
         if brick:in_play() and self.ball:collides(brick) then
 
             -- add to score
-            self.score = self.score + (brick.tier * 25)
+            self.score = self.score + (brick:level() * 25)
 
             -- trigger the brick's hit function, which removes it from play
             brick:hit()

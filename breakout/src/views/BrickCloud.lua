@@ -61,13 +61,13 @@ function BrickCloud:hit()
     -- it our self.color but with varying alpha; brighter for higher tiers, fading to 0
     -- over the particle's lifetime (the second color)
     self.psystem:setColors(
-            paletteColors[math.floor(self.brick.tier / 5) + 1].r,
-            paletteColors[math.floor(self.brick.tier / 5) + 1].g,
-            paletteColors[math.floor(self.brick.tier / 5) + 1].b,
-            55 * (math.floor(self.brick.tier / 5) + 1) / 255,
-            paletteColors[math.floor(self.brick.tier / 5) + 1].r,
-            paletteColors[math.floor(self.brick.tier / 5) + 1].g,
-            paletteColors[math.floor(self.brick.tier / 5) + 1].b,
+            paletteColors[math.floor(self.brick:level() / 5) + 1].r,
+            paletteColors[math.floor(self.brick:level() / 5) + 1].g,
+            paletteColors[math.floor(self.brick:level() / 5) + 1].b,
+            55 * (math.floor(self.brick:level() / 5) + 1) / 255,
+            paletteColors[math.floor(self.brick:level() / 5) + 1].r,
+            paletteColors[math.floor(self.brick:level() / 5) + 1].g,
+            paletteColors[math.floor(self.brick:level() / 5) + 1].b,
             0
     )
     self.psystem:emit(64)
