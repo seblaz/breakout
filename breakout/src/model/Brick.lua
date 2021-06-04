@@ -46,9 +46,7 @@ function Brick:hit()
     gSounds['brick-hit-2']:stop()
     gSounds['brick-hit-2']:play()
 
-    -- if we're at a higher tier than the base, we need to go down a tier
-    -- if we're already at the lowest color, else just go down a color
-    if self._level ~= 0 then
+    if self:level() ~= 0 then
         self._level = self._level - 1
     end
 

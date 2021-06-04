@@ -18,7 +18,7 @@ function Brick:render()
 end
 
 function Brick:_color()
-    return gFrames['bricks'][self.brick:level() + 1]
+    return gFrames['bricks'][self.brick:level()]
 end
 
 return Brick
