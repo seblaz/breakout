@@ -42,7 +42,7 @@ function LevelMaker.createMap(level)
 
     -- highest possible spawned brick color in this level; ensure we
     -- don't go above 3
-    local highestTier = math.min(3, math.floor(level / 5))
+    local highestTier = math.min(21, math.floor(level / 5))
 
     -- highest color of the highest tier, no higher than 5
     local highestColor = math.min(5, level % 5 + 3)
@@ -97,11 +97,9 @@ function LevelMaker.createMap(level)
 
             -- if we're alternating, figure out which color/tier we're on
             if alternatePattern and alternateFlag then
-                b.color = alternateColor1
                 b.tier = alternateTier1
                 alternateFlag = not alternateFlag
             else
-                b.color = alternateColor2
                 b.tier = alternateTier2
                 alternateFlag = not alternateFlag
             end

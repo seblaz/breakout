@@ -14,70 +14,25 @@
     layout of bricks.
 ]]
 
+local BrickView = require 'src/views/Brick'
+local BrickCloud = require 'src/views/BrickCloud'
+
 Brick = Class{}
 
--- some of the colors in our palette (to be used with particle systems)
-paletteColors = {
-    -- blue
-    [1] = {
-        ['r'] = 0.38,
-        ['g'] = 0.6,
-        ['b'] = 1
-    },
-    -- green
-    [2] = {
-        ['r'] = 0.41,
-        ['g'] = 0.75,
-        ['b'] = 0.18
-    },
-    -- red
-    [3] = {
-        ['r'] = 0.85,
-        ['g'] = 0.34,
-        ['b'] = 0.38
-    },
-    -- purple
-    [4] = {
-        ['r'] = 0.84,
-        ['g'] = 0.48,
-        ['b'] = 0.72
-    },
-    -- gold
-    [5] = {
-        ['r'] = 0.98,
-        ['g'] = 0.94,
-        ['b'] = 0.21
-    }
-}
 
 function Brick:init(x, y)
-    -- used for coloring and score calculation
-    self.tier = 0
-    self.color = 1
-    
+    -- tier is the number of hits required to destroy the brick.
+    self.tier = 1
+
     self.x = x
     self.y = y
     self.width = 32
     self.height = 16
     
-    -- used to determine whether this brick should be rendered
     self.inPlay = true
 
-    -- particle system belonging to the brick, emitted on hit
-    self.psystem = love.graphics.newParticleSystem(gTextures['particle'], 64)
-
-    -- various behavior-determining functions for the particle system
-    -- https://love2d.org/wiki/ParticleSystem
-
-    -- lasts between 0.5-1 seconds seconds
-    self.psystem:setParticleLifetime(0.5, 1)
-
-    -- give it an acceleration of anywhere between X1,Y1 and X2,Y2 (0, 0) and (80, 80) here
-    -- gives generally downward 
-    self.psystem:setLinearAcceleration(-15, 0, 15, 80)
-
-    -- spread of particles; normal looks more natural than uniform
-    self.psystem:setEmissionArea('normal', 10, 10)
+    self.view1 = BrickView(self)
+    self.view2 = BrickCloud(self)
 end
 
 --[[
@@ -85,20 +40,9 @@ end
     changing its color otherwise.
 ]]
 function Brick:hit()
-    -- set the particle system to interpolate between two colors; in this case, we give
-    -- it our self.color but with varying alpha; brighter for higher tiers, fading to 0
-    -- over the particle's lifetime (the second color)
-    self.psystem:setColors(
-        paletteColors[self.color].r,
-        paletteColors[self.color].g,
-        paletteColors[self.color].b,
-        55 * (self.tier + 1) / 255,
-        paletteColors[self.color].r,
-        paletteColors[self.color].g,
-        paletteColors[self.color].b,
-        0
-    )
-    self.psystem:emit(64)
+    -- notify the view2 of the hit. This should disappear once the events
+    -- are implemented.
+    self.view2:hit()
 
     -- sound on hit
     gSounds['brick-hit-2']:stop()
@@ -106,20 +50,10 @@ function Brick:hit()
 
     -- if we're at a higher tier than the base, we need to go down a tier
     -- if we're already at the lowest color, else just go down a color
-    if self.tier > 0 then
-        if self.color == 1 then
-            self.tier = self.tier - 1
-            self.color = 5
-        else
-            self.color = self.color - 1
-        end
+    if self.tier == 0 then
+        self.inPlay = false
     else
-        -- if we're in the first tier and the base color, remove brick from play
-        if self.color == 1 then
-            self.inPlay = false
-        else
-            self.color = self.color - 1
-        end
+        self.tier = self.tier - 1
     end
 
     -- play a second layer sound if the brick is destroyed
@@ -130,17 +64,11 @@ function Brick:hit()
 end
 
 function Brick:update(dt)
-    self.psystem:update(dt)
+    self.view2:update(dt)
 end
 
 function Brick:render()
-    if self.inPlay then
-        love.graphics.draw(gTextures['main'], 
-            -- multiply color by 4 (-1) to get our color offset, then add tier to that
-            -- to draw the correct tier and color brick onto the screen
-            gFrames['bricks'][1 + ((self.color - 1) * 4) + self.tier],
-            self.x, self.y)
-    end
+    self.view1:render()
 end
 
 --[[
@@ -148,5 +76,5 @@ end
     otherwise, some bricks would render over other bricks' particle systems.
 ]]
 function Brick:renderParticles()
-    love.graphics.draw(self.psystem, self.x + 16, self.y + 8)
+    self.view2:render()
 end

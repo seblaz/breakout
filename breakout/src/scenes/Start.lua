@@ -26,7 +26,7 @@ function Start:enter(params)
     self.highScores = params.highScores
 end
 
-function Start:update(dt)
+function Start:update()
     -- toggle highlighted option if we press an arrow key up or down
     if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
         highlighted = highlighted == 1 and 2 or 1
@@ -59,7 +59,7 @@ function Start:render()
     love.graphics.setFont(gFonts['large'])
     love.graphics.printf("BREAKOUT", 0, VIRTUAL_HEIGHT / 3,
         VIRTUAL_WIDTH, 'center')
-    
+
     -- instructions
     love.graphics.setFont(gFonts['medium'])
 

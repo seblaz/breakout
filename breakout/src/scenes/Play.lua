@@ -15,6 +15,7 @@
 ]]
 
 local Base = require 'src/scenes/Base'
+local table = require 'table'
 
 Play = Base()
 
@@ -36,6 +37,10 @@ function Play:enter(params)
     -- give ball random starting velocity
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
+
+    self.views = {unpack(self.bricks)}
+    table.insert(self.views, self.paddle)
+    table.insert(self.views, self.ball)
 end
 
 function Play:update(dt)
@@ -84,7 +89,7 @@ function Play:update(dt)
         if brick.inPlay and self.ball:collides(brick) then
 
             -- add to score
-            self.score = self.score + (brick.tier * 200 + brick.color * 25)
+            self.score = self.score + (brick.tier * 25)
 
             -- trigger the brick's hit function, which removes it from play
             brick:hit()
@@ -200,18 +205,14 @@ function Play:update(dt)
 end
 
 function Play:render()
-    -- render bricks
-    for k, brick in pairs(self.bricks) do
-        brick:render()
+    for _, object in pairs(self.views) do
+        object:render()
     end
 
     -- render all particle systems
     for k, brick in pairs(self.bricks) do
         brick:renderParticles()
     end
-
-    self.paddle:render()
-    self.ball:render()
 
     renderScore(self.score)
     renderHealth(self.health)
