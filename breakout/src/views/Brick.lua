@@ -7,7 +7,7 @@ function Brick:initialize(brick)
 end
 
 function Brick:render()
-    if self.brick.inPlay then
+    if self.brick:in_play() then
         love.graphics.draw(
                 gTextures['main'],
                 self:_color(),

@@ -28,8 +28,6 @@ function Brick:init(x, y)
     self.y = y
     self.width = 32
     self.height = 16
-    
-    self.inPlay = true
 
     self.view1 = BrickView(self)
     self.view2 = BrickCloud(self)
@@ -50,17 +48,19 @@ function Brick:hit()
 
     -- if we're at a higher tier than the base, we need to go down a tier
     -- if we're already at the lowest color, else just go down a color
-    if self.tier == 0 then
-        self.inPlay = false
-    else
+    if self.tier ~= 0 then
         self.tier = self.tier - 1
     end
 
     -- play a second layer sound if the brick is destroyed
-    if not self.inPlay then
+    if not self:in_play() then
         gSounds['brick-hit-1']:stop()
         gSounds['brick-hit-1']:play()
     end
+end
+
+function Brick:in_play()
+    return self.tier ~= 0
 end
 
 function Brick:update(dt)

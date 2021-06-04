@@ -86,7 +86,7 @@ function Play:update(dt)
     for k, brick in pairs(self.bricks) do
 
         -- only check collision if we're in play
-        if brick.inPlay and self.ball:collides(brick) then
+        if brick:in_play() and self.ball:collides(brick) then
 
             -- add to score
             self.score = self.score + (brick.tier * 25)
@@ -226,7 +226,7 @@ end
 
 function Play:checkVictory()
     for k, brick in pairs(self.bricks) do
-        if brick.inPlay then
+        if brick:in_play() then
             return false
         end 
     end
