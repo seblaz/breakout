@@ -14,7 +14,6 @@
     layout of bricks.
 ]]
 
-local BrickView = require 'src/views/Brick'
 local BrickCloud = require 'src/views/BrickCloud'
 
 Brick = Class{}
