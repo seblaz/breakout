@@ -16,6 +16,7 @@
 
 local Base = require 'src/scenes/Base'
 local BrickView = require 'src/views/Brick'
+local BallSkin = require 'src/views/BallSkin'
 
 Serve = Base()
 

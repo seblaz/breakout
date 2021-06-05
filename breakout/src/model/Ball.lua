@@ -13,9 +13,11 @@
     for visual variety.
 ]]
 
+local BallSkin = require 'src/views/BallSkin'
+
 Ball = Class{}
 
-function Ball:init(skin)
+function Ball:init()
     -- simple positional and dimensional variables
     self.width = 8
     self.height = 8
@@ -90,4 +92,5 @@ function Ball:render()
     -- gBallFrames is a table of quads mapping to each individual ball skin in the texture
     love.graphics.draw(gTextures['main'], gFrames['balls'][self.skin],
         self.x, self.y)
+     -- self.skin:render()
 end
