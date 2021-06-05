@@ -29,7 +29,6 @@ function Brick:init(x, y, level)
     self.width = 32
     self.height = 16
 
-    self.view1 = BrickView(self)
     self.view2 = BrickCloud(self)
 end
 
