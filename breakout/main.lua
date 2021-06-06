@@ -27,12 +27,19 @@
 require 'src/Dependencies'
 
 local HighScoreRepo = require 'src/repositories/HighScore'
+local FPSView = require 'src/views/FPS'
+
+
+local fps_view
 
 --[[
     Called just once at the beginning of the game; used to set up
     game objects, variables, etc. and prepare the game world.
 ]]
 function love.load()
+    -- Initialize FPS views
+    fps_view = FPSView()
+
     -- set love's default filter to "nearest-neighbor", which essentially
     -- means there will be no filtering of pixels (blurriness), which is
     -- important for a nice crisp, 2D look
@@ -209,7 +216,7 @@ function love.draw()
     gStateMachine:render()
     
     -- display FPS for debugging; simply comment out to remove
-    displayFPS()
+    fps_view:render()
     
     push:apply('end')
 end
@@ -235,15 +242,6 @@ function renderHealth(health)
     end
 end
 
---[[
-    Renders the current FPS.
-]]
-function displayFPS()
-    -- simple FPS display across all states
-    love.graphics.setFont(gFonts['small'])
-    love.graphics.setColor(0, 1, 0)
-    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 5, 5)
-end
 
 --[[
     Simply renders the player's score at the top right, with left-side padding
