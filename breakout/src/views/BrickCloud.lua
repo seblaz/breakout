@@ -1,6 +1,7 @@
 local Object = require 'src/Object'
 
 local BrickCloud = Object()
+local EventBus = require 'src/model/EventBus'
 
 -- some of the colors in our palette (to be used with particle systems)
 local paletteColors = {
@@ -38,6 +39,7 @@ local paletteColors = {
 
 function BrickCloud:initialize(brick)
     self.brick = brick
+    EventBus:subscribe("BRICK_HIT", function(...) self:hit(...) end)
 
     -- particle system belonging to the brick, emitted on hit
     self.psystem = love.graphics.newParticleSystem(gTextures['particle'], 64)
@@ -56,7 +58,9 @@ function BrickCloud:initialize(brick)
     self.psystem:setEmissionArea('normal', 10, 10)
 end
 
-function BrickCloud:hit()
+function BrickCloud:hit(brick)
+    if self.brick ~= brick then return end
+
     -- set the particle system to interpolate between two colors; in this case, we give
     -- it our self.color but with varying alpha; brighter for higher tiers, fading to 0
     -- over the particle's lifetime (the second color)

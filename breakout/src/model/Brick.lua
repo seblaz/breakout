@@ -14,7 +14,7 @@
     layout of bricks.
 ]]
 
-local BrickCloud = require 'src/views/BrickCloud'
+local EventBus = require 'src/model/EventBus'
 
 Brick = Class{}
 
@@ -27,8 +27,6 @@ function Brick:init(x, y, level)
     self.y = y
     self.width = 32
     self.height = 16
-
-    self.view2 = BrickCloud(self)
 end
 
 --[[
@@ -36,9 +34,7 @@ end
     changing its color otherwise.
 ]]
 function Brick:hit()
-    -- notify the view2 of the hit. This should disappear once the events
-    -- are implemented.
-    self.view2:hit()
+    EventBus:notify("BRICK_HIT", self)
 
     -- sound on hit
     gSounds['brick-hit-2']:stop()
@@ -61,16 +57,4 @@ end
 
 function Brick:in_play()
     return self._level ~= 0
-end
-
-function Brick:update(dt)
-    self.view2:update(dt)
-end
-
---[[
-    Need a separate render function for our particles so it can be called after all bricks are drawn;
-    otherwise, some bricks would render over other bricks' particle systems.
-]]
-function Brick:renderParticles()
-    self.view2:render()
 end
