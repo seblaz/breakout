@@ -3,12 +3,12 @@ local Score = require 'src/model/Score'
 
 local HighScore = Object()
 
-function HighScore:save()
+function HighScore:save(highScores)
     local scoresStr = ''
 
     for i = 1, 10 do
-        scoresStr = scoresStr .. self.highScores[i]:name() .. '\n'
-        scoresStr = scoresStr .. tostring(self.highScores[i]:points()) .. '\n'
+        scoresStr = scoresStr .. highScores[i]:name() .. '\n'
+        scoresStr = scoresStr .. tostring(highScores[i]:points()) .. '\n'
     end
 
     love.filesystem.write('breakout.lst', scoresStr)

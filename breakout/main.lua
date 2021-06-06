@@ -26,7 +26,6 @@
 
 require 'src/Dependencies'
 
-local Score = require 'src/model/Score'
 local HighScoreRepo = require 'src/repositories/HighScore'
 
 --[[

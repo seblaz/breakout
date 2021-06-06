@@ -11,6 +11,7 @@
 ]]
 
 local Base = require 'src/scenes/Base'
+local HighScoreRepo = require 'src/repositories/HighScore'
 
 EnterHighScore = Base()
 
@@ -23,6 +24,11 @@ local chars = {
 
 -- char we're currently changing
 local highlightedChar = 1
+
+function EnterHighScore:initialize()
+    self:proto():initialize()
+    self._high_score_repo = HighScoreRepo()
+end
 
 function EnterHighScore:enter(params)
     self.highScores = params.highScores
@@ -43,15 +49,7 @@ function EnterHighScore:update(dt)
         self.score:set_name(name)
         self.highScores[self.scoreIndex] = self.score
 
-        -- write scores to file
-        local scoresStr = ''
-
-        for i = 1, 10 do
-            scoresStr = scoresStr .. self.highScores[i]:name() .. '\n'
-            scoresStr = scoresStr .. tostring(self.highScores[i]:points()) .. '\n'
-        end
-
-        love.filesystem.write('breakout.lst', scoresStr)
+        self._high_score_repo:save(self.highScores)
 
         gStateMachine:change('high-scores', {
             highScores = self.highScores
