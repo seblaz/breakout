@@ -15,6 +15,7 @@
 ]]
 
 local EventBus = require 'src/model/EventBus'
+local Events = require 'src/model/Events'
 
 Brick = Class{}
 
@@ -34,7 +35,7 @@ end
     changing its color otherwise.
 ]]
 function Brick:hit()
-    EventBus:notify("BRICK_HIT", self)
+    EventBus:notify(Events.BRICK_HIT, self)
 
     -- sound on hit
     gSounds['brick-hit-2']:stop()

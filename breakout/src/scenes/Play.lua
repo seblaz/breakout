@@ -40,12 +40,14 @@ function Play:enter(params)
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
 
-    self.views = table.map(self.bricks, BrickView)
-    self.clouds = BrickClouds()
+    local clouds = BrickClouds()
 
-    table.insert(self.views, self.clouds)
+    self.views = table.map(self.bricks, BrickView)
+    table.insert(self.views, clouds)
     table.insert(self.views, self.paddle)
     table.insert(self.views, self.ball)
+
+    self.models = {self.paddle, self.ball, clouds}
 end
 
 function Play:update(dt)
@@ -62,10 +64,8 @@ function Play:update(dt)
         return
     end
 
-    -- update positions based on velocity
-    self.paddle:update(dt)
-    self.ball:update(dt)
-    self.clouds:update(dt)
+    -- update model based on velocity
+    table.apply(self.models, function(model) model:update(dt) end)
 
     if self.ball:collides(self.paddle) then
         -- raise ball above paddle in case it goes below it, then reverse dy
