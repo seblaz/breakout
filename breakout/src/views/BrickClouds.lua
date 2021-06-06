@@ -37,9 +37,11 @@ local paletteColors = {
     }
 }
 
+--- Represents a single brick cloud
+
 function BrickCloud:initialize(brick)
     self.brick = brick
-    EventBus:subscribe("BRICK_HIT", function(...) self:hit(...) end)
+    EventBus:subscribe(function(...) self:hit(...) end, "BRICK_HIT")
 
     -- particle system belonging to the brick, emitted on hit
     self.psystem = love.graphics.newParticleSystem(gTextures['particle'], 64)
@@ -56,10 +58,6 @@ function BrickCloud:initialize(brick)
 
     -- spread of particles; normal looks more natural than uniform
     self.psystem:setEmissionArea('normal', 10, 10)
-end
-
-function BrickCloud:hit(brick)
-    if self.brick ~= brick then return end
 
     -- set the particle system to interpolate between two colors; in this case, we give
     -- it our self.color but with varying alpha; brighter for higher tiers, fading to 0
@@ -85,4 +83,25 @@ function BrickCloud:render()
     love.graphics.draw(self.psystem, self.brick.x + 16, self.brick.y + 8)
 end
 
-return BrickCloud
+--- Represents all the brick clouds
+
+local BrickClouds = Object()
+
+function BrickClouds:initialize()
+    self.clouds = {}
+    EventBus:subscribe("BRICK_HIT", function(...) self:brick_hit(...) end)
+end
+
+function BrickClouds:brick_hit(brick)
+    table.insert(self.clouds, BrickCloud(brick))
+end
+
+function BrickClouds:update(dt)
+    table.apply(self.clouds, function(cloud) cloud:update(dt) end)
+end
+
+function BrickClouds:render()
+    table.apply(self.clouds, function(cloud) cloud:render() end)
+end
+
+return BrickClouds

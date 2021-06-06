@@ -17,7 +17,7 @@
 local Base = require 'src/scenes/Base'
 local table = require 'table'
 local BrickView = require 'src/views/Brick'
-local BrickCloudView = require 'src/views/BrickCloud'
+local BrickClouds = require 'src/views/BrickClouds'
 
 Play = Base()
 
@@ -41,9 +41,9 @@ function Play:enter(params)
     self.ball.dy = math.random(-50, -60)
 
     self.views = table.map(self.bricks, BrickView)
-    self.particles = table.map(self.bricks, BrickCloudView)
-    table.concatenate(self.views, self.particles)
+    self.clouds = BrickClouds()
 
+    table.insert(self.views, self.clouds)
     table.insert(self.views, self.paddle)
     table.insert(self.views, self.ball)
 end
@@ -65,7 +65,7 @@ function Play:update(dt)
     -- update positions based on velocity
     self.paddle:update(dt)
     self.ball:update(dt)
-    table.apply(self.particles, function(particle) particle:update(dt) end)
+    self.clouds:update(dt)
 
     if self.ball:collides(self.paddle) then
         -- raise ball above paddle in case it goes below it, then reverse dy
