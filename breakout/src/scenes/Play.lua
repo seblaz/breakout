@@ -19,6 +19,7 @@ local table = require 'table'
 local BrickView = require 'src/views/Brick'
 local BrickClouds = require 'src/views/BrickClouds'
 local PlaySounds = require 'src/sounds/Play'
+local EventBus = require 'src/model/EventBus'
 
 Play = Base()
 
@@ -120,6 +121,8 @@ function Play:update(dt)
             -- go to our victory screen if there are no more bricks left
             if self:checkVictory() then
                 gSounds['victory']:play()
+
+                EventBus:reset()
 
                 gStateMachine:change('victory', {
                     level = self.level,

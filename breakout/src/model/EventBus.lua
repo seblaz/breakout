@@ -3,7 +3,11 @@ local Object = require 'src/Object'
 local EventBus = Object()
 
 function EventBus:initialize()
-    self.subscribers = {}
+    self:reset()
+end
+
+function EventBus:reset()
+    self._subscribers = {}
 end
 
 function EventBus:subscribe(event, observer)
@@ -11,10 +15,10 @@ function EventBus:subscribe(event, observer)
 end
 
 function EventBus:_event_subscribers(event)
-    if not self.subscribers[event] then
-        self.subscribers[event] = {}
+    if not self._subscribers[event] then
+        self._subscribers[event] = {}
     end
-    return self.subscribers[event]
+    return self._subscribers[event]
 end
 
 function EventBus:notify(event, ...)
