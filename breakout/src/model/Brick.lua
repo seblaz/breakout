@@ -30,10 +30,6 @@ function Brick:init(x, y, level)
     self.height = 16
 end
 
---[[
-    Triggers a hit on the brick, taking it out of play if at 0 health or
-    changing its color otherwise.
-]]
 function Brick:hit()
     EventBus:notify(Events.BRICK_HIT, self)
 
@@ -41,10 +37,8 @@ function Brick:hit()
         self._level = self._level - 1
     end
 
-    -- play a second layer sound if the brick is destroyed
     if not self:in_play() then
-        gSounds['brick-hit-1']:stop()
-        gSounds['brick-hit-1']:play()
+        EventBus:notify(Events.BRICK_DESTROYED, self)
     end
 end
 

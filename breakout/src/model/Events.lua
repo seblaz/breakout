@@ -3,7 +3,8 @@
 ---
 
 local events = {
-    BRICK_HIT = "BRICK_HIT"
+    BRICK_HIT = "BRICK_HIT",
+    BRICK_DESTROYED = "BRICK_DESTROYED",
 }
 
 return events
