@@ -33,25 +33,22 @@ end
 function EnterHighScore:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         -- update scores table
-        local name = string.char(chars[1]) .. string.char(chars[2]) .. string.char(chars[3])
 
         -- go backwards through high scores table till this score, shifting scores
         for i = 10, self.scoreIndex, -1 do
-            self.highScores[i + 1] = {
-                name = self.highScores[i].name,
-                score = self.highScores[i].score
-            }
+            self.highScores[i + 1] = self.highScores[i]
         end
 
-        self.highScores[self.scoreIndex].name = name
-        self.highScores[self.scoreIndex].score = self.score
+        local name = string.char(chars[1]) .. string.char(chars[2]) .. string.char(chars[3])
+        self.score:set_name(name)
+        self.highScores[self.scoreIndex] = self.score
 
         -- write scores to file
         local scoresStr = ''
 
         for i = 1, 10 do
-            scoresStr = scoresStr .. self.highScores[i].name .. '\n'
-            scoresStr = scoresStr .. tostring(self.highScores[i].score) .. '\n'
+            scoresStr = scoresStr .. self.highScores[i]:name() .. '\n'
+            scoresStr = scoresStr .. tostring(self.highScores[i]:points()) .. '\n'
         end
 
         love.filesystem.write('breakout.lst', scoresStr)
@@ -86,7 +83,7 @@ end
 
 function EnterHighScore:render()
     love.graphics.setFont(gFonts['medium'])
-    love.graphics.printf('Your score: ' .. tostring(self.score), 0, 30,
+    love.graphics.printf('Your score: ' .. tostring(self.score:points()), 0, 30,
         VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(gFonts['large'])

@@ -26,6 +26,8 @@
 
 require 'src/Dependencies'
 
+local Score = require 'src/model/Score'
+
 --[[
     Called just once at the beginning of the game; used to set up
     game objects, variables, etc. and prepare the game world.
@@ -232,26 +234,17 @@ function loadHighScores()
 
     -- flag for whether we're reading a name or not
     local name = true
-    local currentName = nil
     local counter = 1
 
     -- initialize scores table with at least 10 blank entries
     local scores = {}
 
-    for i = 1, 10 do
-        -- blank table; each will hold a name and a score
-        scores[i] = {
-            name = nil,
-            score = nil
-        }
-    end
-
     -- iterate over each line in the file, filling in names and scores
     for line in love.filesystem.lines('breakout.lst') do
         if name then
-            scores[counter].name = string.sub(line, 1, 3)
+            scores[counter] = Score(0, string.sub(line, 1, 3))
         else
-            scores[counter].score = tonumber(line)
+            scores[counter]:add(tonumber(line))
             counter = counter + 1
         end
 

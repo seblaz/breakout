@@ -13,6 +13,7 @@
 ]]
 
 local Base = require 'src/scenes/Base'
+local Score = require 'src/model/Score'
 
 PaddleSelect = Base()
 
@@ -50,8 +51,8 @@ function PaddleSelect:update(dt)
         gStateMachine:change('serve', {
             paddle = Paddle(self.currentPaddle),
             bricks = LevelMaker.createMap(32),
-            health = 3,
-            score = 0,
+            health = 1,
+            score = Score(),
             highScores = self.highScores,
             level = 32,
             recoverPoints = 5000

@@ -16,7 +16,8 @@
 
 local Base = require 'src/scenes/Base'
 local BrickView = require 'src/views/Brick'
-local BallSkin = require 'src/views/BallSkin'
+local Set = require 'lib/Set'
+local ScoreView = require 'src/views/Score'
 
 Serve = Base()
 
@@ -33,7 +34,10 @@ function Serve:enter(params)
     -- init new ball (random color for fun)
     self.ball = Ball()
     self.ball.skin = math.random(7)
-    self.views = table.map(self.bricks, BrickView)
+
+    -- Views
+    self.views = Set(table.map(self.bricks, BrickView))
+    self.views:insert(ScoreView(self.score))
 end
 
 function Serve:update(dt)
@@ -65,11 +69,13 @@ function Serve:render()
     self.paddle:render()
     self.ball:render()
 
-    for k, view in pairs(self.views) do
+    self.views:foreach(function(view)
         view:render()
-    end
+    end)
 
-    renderScore(self.score)
+    self.views:foreach(function(view) view:render() end)
+
+    --renderScore(self.score)
     renderHealth(self.health)
 
     love.graphics.setFont(gFonts['large'])

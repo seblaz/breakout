@@ -37,8 +37,8 @@ function HighScore:render()
 
     -- iterate over all high score indices in our high scores table
     for i = 1, 10 do
-        local name = self.highScores[i].name or '---'
-        local score = self.highScores[i].score or '---'
+        local name = self.highScores[i]:name()
+        local score = self.highScores[i]:points()
 
         -- score number (1-10)
         love.graphics.printf(tostring(i) .. '.', VIRTUAL_WIDTH / 4, 

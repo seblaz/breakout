@@ -20,6 +20,7 @@ local BrickView = require 'src/views/Brick'
 local BrickClouds = require 'src/views/BrickClouds'
 local PlaySounds = require 'src/sounds/Play'
 local EventBus = require 'src/model/EventBus'
+local ScoreView = require 'src/views/Score'
 
 Play = Base()
 
@@ -48,6 +49,7 @@ function Play:enter(params)
     table.insert(self.views, clouds)
     table.insert(self.views, self.paddle)
     table.insert(self.views, self.ball)
+    table.insert(self.views, ScoreView(self.score))
 
     -- Models
     self.models = {self.paddle, self.ball, clouds}
@@ -85,7 +87,7 @@ function Play:update(dt)
         -- if we hit the paddle on its left side while moving left...
         if self.ball.x < self.paddle.x + (self.paddle.width / 2) and self.paddle.dx < 0 then
             self.ball.dx = -50 + -(8 * (self.paddle.x + self.paddle.width / 2 - self.ball.x))
-        
+
         -- else if we hit the paddle on its right side while moving right...
         elseif self.ball.x > self.paddle.x + (self.paddle.width / 2) and self.paddle.dx > 0 then
             self.ball.dx = 50 + (8 * math.abs(self.paddle.x + self.paddle.width / 2 - self.ball.x))
@@ -101,22 +103,23 @@ function Play:update(dt)
         if brick:in_play() and self.ball:collides(brick) then
 
             -- add to score
-            self.score = self.score + (brick:level() * 25)
+            self.score:add(brick:level() * 25)
 
             -- trigger the brick's hit function, which removes it from play
             brick:hit()
 
             -- if we have enough points, recover a point of health
-            if self.score > self.recoverPoints then
-                -- can't go above 3 health
-                self.health = math.min(3, self.health + 1)
-
-                -- multiply recover points by 2
-                self.recoverPoints = math.min(100000, self.recoverPoints * 2)
-
-                -- play recover sound effect
-                gSounds['recover']:play()
-            end
+            -- this had a bug because it always added one more health above xxx points
+            --if self.score:points() > self.recoverPoints then
+            --    -- can't go above 3 health
+            --    self.health = math.min(3, self.health + 1)
+            --
+            --    -- multiply recover points by 2
+            --    self.recoverPoints = math.min(100000, self.recoverPoints * 2)
+            --
+            --    -- play recover sound effect
+            --    gSounds['recover']:play()
+            --end
 
             -- go to our victory screen if there are no more bricks left
             if self:checkVictory() then
@@ -147,29 +150,29 @@ function Play:update(dt)
             -- left edge; only check if we're moving right, and offset the check by a couple of pixels
             -- so that flush corner hits register as Y flips, not X flips
             if self.ball.x + 2 < brick.x and self.ball.dx > 0 then
-                
+
                 -- flip x velocity and reset position outside of brick
                 self.ball.dx = -self.ball.dx
                 self.ball.x = brick.x - 8
-            
+
             -- right edge; only check if we're moving left, , and offset the check by a couple of pixels
             -- so that flush corner hits register as Y flips, not X flips
             elseif self.ball.x + 6 > brick.x + brick.width and self.ball.dx < 0 then
-                
+
                 -- flip x velocity and reset position outside of brick
                 self.ball.dx = -self.ball.dx
                 self.ball.x = brick.x + 32
-            
+
             -- top edge if no X collisions, always check
             elseif self.ball.y < brick.y then
-                
+
                 -- flip y velocity and reset position outside of brick
                 self.ball.dy = -self.ball.dy
                 self.ball.y = brick.y - 8
-            
+
             -- bottom edge if no X collisions or top collision, last possibility
             else
-                
+
                 -- flip y velocity and reset position outside of brick
                 self.ball.dy = -self.ball.dy
                 self.ball.y = brick.y + 16
@@ -216,7 +219,6 @@ end
 function Play:render()
     table.apply(self.views, function(view) view:render() end)
 
-    renderScore(self.score)
     renderHealth(self.health)
 
     -- pause text, if paused
@@ -230,7 +232,7 @@ function Play:checkVictory()
     for k, brick in pairs(self.bricks) do
         if brick:in_play() then
             return false
-        end 
+        end
     end
 
     return true
