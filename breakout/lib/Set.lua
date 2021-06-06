@@ -34,6 +34,16 @@ function Set:foreach(f)
     end
 end
 
+function Set:select(f)
+    local result = Set()
+    self:foreach(function(element)
+        if f(element) then
+            result:insert(element)
+        end
+    end)
+    return result
+end
+
 function Set:__add (a,b)
     local res = Set()
     for k in a:elements() do

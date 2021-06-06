@@ -80,8 +80,8 @@ function BrickCloud:update(dt)
     self.psystem:update(dt)
 end
 
-function BrickCloud:is_done()
-    return self.psystem:getCount() ~= 0
+function BrickCloud:finished()
+    return self.psystem:getCount() == 0
 end
 
 function BrickCloud:render()
@@ -106,6 +106,17 @@ end
 function BrickClouds:update(dt)
     self.clouds:foreach(function(cloud)
         cloud:update(dt)
+    end)
+    self:_remove_finished_clouds()
+end
+
+function BrickClouds:_remove_finished_clouds()
+    self.clouds:
+    select(function(cloud)
+        return cloud:finished()
+    end):
+    foreach(function(cloud)
+        self.clouds:remove(cloud)
     end)
 end
 
