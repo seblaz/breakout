@@ -37,10 +37,6 @@ end
 function Brick:hit()
     EventBus:notify(Events.BRICK_HIT, self)
 
-    -- sound on hit
-    gSounds['brick-hit-2']:stop()
-    gSounds['brick-hit-2']:play()
-
     if self:level() ~= 0 then
         self._level = self._level - 1
     end

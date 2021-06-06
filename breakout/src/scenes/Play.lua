@@ -18,6 +18,7 @@ local Base = require 'src/scenes/Base'
 local table = require 'table'
 local BrickView = require 'src/views/Brick'
 local BrickClouds = require 'src/views/BrickClouds'
+local PlaySounds = require 'src/sounds/Play'
 
 Play = Base()
 
@@ -40,14 +41,18 @@ function Play:enter(params)
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
 
+    -- Views
     local clouds = BrickClouds()
-
     self.views = table.map(self.bricks, BrickView)
     table.insert(self.views, clouds)
     table.insert(self.views, self.paddle)
     table.insert(self.views, self.ball)
 
+    -- Models
     self.models = {self.paddle, self.ball, clouds}
+
+    -- Sounds
+    self.sounds = PlaySounds()
 end
 
 function Play:update(dt)
