@@ -1,8 +1,9 @@
 local Object = require 'src/Object'
-
-local BrickCloud = Object()
+local Set = require 'lib/Set'
 local EventBus = require 'src/model/EventBus'
 local Events = require 'src/model/Events'
+
+local BrickCloud = Object()
 
 -- some of the colors in our palette (to be used with particle systems)
 local paletteColors = {
@@ -79,6 +80,10 @@ function BrickCloud:update(dt)
     self.psystem:update(dt)
 end
 
+function BrickCloud:is_done()
+    return self.psystem:getCount() ~= 0
+end
+
 function BrickCloud:render()
     love.graphics.draw(self.psystem, self.brick.x + 16, self.brick.y + 8)
 end
@@ -88,20 +93,26 @@ end
 local BrickClouds = Object()
 
 function BrickClouds:initialize()
-    self.clouds = {}
-    EventBus:subscribe(Events.BRICK_HIT, function(...) self:brick_hit(...) end)
+    self.clouds = Set()
+    EventBus:subscribe(Events.BRICK_HIT, function(...)
+        self:brick_hit(...)
+    end)
 end
 
 function BrickClouds:brick_hit(brick)
-    table.insert(self.clouds, BrickCloud(brick))
+    self.clouds:insert(BrickCloud(brick))
 end
 
 function BrickClouds:update(dt)
-    table.apply(self.clouds, function(cloud) cloud:update(dt) end)
+    self.clouds:foreach(function(cloud)
+        cloud:update(dt)
+    end)
 end
 
 function BrickClouds:render()
-    table.apply(self.clouds, function(cloud) cloud:render() end)
+    self.clouds:foreach(function(cloud)
+        cloud:render()
+    end)
 end
 
 return BrickClouds
