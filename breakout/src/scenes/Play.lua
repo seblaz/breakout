@@ -190,10 +190,10 @@ function Play:update(dt)
 
     -- if ball goes below bounds, revert to serve state and decrease health
     if self.ball.y >= VIRTUAL_HEIGHT then
-        self.health = self.health - 1
+        self.health:decrease()
         gSounds['hurt']:play()
 
-        if self.health == 0 then
+        if not self.health:is_alive() then
             gStateMachine:change('game-over', {
                 score = self.score,
                 highScores = self.highScores
