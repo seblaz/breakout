@@ -28,18 +28,16 @@ require 'src/Dependencies'
 
 local HighScoreRepo = require 'src/repositories/HighScore'
 local FPSView = require 'src/views/FPS'
+local BackgroundView = require 'src/views/Background'
 
 
-local fps_view
+local views
 
 --[[
     Called just once at the beginning of the game; used to set up
     game objects, variables, etc. and prepare the game world.
 ]]
 function love.load()
-    -- Initialize FPS views
-    fps_view = FPSView()
-
     -- set love's default filter to "nearest-neighbor", which essentially
     -- means there will be no filtering of pixels (blurriness), which is
     -- important for a nice crisp, 2D look
@@ -131,6 +129,9 @@ function love.load()
         highScores = HighScoreRepo():load()
     })
 
+    -- Views
+    views = {BackgroundView(), gStateMachine, FPSView()}
+
     -- play our music outside of all states and set it to looping
     --gSounds['music']:play()
     --gSounds['music']:setLooping(true)
@@ -199,24 +200,7 @@ function love.draw()
     -- begin drawing with push, in our virtual resolution
     push:apply('start')
 
-    -- background should be drawn regardless of state, scaled to fit our
-    -- virtual resolution
-    local backgroundWidth = gTextures['background']:getWidth()
-    local backgroundHeight = gTextures['background']:getHeight()
+    table.apply(views, function(view) view:render() end)
 
-    love.graphics.draw(gTextures['background'], 
-        -- draw at coordinates 0, 0
-        0, 0, 
-        -- no rotation
-        0,
-        -- scale factors on X and Y axis so it fills the screen
-        VIRTUAL_WIDTH / (backgroundWidth - 1), VIRTUAL_HEIGHT / (backgroundHeight - 1))
-    
-    -- use the state machine to defer rendering to the current state we're in
-    gStateMachine:render()
-    
-    -- display FPS for debugging; simply comment out to remove
-    fps_view:render()
-    
     push:apply('end')
 end
