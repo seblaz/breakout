@@ -17,6 +17,8 @@
 local Set = require 'lib/Set'
 local Base = require 'src/scenes/Base'
 
+local Fonts = require 'src/assets/Fonts'
+
 local BrickView = require 'src/views/Brick'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
@@ -75,11 +77,11 @@ end
 function Serve:render()
     self.views:foreach(function(view) view:render() end)
 
-    love.graphics.setFont(gFonts['large'])
+    love.graphics.setFont(Fonts:get('large'))
     love.graphics.printf('Level ' .. tostring(self.level), 0, VIRTUAL_HEIGHT / 3,
         VIRTUAL_WIDTH, 'center')
 
-    love.graphics.setFont(gFonts['medium'])
+    love.graphics.setFont(Fonts:get('medium'))
     love.graphics.printf('Press Enter to serve!', 0, VIRTUAL_HEIGHT / 2,
         VIRTUAL_WIDTH, 'center')
 end

@@ -24,11 +24,6 @@
     http://www.soundcloud.com/empyreanma
 ]]
 
-require 'src/Dependencies'
-
-local Main = require 'src/Main'
-
-
 local main
 
 --[[
@@ -36,8 +31,16 @@ local main
     game objects, variables, etc. and prepare the game world.
 ]]
 function love.load()
-    -- Our game
-    main = Main()
+    -- set love's default filter to "nearest-neighbor", which essentially
+    -- means there will be no filtering of pixels (blurriness), which is
+    -- important for a nice crisp, 2D look
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+
+    -- Should blow after the global variables are deleted
+    require 'src/Dependencies'
+
+    -- Our game, require it after the setDefaultFilter
+    main = require 'src/Main'()
 
     -- a table we'll use to keep track of which keys have been pressed this
     -- frame, to get around the fact that LÖVE's default callback won't let us

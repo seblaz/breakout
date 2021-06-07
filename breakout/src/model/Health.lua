@@ -3,7 +3,7 @@ local Object = require 'src/Object'
 local Health = Object()
 
 function Health:initialize()
-    self._points = 1
+    self._points = 3
 end
 
 function Health:decrease()

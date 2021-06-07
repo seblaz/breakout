@@ -7,24 +7,11 @@ local BackgroundView = require 'src/views/Background'
 local Main = Object()
 
 function Main:initialize()
-    -- set love's default filter to "nearest-neighbor", which essentially
-    -- means there will be no filtering of pixels (blurriness), which is
-    -- important for a nice crisp, 2D look
-    love.graphics.setDefaultFilter('nearest', 'nearest')
-
     -- seed the RNG so that calls to random are always random
     math.randomseed(os.time())
 
     -- set the application title bar
     love.window.setTitle('Breakout')
-
-    -- initialize our nice-looking retro text fonts
-    gFonts = {
-        ['small'] = love.graphics.newFont('fonts/font.ttf', 8),
-        ['medium'] = love.graphics.newFont('fonts/font.ttf', 16),
-        ['large'] = love.graphics.newFont('fonts/font.ttf', 32)
-    }
-    love.graphics.setFont(gFonts['small'])
 
     -- load up the graphics we'll be using throughout our states
     gTextures = {

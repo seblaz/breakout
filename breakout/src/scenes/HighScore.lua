@@ -11,6 +11,7 @@
 ]]
 
 local Base = require 'src/scenes/Base'
+local Fonts = require 'src/assets/Fonts'
 
 HighScore = Base()
 
@@ -30,10 +31,10 @@ function HighScore:update(dt)
 end
 
 function HighScore:render()
-    love.graphics.setFont(gFonts['large'])
+    love.graphics.setFont(Fonts:get('large'))
     love.graphics.printf('High Scores', 0, 20, VIRTUAL_WIDTH, 'center')
 
-    love.graphics.setFont(gFonts['medium'])
+    love.graphics.setFont(Fonts:get('medium'))
 
     -- iterate over all high score indices in our high scores table
     for i = 1, 10 do
@@ -53,7 +54,7 @@ function HighScore:render()
             60 + i * 13, 100, 'right')
     end
 
-    love.graphics.setFont(gFonts['small'])
+    love.graphics.setFont(Fonts:get('small'))
     love.graphics.printf("Press Escape to return to the main menu!",
         0, VIRTUAL_HEIGHT - 18, VIRTUAL_WIDTH, 'center')
 end

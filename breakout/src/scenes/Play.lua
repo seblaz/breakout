@@ -18,6 +18,7 @@ local table = require 'table'
 local EventBus = require 'src/model/EventBus'
 local Base = require 'src/scenes/Base'
 
+local Fonts = require 'src/assets/Fonts'
 local PlaySounds = require 'src/sounds/Play'
 
 local BrickView = require 'src/views/Brick'
@@ -225,7 +226,7 @@ function Play:render()
 
     -- pause text, if paused
     if self.paused then
-        love.graphics.setFont(gFonts['large'])
+        love.graphics.setFont(Fonts:get('large'))
         love.graphics.printf("PAUSED", 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
     end
 end

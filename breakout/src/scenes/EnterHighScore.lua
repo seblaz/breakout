@@ -12,6 +12,7 @@
 
 local Base = require 'src/scenes/Base'
 local HighScoreRepo = require 'src/repositories/HighScore'
+local Fonts = require 'src/assets/Fonts'
 
 EnterHighScore = Base()
 
@@ -80,11 +81,11 @@ function EnterHighScore:update(dt)
 end
 
 function EnterHighScore:render()
-    love.graphics.setFont(gFonts['medium'])
+    love.graphics.setFont(Fonts:get('medium'))
     love.graphics.printf('Your score: ' .. tostring(self.score:points()), 0, 30,
         VIRTUAL_WIDTH, 'center')
 
-    love.graphics.setFont(gFonts['large'])
+    love.graphics.setFont(Fonts:get('large'))
     
     --
     -- render all three characters of the name
@@ -107,7 +108,7 @@ function EnterHighScore:render()
     love.graphics.print(string.char(chars[3]), VIRTUAL_WIDTH / 2 + 20, VIRTUAL_HEIGHT / 2)
     love.graphics.setColor(1, 1, 1)
     
-    love.graphics.setFont(gFonts['small'])
+    love.graphics.setFont(Fonts:get('small'))
     love.graphics.printf('Press Enter to confirm!', 0, VIRTUAL_HEIGHT - 18,
         VIRTUAL_WIDTH, 'center')
 end

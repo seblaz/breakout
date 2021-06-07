@@ -16,6 +16,7 @@
 -- that BaseState has, so it will have empty versions of all StateMachine methods
 -- even if we don't override them ourselves; handy to avoid superfluous code!
 local Base = require 'src/scenes/Base'
+local Fonts = require 'src/assets/Fonts'
 
 Start = Base()
 
@@ -56,12 +57,12 @@ end
 
 function Start:render()
     -- title
-    love.graphics.setFont(gFonts['large'])
+    love.graphics.setFont(Fonts:get('large'))
     love.graphics.printf("BREAKOUT", 0, VIRTUAL_HEIGHT / 3,
         VIRTUAL_WIDTH, 'center')
 
     -- instructions
-    love.graphics.setFont(gFonts['medium'])
+    love.graphics.setFont(Fonts:get('medium'))
 
     -- if we're highlighting 1, render that option blue
     if highlighted == 1 then
