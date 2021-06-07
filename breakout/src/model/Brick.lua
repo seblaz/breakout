@@ -33,7 +33,7 @@ end
 function Brick:hit()
     EventBus:notify(Events.BRICK_HIT, self)
 
-    if self:level() ~= 0 then
+    if self:in_play() then
         self._level = self._level - 1
     end
 
