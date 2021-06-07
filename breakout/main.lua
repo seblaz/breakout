@@ -241,14 +241,3 @@ function renderHealth(health)
         healthX = healthX + 11
     end
 end
-
-
---[[
-    Simply renders the player's score at the top right, with left-side padding
-    for the score number.
-]]
-function renderScore(score)
-    love.graphics.setFont(gFonts['small'])
-    love.graphics.print('Score:', VIRTUAL_WIDTH - 60, 5)
-    love.graphics.printf(tostring(score), VIRTUAL_WIDTH - 50, 5, 40, 'right')
-end
