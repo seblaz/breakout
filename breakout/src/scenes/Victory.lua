@@ -12,7 +12,9 @@
 ]]
 
 local Base = require 'src/scenes/Base'
+
 local ScoreView = require 'src/views/Score'
+local HealthView = require 'src/views/Health'
 
 Victory = Base()
 
@@ -25,7 +27,12 @@ function Victory:enter(params)
     self.ball = params.ball
     self.recoverPoints = params.recoverPoints
 
-    self.views = {ScoreView(self.score), self.paddle, self.ball}
+    self.views = {
+        HealthView(self.health),
+        ScoreView(self.score),
+        self.paddle,
+        self.ball,
+    }
 end
 
 function Victory:update(dt)
@@ -51,8 +58,6 @@ end
 
 function Victory:render()
     table.apply(self.views, function(view) view:render() end)
-
-    renderHealth(self.health)
 
     -- level complete text
     love.graphics.setFont(gFonts['large'])

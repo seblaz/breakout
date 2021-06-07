@@ -14,13 +14,16 @@
     Over screen if at 0 health or the Serve screen otherwise.
 ]]
 
-local Base = require 'src/scenes/Base'
 local table = require 'table'
+local EventBus = require 'src/model/EventBus'
+local Base = require 'src/scenes/Base'
+
+local PlaySounds = require 'src/sounds/Play'
+
 local BrickView = require 'src/views/Brick'
 local BrickClouds = require 'src/views/BrickClouds'
-local PlaySounds = require 'src/sounds/Play'
-local EventBus = require 'src/model/EventBus'
 local ScoreView = require 'src/views/Score'
+local HealthView = require 'src/views/Health'
 
 Play = Base()
 
@@ -50,6 +53,7 @@ function Play:enter(params)
     table.insert(self.views, self.paddle)
     table.insert(self.views, self.ball)
     table.insert(self.views, ScoreView(self.score))
+    table.insert(self.views, HealthView(self.health))
 
     -- Models
     self.models = {self.paddle, self.ball, clouds}
@@ -218,8 +222,6 @@ end
 
 function Play:render()
     table.apply(self.views, function(view) view:render() end)
-
-    renderHealth(self.health)
 
     -- pause text, if paused
     if self.paused then

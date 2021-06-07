@@ -220,24 +220,3 @@ function love.draw()
     
     push:apply('end')
 end
-
---[[
-    Renders hearts based on how much health the player has. First renders
-    full hearts, then empty hearts for however much health we're missing.
-]]
-function renderHealth(health)
-    -- start of our health rendering
-    local healthX = VIRTUAL_WIDTH - 100
-    
-    -- render health left
-    for i = 1, health:points() do
-        love.graphics.draw(gTextures['hearts'], gFrames['hearts'][1], healthX, 4)
-        healthX = healthX + 11
-    end
-
-    -- render missing health
-    for i = 1, 3 - health:points() do
-        love.graphics.draw(gTextures['hearts'], gFrames['hearts'][2], healthX, 4)
-        healthX = healthX + 11
-    end
-end

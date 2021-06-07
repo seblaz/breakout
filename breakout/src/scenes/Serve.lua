@@ -14,10 +14,12 @@
     well as the level we're on.
 ]]
 
-local Base = require 'src/scenes/Base'
-local BrickView = require 'src/views/Brick'
 local Set = require 'lib/Set'
+local Base = require 'src/scenes/Base'
+
+local BrickView = require 'src/views/Brick'
 local ScoreView = require 'src/views/Score'
+local HealthView = require 'src/views/Health'
 
 Serve = Base()
 
@@ -36,8 +38,13 @@ function Serve:enter(params)
     self.ball.skin = math.random(7)
 
     -- Views
-    self.views = Set(table.map(self.bricks, BrickView))
-    self.views:insert(ScoreView(self.score))
+    self.views = Set({
+        self.paddle,
+        self.ball,
+        ScoreView(self.score),
+        HealthView(self.health),
+        unpack(table.map(self.bricks, BrickView)),
+    })
 end
 
 function Serve:update(dt)
@@ -66,17 +73,7 @@ function Serve:update(dt)
 end
 
 function Serve:render()
-    self.paddle:render()
-    self.ball:render()
-
-    self.views:foreach(function(view)
-        view:render()
-    end)
-
     self.views:foreach(function(view) view:render() end)
-
-    --renderScore(self.score)
-    renderHealth(self.health)
 
     love.graphics.setFont(gFonts['large'])
     love.graphics.printf('Level ' .. tostring(self.level), 0, VIRTUAL_HEIGHT / 3,
