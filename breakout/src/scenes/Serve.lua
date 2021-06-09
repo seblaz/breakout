@@ -22,6 +22,8 @@ local Fonts = require 'src/assets/Fonts'
 local BrickView = require 'src/views/Brick'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
+local BallView = require 'src/views/Ball'
+
 
 Serve = Base()
 
@@ -35,14 +37,14 @@ function Serve:enter(params)
     self.level = params.level
     self.recoverPoints = params.recoverPoints
 
-    -- init new ball (random color for fun)
     self.ball = Ball()
-    self.ball.skin = math.random(7)
+    --En cada serve se inicializa un color nuevo para la bola, se puede dejar fijo
+    self.ballView = BallView(self.ball)
 
     -- Views
     self.views = Set({
         self.paddle,
-        self.ball,
+        self.ballView,
         ScoreView(self.score),
         HealthView(self.health),
         unpack(table.map(self.bricks, BrickView)),
@@ -64,6 +66,7 @@ function Serve:update(dt)
             score = self.score,
             highScores = self.highScores,
             ball = self.ball,
+            ballView = self.ballView, -- Le paso el ballView al play para que mantenga la misma vista y no inicialice otra
             level = self.level,
             recoverPoints = self.recoverPoints
         })

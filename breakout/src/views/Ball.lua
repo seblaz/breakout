@@ -1,16 +1,22 @@
 local Object = require 'src/Object'
 
-local BallSkin = Object()
+local Ball = Object()
 
-function BallSkin:initialize(ball)
+function Ball:initialize(ball)
     self.ball = ball
-    self.color = 2
+    self.color = math.random(7)
 end
 
-function BallSkin:render()
+
+function Ball:render()
 
     -- gTexture is our global texture for all blocks
     -- gBallFrames is a table of quads mapping to each individual ball skin in the texture
+    --[[for k,v in pairs(self.ball) do
+        print(k)  
+        print(v)
+       end]]
+
     love.graphics.draw(
                     self._getTexture(),
                     self:_getColor(),
@@ -20,10 +26,12 @@ function BallSkin:render()
 end
 
 
-function BallSkin:_getColor()
+function Ball:_getColor()
     return gFrames['balls'][self.color]
 end
 
-function BallSkin:_getTexture()
+function Ball:_getTexture()
     return gTextures['main']
 end
+
+return Ball

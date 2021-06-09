@@ -27,13 +27,14 @@ function Victory:enter(params)
     self.paddle = params.paddle
     self.health = params.health
     self.ball = params.ball
+    self.ballView = params.ballView -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
     self.recoverPoints = params.recoverPoints
 
     self.views = {
         HealthView(self.health),
         ScoreView(self.score),
         self.paddle,
-        self.ball,
+        self.ballView,
     }
 end
 

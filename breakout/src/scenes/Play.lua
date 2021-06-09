@@ -39,6 +39,7 @@ function Play:enter(params)
     self.score = params.score
     self.highScores = params.highScores
     self.ball = params.ball
+    self.ballView = params.ballView
     self.level = params.level
 
     self.recoverPoints = 5000
@@ -52,7 +53,7 @@ function Play:enter(params)
     self.views = table.map(self.bricks, BrickView)
     table.insert(self.views, clouds)
     table.insert(self.views, self.paddle)
-    table.insert(self.views, self.ball)
+    table.insert(self.views, self.ballView) -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
     table.insert(self.views, ScoreView(self.score))
     table.insert(self.views, HealthView(self.health))
 
@@ -139,6 +140,7 @@ function Play:update(dt)
                     score = self.score,
                     highScores = self.highScores,
                     ball = self.ball,
+                    ballView = self.ballView, -- Le paso el ballView al victory para que mantenga la misma vista y no inicialice otra
                     recoverPoints = self.recoverPoints
                 })
             end
