@@ -12,10 +12,6 @@ function Ball:render()
 
     -- gTexture is our global texture for all blocks
     -- gBallFrames is a table of quads mapping to each individual ball skin in the texture
-    --[[for k,v in pairs(self.ball) do
-        print(k)  
-        print(v)
-       end]]
 
     love.graphics.draw(
                     self._getTexture(),
