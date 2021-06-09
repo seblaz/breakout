@@ -30,7 +30,7 @@ LevelMaker = Class{}
     possible ways of randomizing rows and columns of bricks. Calculates the
     brick colors and tiers to choose based on the level passed in.
 ]]
-function LevelMaker.createMap(level)
+function LevelMaker:createMap(level)
     local bricks = {}
 
     -- randomly choose the number of rows
@@ -44,9 +44,6 @@ function LevelMaker.createMap(level)
     -- don't go above 3
     local highestTier = math.min(21, math.floor(level / 5))
 
-    -- highest color of the highest tier, no higher than 5
-    local highestColor = math.min(5, level % 5 + 3)
-
     -- lay out bricks such that they touch each other and fill the space
     for y = 1, numRows do
         -- whether we want to enable skipping for this row
@@ -55,11 +52,9 @@ function LevelMaker.createMap(level)
         -- whether we want to enable alternating colors for this row
         local alternatePattern = math.random(1, 2) == 1 and true or false
 
-        -- choose two colors to alternate between
-        local alternateColor1 = math.random(1, highestColor)
-        local alternateColor2 = math.random(1, highestColor)
-        local alternateTier1 = math.random(0, highestTier)
-        local alternateTier2 = math.random(0, highestTier)
+        -- choose two tiers to alternate between
+        local alternateTier1 = math.random(1, highestTier)
+        local alternateTier2 = math.random(1, highestTier)
 
         -- used only when we want to skip a block, for skip pattern
         local skipFlag = math.random(2) == 1 and true or false
@@ -67,8 +62,7 @@ function LevelMaker.createMap(level)
         -- used only when we want to alternate a block, for alternate pattern
         local alternateFlag = math.random(2) == 1 and true or false
 
-        -- solid color we'll use if we're not skipping or alternating
-        local solidColor = math.random(1, highestColor)
+        -- solid tier we'll use if we're not skipping or alternating
         local solidTier = math.random(0, highestTier)
 
         for x = 1, numCols do
@@ -122,7 +116,7 @@ function LevelMaker.createMap(level)
 
     -- in the event we didn't generate any bricks, try again
     if #bricks == 0 then
-        return self.createMap(level)
+        return self:createMap(level)
     else
         return bricks
     end
