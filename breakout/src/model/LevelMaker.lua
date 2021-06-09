@@ -42,7 +42,7 @@ function LevelMaker:createMap(level)
 
     -- highest possible spawned brick color in this level; ensure we
     -- don't go above 3
-    local highestTier = math.min(21, math.floor(level / 5))
+    local highestTier = math.min(21, math.ceil(level / 5))
 
     -- lay out bricks such that they touch each other and fill the space
     for y = 1, numRows do
