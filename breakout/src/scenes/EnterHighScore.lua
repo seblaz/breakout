@@ -14,7 +14,7 @@ local Base = require 'src/scenes/Base'
 local HighScoreRepo = require 'src/repositories/HighScore'
 local Fonts = require 'src/assets/Fonts'
 
-EnterHighScore = Base()
+local EnterHighScore = Base()
 
 -- individual chars of our string
 local chars = {
@@ -112,3 +112,5 @@ function EnterHighScore:render()
     love.graphics.printf('Press Enter to confirm!', 0, VIRTUAL_HEIGHT - 18,
         VIRTUAL_WIDTH, 'center')
 end
+
+return EnterHighScore

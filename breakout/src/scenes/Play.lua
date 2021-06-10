@@ -26,7 +26,7 @@ local BrickClouds = require 'src/views/BrickClouds'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 
-Play = Base()
+local Play = Base()
 
 --[[
     We initialize what's in our PlayState via a state table that we pass between
@@ -242,3 +242,5 @@ function Play:checkVictory()
 
     return true
 end
+
+return Play

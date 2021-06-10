@@ -23,6 +23,8 @@ ALTERNATE = 2       -- alternate colors
 SKIP = 3            -- skip every other block
 NONE = 4            -- no blocks this row
 
+local Brick = require 'src/model/Brick'
+
 LevelMaker = Class{}
 
 --[[

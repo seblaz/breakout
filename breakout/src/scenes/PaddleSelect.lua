@@ -16,8 +16,9 @@ local Base = require 'src/scenes/Base'
 local Score = require 'src/model/Score'
 local Health = require 'src/model/Health'
 local Fonts = require 'src/assets/Fonts'
+local Paddle = require 'src/model/Paddle'
 
-PaddleSelect = Base()
+local PaddleSelect = Base()
 
 function PaddleSelect:enter(params)
     self.highScores = params.highScores
@@ -105,3 +106,5 @@ function PaddleSelect:render()
     love.graphics.draw(gTextures['main'], gFrames['paddles'][2 + 4 * (self.currentPaddle - 1)],
         VIRTUAL_WIDTH / 2 - 32, VIRTUAL_HEIGHT - VIRTUAL_HEIGHT / 3)
 end
+
+return PaddleSelect

@@ -17,7 +17,7 @@
 local EventBus = require 'src/model/EventBus'
 local Events = require 'src/model/Events'
 
-Brick = Class{}
+local Brick = Class{}
 
 
 function Brick:init(x, y, level)
@@ -49,3 +49,5 @@ end
 function Brick:in_play()
     return self._level ~= 0
 end
+
+return Brick

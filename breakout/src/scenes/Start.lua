@@ -18,7 +18,7 @@
 local Base = require 'src/scenes/Base'
 local Fonts = require 'src/assets/Fonts'
 
-Start = Base()
+local Start = Base()
 
 -- whether we're highlighting "Start" or "High Scores"
 local highlighted = 1
@@ -84,3 +84,5 @@ function Start:render()
     -- reset the color
     love.graphics.setColor(1, 1, 1)
 end
+
+return Start

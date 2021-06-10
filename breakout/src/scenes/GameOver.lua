@@ -15,7 +15,7 @@
 local Base = require 'src/scenes/Base'
 local Fonts = require 'src/assets/Fonts'
 
-GameOver = Base()
+local GameOver = Base()
 
 function GameOver:enter(params)
     self.score = params.score
@@ -64,3 +64,5 @@ function GameOver:render()
     love.graphics.printf('Press Enter!', 0, VIRTUAL_HEIGHT - VIRTUAL_HEIGHT / 4,
         VIRTUAL_WIDTH, 'center')
 end
+
+return GameOver

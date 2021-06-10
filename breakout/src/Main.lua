@@ -3,6 +3,14 @@ local Object = require 'src/Object'
 local HighScoreRepo = require 'src/repositories/HighScore'
 local FPSView = require 'src/views/FPS'
 local BackgroundView = require 'src/views/Background'
+local PaddleSelect = require 'src/scenes/PaddleSelect'
+local EnterHighScore = require 'src/scenes/EnterHighScore'
+local HighScore = require 'src/scenes/HighScore'
+local GameOver = require 'src/scenes/GameOver'
+local Play = require 'src/scenes/Play'
+local Scenes = require 'src/scenes/Scenes'
+local Start = require 'src/scenes/Start'
+local Victory = require 'src/scenes/Victory'
 
 local Main = Object()
 

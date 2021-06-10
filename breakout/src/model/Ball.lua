@@ -13,7 +13,7 @@
     for visual variety.
 ]]
 
-Ball = Class{}
+local Ball = Class{}
 
 function Ball:init()
     -- simple positional and dimensional variables
@@ -24,6 +24,7 @@ function Ball:init()
     -- X and Y axis, since the ball can move in two dimensions
     self.dy = 0
     self.dx = 0
+
 end
 
 --[[
@@ -80,3 +81,5 @@ function Ball:update(dt)
         gSounds['wall-hit']:play()
     end
 end
+
+return Ball

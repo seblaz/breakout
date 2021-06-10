@@ -13,7 +13,7 @@
     which the player gets to choose upon starting the game.
 ]]
 
-Paddle = Class{}
+local Paddle = Class{}
 
 --[[
     Our Paddle will initialize at the same spot every time, in the middle
@@ -75,3 +75,5 @@ function Paddle:render()
     love.graphics.draw(gTextures['main'], gFrames['paddles'][self.size + 4 * (self.skin - 1)],
         self.x, self.y)
 end
+
+return Paddle

@@ -18,7 +18,7 @@ local Fonts = require 'src/assets/Fonts'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 
-Victory = Base()
+local Victory = Base()
 
 function Victory:enter(params)
     self.level = params.level
@@ -72,3 +72,5 @@ function Victory:render()
     love.graphics.printf('Press Enter to serve!', 0, VIRTUAL_HEIGHT / 2,
         VIRTUAL_WIDTH, 'center')
 end
+
+return Victory

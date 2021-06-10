@@ -23,6 +23,8 @@ local BrickView = require 'src/views/Brick'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 local BallView = require 'src/views/Ball'
+local Ball = require 'src/model/Ball'
+
 
 
 Serve = Base()

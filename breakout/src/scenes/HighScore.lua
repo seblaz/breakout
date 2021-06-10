@@ -13,7 +13,7 @@
 local Base = require 'src/scenes/Base'
 local Fonts = require 'src/assets/Fonts'
 
-HighScore = Base()
+local HighScore = Base()
 
 function HighScore:enter(params)
     self.highScores = params.highScores
@@ -58,3 +58,5 @@ function HighScore:render()
     love.graphics.printf("Press Escape to return to the main menu!",
         0, VIRTUAL_HEIGHT - 18, VIRTUAL_WIDTH, 'center')
 end
+
+return HighScore

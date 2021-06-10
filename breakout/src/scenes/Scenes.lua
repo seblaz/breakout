@@ -1,7 +1,7 @@
 local Base = require 'src/scenes/Base'
 local Object = require 'src/Object'
 
-Scenes = Object()
+local Scenes = Object()
 
 function Scenes:initialize(scenes)
 	self.scenes = scenes or {} -- [name] -> [function that returns states]
@@ -22,3 +22,5 @@ end
 function Scenes:render()
 	self.current:render()
 end
+
+return Scenes
