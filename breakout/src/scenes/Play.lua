@@ -23,6 +23,7 @@ local PlaySounds = require 'src/sounds/Play'
 
 local BrickView = require 'src/views/Brick'
 local BrickClouds = require 'src/views/BrickClouds'
+local PaddleView = require 'src/views/Paddle'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 
@@ -34,6 +35,7 @@ local Play = Base()
 ]]
 function Play:enter(params)
     self.paddle = params.paddle
+    self.paddleView = params.paddleView
     self.bricks = params.bricks
     self.health = params.health
     self.score = params.score
@@ -52,7 +54,7 @@ function Play:enter(params)
     local clouds = BrickClouds()
     self.views = table.map(self.bricks, BrickView)
     table.insert(self.views, clouds)
-    table.insert(self.views, self.paddle)
+    table.insert(self.views, self.paddleView)
     table.insert(self.views, self.ballView) -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
     table.insert(self.views, ScoreView(self.score))
     table.insert(self.views, HealthView(self.health))
@@ -136,6 +138,7 @@ function Play:update(dt)
                 gStateMachine:change('victory', {
                     level = self.level,
                     paddle = self.paddle,
+                    paddleView = self.paddleView,
                     health = self.health,
                     score = self.score,
                     highScores = self.highScores,
@@ -208,6 +211,7 @@ function Play:update(dt)
         else
             gStateMachine:change('serve', {
                 paddle = self.paddle,
+                paddleView = self.paddleView,
                 bricks = self.bricks,
                 health = self.health,
                 score = self.score,

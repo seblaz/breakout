@@ -17,6 +17,7 @@ local Score = require 'src/model/Score'
 local Health = require 'src/model/Health'
 local Fonts = require 'src/assets/Fonts'
 local Paddle = require 'src/model/Paddle'
+local PaddleView = require 'src/views/Paddle'
 
 local PaddleSelect = Base()
 
@@ -50,9 +51,11 @@ function PaddleSelect:update(dt)
     -- select paddle and move on to the serve state, passing in the selection
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
         gSounds['confirm']:play()
-
+        paddleModel = Paddle(self.currentPaddle)
+        paddleSelectedView = PaddleView(paddleModel)
         gStateMachine:change('serve', {
-            paddle = Paddle(self.currentPaddle),
+            paddle = paddleModel,
+            paddleView = paddleSelectedView,
             bricks = LevelMaker:createMap(32),
             health = Health(),
             score = Score(10000),

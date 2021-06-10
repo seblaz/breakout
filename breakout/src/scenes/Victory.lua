@@ -24,6 +24,7 @@ function Victory:enter(params)
     self.level = params.level
     self.score = params.score
     self.highScores = params.highScores
+    self.paddleView = params.paddleView
     self.paddle = params.paddle
     self.health = params.health
     self.ball = params.ball
@@ -33,7 +34,7 @@ function Victory:enter(params)
     self.views = {
         HealthView(self.health),
         ScoreView(self.score),
-        self.paddle,
+        self.paddleView,
         self.ballView,
     }
 end
@@ -51,6 +52,7 @@ function Victory:update(dt)
             level = self.level + 1,
             bricks = LevelMaker:createMap(self.level + 1),
             paddle = self.paddle,
+            paddleView = self.paddleView,
             health = self.health,
             score = self.score,
             highScores = self.highScores,

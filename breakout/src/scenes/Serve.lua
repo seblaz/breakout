@@ -23,6 +23,7 @@ local BrickView = require 'src/views/Brick'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 local BallView = require 'src/views/Ball'
+local PaddleView = require 'src/views/Paddle'
 local Ball = require 'src/model/Ball'
 
 
@@ -32,6 +33,7 @@ Serve = Base()
 function Serve:enter(params)
     -- grab game state from params
     self.paddle = params.paddle
+    self.paddleView = params.paddleView
     self.bricks = params.bricks
     self.health = params.health
     self.score = params.score
@@ -45,7 +47,7 @@ function Serve:enter(params)
 
     -- Views
     self.views = Set({
-        self.paddle,
+        self.paddleView,
         self.ballView,
         ScoreView(self.score),
         HealthView(self.health),
@@ -63,6 +65,7 @@ function Serve:update(dt)
         -- pass in all important state info to the PlayState
         gStateMachine:change('play', {
             paddle = self.paddle,
+            paddleView = self.paddleView,
             bricks = self.bricks,
             health = self.health,
             score = self.score,

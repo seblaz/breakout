@@ -21,9 +21,8 @@ local Paddle = Class{}
 ]]
 function Paddle:init(skin)
     -- x is placed in the middle
-    self.x = VIRTUAL_WIDTH / 2 - 32
-
     -- y is placed a little above the bottom edge of the screen
+    self.x = VIRTUAL_WIDTH / 2 - 32
     self.y = VIRTUAL_HEIGHT - 32
 
     -- start us off with no velocity
@@ -67,13 +66,5 @@ function Paddle:update(dt)
     end
 end
 
---[[
-    Render the paddle by drawing the main texture, passing in the quad
-    that corresponds to the proper skin and size.
-]]
-function Paddle:render()
-    love.graphics.draw(gTextures['main'], gFrames['paddles'][self.size + 4 * (self.skin - 1)],
-        self.x, self.y)
-end
 
 return Paddle
