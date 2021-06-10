@@ -14,15 +14,14 @@ end
 function Paddle:render()
     love.graphics.draw(
             gTextures['main'],
-            gFrames['paddles'][self.paddle.size + 4 * (self.paddle.skin - 1)],
+            self:_color(),
             self.paddle.x,
             self.paddle.y
     )
 end
 
 function Paddle:_color()
-    return gFrames['paddles'][self.size + 4 * (self.skin - 1)]
-    --return love.graphics.setColor(0, 1, 0)
+    return gFrames['paddles'][self.paddle.size + 4 * (self.paddle.skin - 1)]
 end
 
 return Paddle
