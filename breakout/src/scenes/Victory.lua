@@ -50,7 +50,7 @@ function Victory:update(dt)
 
     -- go to play screen if the player presses Enter
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        gStateMachine:change('serve', {
+        self._scenes:change('serve', {
             level = self.level + 1,
             bricks = LevelMaker:createMap(self.level + 1),
             paddle = self.paddle,

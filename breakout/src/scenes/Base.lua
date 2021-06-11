@@ -19,6 +19,10 @@ local Object = require 'src/Object'
 
 local Base = Object()
 
+function Base:initialize(scenes)
+    self._scenes = scenes
+end
+
 function Base:enter() end
 function Base:exit() end
 function Base:update() end

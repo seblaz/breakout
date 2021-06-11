@@ -136,7 +136,7 @@ function Play:update(dt)
 
                 EventBus:reset()
 
-                gStateMachine:change('victory', {
+                self._scenes:change('victory', {
                     level = self.level,
                     paddle = self.paddle,
                     paddleView = self.paddleView,

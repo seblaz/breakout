@@ -27,8 +27,8 @@ local chars = {
 -- char we're currently changing
 local highlightedChar = 1
 
-function EnterHighScore:initialize()
-    self:proto():initialize()
+function EnterHighScore:initialize(scenes)
+    self:proto():initialize(scenes)
     self._high_score_repo = HighScoreRepo()
 end
 
@@ -53,7 +53,7 @@ function EnterHighScore:update(dt)
 
         self._high_score_repo:save(self.highScores)
 
-        gStateMachine:change('high-scores', {
+        self._scenes:change('high-scores', {
             highScores = self.highScores
         })
     end

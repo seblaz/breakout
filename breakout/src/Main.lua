@@ -56,16 +56,16 @@ function Main:initialize()
     -- 5. 'victory' (the current level is over, with a victory jingle)
     -- 6. 'game-over' (the player has lost; display score and allow restart)
 
-    gStateMachine = Scenes {
-        ['start'] = function() return Start() end,
-        ['play'] = function() return Play() end,
-        ['serve'] = function() return Serve() end,
-        ['game-over'] = function() return GameOver() end,
-        ['victory'] = function() return Victory() end,
-        ['high-scores'] = function() return HighScore() end,
-        ['enter-high-score'] = function() return EnterHighScore() end,
-        ['paddle-select'] = function() return PaddleSelect() end
-    }
+    gStateMachine = Scenes({})
+    gStateMachine:new_scene('start', function() return Start(gStateMachine) end)
+    gStateMachine:new_scene('play', function() return Play(gStateMachine) end)
+    gStateMachine:new_scene('serve', function() return Serve(gStateMachine) end)
+    gStateMachine:new_scene('game-over', function() return GameOver(gStateMachine) end)
+    gStateMachine:new_scene('victory', function() return Victory(gStateMachine) end)
+    gStateMachine:new_scene('high-scores', function() return HighScore(gStateMachine) end)
+    gStateMachine:new_scene('enter-high-score', function() return EnterHighScore(gStateMachine) end)
+    gStateMachine:new_scene('paddle-select', function() return PaddleSelect(gStateMachine) end)
+
     gStateMachine:change('start', {
         highScores = HighScoreRepo():load()
     })

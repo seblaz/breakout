@@ -27,7 +27,8 @@ function PaddleSelect:enter(params)
     self.highScores = params.highScores
 end
 
-function PaddleSelect:initialize()
+function PaddleSelect:initialize(scenes)
+    self:proto():initialize(scenes)
     -- the paddle we're highlighting; will be passed to the ServeState
     -- when we press Enter
     self.currentPaddle = 1
@@ -55,7 +56,7 @@ function PaddleSelect:update(dt)
         Constants.gSounds['confirm']:play()
         paddleModel = Paddle(self.currentPaddle)
         paddleSelectedView = PaddleView(paddleModel)
-        gStateMachine:change('serve', {
+        self._scenes:change('serve', {
             paddle = paddleModel,
             paddleView = paddleSelectedView,
             bricks = LevelMaker:createMap(32),

@@ -40,11 +40,11 @@ function Start:update()
         Constants.gSounds['confirm']:play()
 
         if highlighted == 1 then
-            gStateMachine:change('paddle-select', {
+            self._scenes:change('paddle-select', {
                 highScores = self.highScores
             })
         else
-            gStateMachine:change('high-scores', {
+            self._scenes:change('high-scores', {
                 highScores = self.highScores
             })
         end
