@@ -205,12 +205,12 @@ function Play:update(dt)
         Constants.gSounds['hurt']:play()
 
         if not self.health:is_alive() then
-            gStateMachine:change('game-over', {
+            self._scenes:change('game-over', {
                 score = self.score,
                 highScores = self.highScores
             })
         else
-            gStateMachine:change('serve', {
+            self._scenes:change('serve', {
                 paddle = self.paddle,
                 paddleView = self.paddleView,
                 bricks = self.bricks,
