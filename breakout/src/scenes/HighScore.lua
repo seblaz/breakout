@@ -12,6 +12,7 @@
 
 local Base = require 'src/scenes/Base'
 local Fonts = require 'src/assets/Fonts'
+local Constants = require 'src/constants'
 
 local HighScore = Base()
 
@@ -32,7 +33,7 @@ end
 
 function HighScore:render()
     love.graphics.setFont(Fonts:get('large'))
-    love.graphics.printf('High Scores', 0, 20, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('High Scores', 0, 20, Constants.VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(Fonts:get('medium'))
 
@@ -42,21 +43,21 @@ function HighScore:render()
         local score = self.highScores[i]:points()
 
         -- score number (1-10)
-        love.graphics.printf(tostring(i) .. '.', VIRTUAL_WIDTH / 4, 
+        love.graphics.printf(tostring(i) .. '.', Constants.VIRTUAL_WIDTH / 4,
             60 + i * 13, 50, 'left')
 
         -- score name
-        love.graphics.printf(name, VIRTUAL_WIDTH / 4 + 38, 
+        love.graphics.printf(name, Constants.VIRTUAL_WIDTH / 4 + 38,
             60 + i * 13, 50, 'right')
         
         -- score itself
-        love.graphics.printf(tostring(score), VIRTUAL_WIDTH / 2,
+        love.graphics.printf(tostring(score), Constants.VIRTUAL_WIDTH / 2,
             60 + i * 13, 100, 'right')
     end
 
     love.graphics.setFont(Fonts:get('small'))
     love.graphics.printf("Press Escape to return to the main menu!",
-        0, VIRTUAL_HEIGHT - 18, VIRTUAL_WIDTH, 'center')
+        0, Constants.VIRTUAL_HEIGHT - 18, Constants.VIRTUAL_WIDTH, 'center')
 end
 
 return HighScore

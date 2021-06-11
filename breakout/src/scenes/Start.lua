@@ -17,6 +17,7 @@
 -- even if we don't override them ourselves; handy to avoid superfluous code!
 local Base = require 'src/scenes/Base'
 local Fonts = require 'src/assets/Fonts'
+local Constants = require 'src/constants'
 
 local Start = Base()
 
@@ -58,8 +59,8 @@ end
 function Start:render()
     -- title
     love.graphics.setFont(Fonts:get('large'))
-    love.graphics.printf("BREAKOUT", 0, VIRTUAL_HEIGHT / 3,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf("BREAKOUT", 0, Constants.VIRTUAL_HEIGHT / 3,
+        Constants.VIRTUAL_WIDTH, 'center')
 
     -- instructions
     love.graphics.setFont(Fonts:get('medium'))
@@ -68,8 +69,8 @@ function Start:render()
     if highlighted == 1 then
         love.graphics.setColor(0.4, 1, 1)
     end
-    love.graphics.printf("START", 0, VIRTUAL_HEIGHT / 2 + 70,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf("START", 0, Constants.VIRTUAL_HEIGHT / 2 + 70,
+        Constants.VIRTUAL_WIDTH, 'center')
 
     -- reset the color
     love.graphics.setColor(1, 1, 1)
@@ -78,8 +79,8 @@ function Start:render()
     if highlighted == 2 then
         love.graphics.setColor(0.4, 1, 1)
     end
-    love.graphics.printf("HIGH SCORES", 0, VIRTUAL_HEIGHT / 2 + 90,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf("HIGH SCORES", 0, Constants.VIRTUAL_HEIGHT / 2 + 90,
+        Constants.VIRTUAL_WIDTH, 'center')
 
     -- reset the color
     love.graphics.setColor(1, 1, 1)

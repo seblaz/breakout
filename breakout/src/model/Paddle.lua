@@ -12,6 +12,7 @@
     the paddle, the player loses one heart. The Paddle can have a skin,
     which the player gets to choose upon starting the game.
 ]]
+local Constants = require 'src/constants'
 
 local Paddle = Class{}
 
@@ -22,8 +23,8 @@ local Paddle = Class{}
 function Paddle:init(skin)
     -- x is placed in the middle
     -- y is placed a little above the bottom edge of the screen
-    self.x = VIRTUAL_WIDTH / 2 - 32
-    self.y = VIRTUAL_HEIGHT - 32
+    self.x = Constants.VIRTUAL_WIDTH / 2 - 32
+    self.y = Constants.VIRTUAL_HEIGHT - 32
 
     -- start us off with no velocity
     self.dx = 0
@@ -44,9 +45,9 @@ end
 function Paddle:update(dt)
     -- keyboard input
     if love.keyboard.isDown('left') then
-        self.dx = -PADDLE_SPEED
+        self.dx = - Constants.PADDLE_SPEED
     elseif love.keyboard.isDown('right') then
-        self.dx = PADDLE_SPEED
+        self.dx = Constants.PADDLE_SPEED
     else
         self.dx = 0
     end
@@ -62,7 +63,7 @@ function Paddle:update(dt)
     -- height (or else it will go partially below, since position is
     -- based on its top left corner)
     else
-        self.x = math.min(VIRTUAL_WIDTH - self.width, self.x + self.dx * dt)
+        self.x = math.min(Constants.VIRTUAL_WIDTH - self.width, self.x + self.dx * dt)
     end
 end
 

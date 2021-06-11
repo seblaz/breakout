@@ -1,4 +1,5 @@
 local Object = require 'src/Object'
+local Constants = require 'src/constants'
 
 local Background = Object()
 
@@ -14,7 +15,7 @@ function Background:render()
         -- no rotation
         0,
         -- scale factors on X and Y axis so it fills the screen
-        VIRTUAL_WIDTH / (backgroundWidth - 1), VIRTUAL_HEIGHT / (backgroundHeight - 1)
+        Constants.VIRTUAL_WIDTH / (backgroundWidth - 1), Constants.VIRTUAL_HEIGHT / (backgroundHeight - 1)
     )
 end
 

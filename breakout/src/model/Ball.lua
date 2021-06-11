@@ -12,6 +12,7 @@
     the paddle. The ball can have a skin, which is chosen at random, just
     for visual variety.
 ]]
+local Constants = require 'src/constants'
 
 local Ball = Class{}
 
@@ -52,8 +53,8 @@ end
     Places the ball in the middle of the screen, with no movement.
 ]]
 function Ball:reset()
-    self.x = VIRTUAL_WIDTH / 2 - 2
-    self.y = VIRTUAL_HEIGHT / 2 - 2
+    self.x = Constants.VIRTUAL_WIDTH / 2 - 2
+    self.y = Constants.VIRTUAL_HEIGHT / 2 - 2
     self.dx = 0
     self.dy = 0
 end
@@ -69,8 +70,8 @@ function Ball:update(dt)
         gSounds['wall-hit']:play()
     end
 
-    if self.x >= VIRTUAL_WIDTH - 8 then
-        self.x = VIRTUAL_WIDTH - 8
+    if self.x >= Constants.VIRTUAL_WIDTH - 8 then
+        self.x = Constants.VIRTUAL_WIDTH - 8
         self.dx = -self.dx
         gSounds['wall-hit']:play()
     end

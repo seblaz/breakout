@@ -25,10 +25,11 @@ local HealthView = require 'src/views/Health'
 local BallView = require 'src/views/Ball'
 local PaddleView = require 'src/views/Paddle'
 local Ball = require 'src/model/Ball'
+local Constants = require 'src/constants'
 
 
 
-Serve = Base()
+local Serve = Base()
 
 function Serve:enter(params)
     -- grab game state from params
@@ -86,10 +87,12 @@ function Serve:render()
     self.views:foreach(function(view) view:render() end)
 
     love.graphics.setFont(Fonts:get('large'))
-    love.graphics.printf('Level ' .. tostring(self.level), 0, VIRTUAL_HEIGHT / 3,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Level ' .. tostring(self.level), 0, Constants.VIRTUAL_HEIGHT / 3,
+        Constants.VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(Fonts:get('medium'))
-    love.graphics.printf('Press Enter to serve!', 0, VIRTUAL_HEIGHT / 2,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Press Enter to serve!', 0, Constants.VIRTUAL_HEIGHT / 2,
+        Constants.VIRTUAL_WIDTH, 'center')
 end
+
+return Serve

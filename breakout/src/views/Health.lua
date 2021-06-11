@@ -1,4 +1,5 @@
 local Object = require 'src/Object'
+local Constants = require 'src/constants'
 
 local Health = Object()
 
@@ -8,7 +9,7 @@ end
 
 function Health:render()
     -- start of our health rendering
-    local healthX = VIRTUAL_WIDTH - 100
+    local healthX = Constants.VIRTUAL_WIDTH - 100
 
     -- render health left
     for i = 1, self._health:points() do

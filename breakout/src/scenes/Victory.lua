@@ -17,6 +17,8 @@ local Fonts = require 'src/assets/Fonts'
 
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
+local Constants = require 'src/constants'
+local LevelMaker = require 'src/model/LevelMaker'
 
 local Victory = Base()
 
@@ -67,12 +69,12 @@ function Victory:render()
     -- level complete text
     love.graphics.setFont(Fonts:get('large'))
     love.graphics.printf("Level " .. tostring(self.level) .. " complete!",
-        0, VIRTUAL_HEIGHT / 4, VIRTUAL_WIDTH, 'center')
+        0, Constants.VIRTUAL_HEIGHT / 4, Constants.VIRTUAL_WIDTH, 'center')
 
     -- instructions text
     love.graphics.setFont(Fonts:get('medium'))
-    love.graphics.printf('Press Enter to serve!', 0, VIRTUAL_HEIGHT / 2,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Press Enter to serve!', 0, Constants.VIRTUAL_HEIGHT / 2,
+        Constants.VIRTUAL_WIDTH, 'center')
 end
 
 return Victory

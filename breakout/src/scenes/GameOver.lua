@@ -14,6 +14,7 @@
 
 local Base = require 'src/scenes/Base'
 local Fonts = require 'src/assets/Fonts'
+local Constants = require 'src/constants'
 
 local GameOver = Base()
 
@@ -57,12 +58,12 @@ end
 
 function GameOver:render()
     love.graphics.setFont(Fonts:get('large'))
-    love.graphics.printf('GAME OVER', 0, VIRTUAL_HEIGHT / 3, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('GAME OVER', 0, Constants.VIRTUAL_HEIGHT / 3, Constants.VIRTUAL_WIDTH, 'center')
     love.graphics.setFont(Fonts:get('medium'))
-    love.graphics.printf('Final Score: ' .. tostring(self.score:points()), 0, VIRTUAL_HEIGHT / 2,
-        VIRTUAL_WIDTH, 'center')
-    love.graphics.printf('Press Enter!', 0, VIRTUAL_HEIGHT - VIRTUAL_HEIGHT / 4,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Final Score: ' .. tostring(self.score:points()), 0, Constants.VIRTUAL_HEIGHT / 2,
+        Constants.VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Press Enter!', 0, Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 4,
+        Constants.VIRTUAL_WIDTH, 'center')
 end
 
 return GameOver

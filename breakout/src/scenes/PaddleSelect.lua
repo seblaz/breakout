@@ -18,6 +18,8 @@ local Health = require 'src/model/Health'
 local Fonts = require 'src/assets/Fonts'
 local Paddle = require 'src/model/Paddle'
 local PaddleView = require 'src/views/Paddle'
+local Constants = require 'src/constants'
+local LevelMaker = require 'src/model/LevelMaker'
 
 local PaddleSelect = Base()
 
@@ -73,11 +75,11 @@ end
 function PaddleSelect:render()
     -- instructions
     love.graphics.setFont(Fonts:get('medium'))
-    love.graphics.printf("Select your paddle with left and right!", 0, VIRTUAL_HEIGHT / 4,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf("Select your paddle with left and right!", 0, Constants.VIRTUAL_HEIGHT / 4,
+        Constants.VIRTUAL_WIDTH, 'center')
     love.graphics.setFont(Fonts:get('small'))
-    love.graphics.printf("(Press Enter to continue!)", 0, VIRTUAL_HEIGHT / 3,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf("(Press Enter to continue!)", 0, Constants.VIRTUAL_HEIGHT / 3,
+        Constants.VIRTUAL_WIDTH, 'center')
         
     -- left arrow; should render normally if we're higher than 1, else
     -- in a shadowy form to let us know we're as far left as we can go
@@ -86,8 +88,8 @@ function PaddleSelect:render()
         love.graphics.setColor(0.16, 0.16, 0.16, 0.5)
     end
     
-    love.graphics.draw(gTextures['arrows'], gFrames['arrows'][1], VIRTUAL_WIDTH / 4 - 24,
-        VIRTUAL_HEIGHT - VIRTUAL_HEIGHT / 3)
+    love.graphics.draw(gTextures['arrows'], gFrames['arrows'][1], Constants.VIRTUAL_WIDTH / 4 - 24,
+        Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
    
     -- reset drawing color to full white for proper rendering
     love.graphics.setColor(1, 1, 1)
@@ -99,15 +101,15 @@ function PaddleSelect:render()
         love.graphics.setColor(0.16, 0.16, 0.16, 0.5)
     end
     
-    love.graphics.draw(gTextures['arrows'], gFrames['arrows'][2], VIRTUAL_WIDTH - VIRTUAL_WIDTH / 4,
-        VIRTUAL_HEIGHT - VIRTUAL_HEIGHT / 3)
+    love.graphics.draw(gTextures['arrows'], gFrames['arrows'][2], Constants.VIRTUAL_WIDTH - Constants.VIRTUAL_WIDTH / 4,
+        Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
     
     -- reset drawing color to full white for proper rendering
     love.graphics.setColor(1, 1, 1)
 
     -- draw the paddle itself, based on which we have selected
     love.graphics.draw(gTextures['main'], gFrames['paddles'][2 + 4 * (self.currentPaddle - 1)],
-        VIRTUAL_WIDTH / 2 - 32, VIRTUAL_HEIGHT - VIRTUAL_HEIGHT / 3)
+        Constants.VIRTUAL_WIDTH / 2 - 32, Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
 end
 
 return PaddleSelect

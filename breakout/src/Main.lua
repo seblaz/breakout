@@ -11,6 +11,8 @@ local Play = require 'src/scenes/Play'
 local Scenes = require 'src/scenes/Scenes'
 local Start = require 'src/scenes/Start'
 local Victory = require 'src/scenes/Victory'
+local Serve = require 'src/scenes/Serve'
+local Constants = require 'src/constants'
 
 local Main = Object()
 
@@ -42,7 +44,7 @@ function Main:initialize()
 
     -- initialize our virtual resolution, which will be rendered within our
     -- actual window no matter its dimensions
-    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+    push:setupScreen(Constants.VIRTUAL_WIDTH, Constants.VIRTUAL_HEIGHT, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, {
         vsync = true,
         fullscreen = false,
         resizable = true

@@ -13,6 +13,7 @@
 local Base = require 'src/scenes/Base'
 local HighScoreRepo = require 'src/repositories/HighScore'
 local Fonts = require 'src/assets/Fonts'
+local Constants = require 'src/constants'
 
 local EnterHighScore = Base()
 
@@ -83,7 +84,7 @@ end
 function EnterHighScore:render()
     love.graphics.setFont(Fonts:get('medium'))
     love.graphics.printf('Your score: ' .. tostring(self.score:points()), 0, 30,
-        VIRTUAL_WIDTH, 'center')
+        Constants.VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(Fonts:get('large'))
     
@@ -93,24 +94,24 @@ function EnterHighScore:render()
     if highlightedChar == 1 then
         love.graphics.setColor(0.4, 1, 1)
     end
-    love.graphics.print(string.char(chars[1]), VIRTUAL_WIDTH / 2 - 28, VIRTUAL_HEIGHT / 2)
+    love.graphics.print(string.char(chars[1]), Constants.VIRTUAL_WIDTH / 2 - 28, Constants.VIRTUAL_HEIGHT / 2)
     love.graphics.setColor(1, 1, 1)
 
     if highlightedChar == 2 then
         love.graphics.setColor(0.4, 1, 1)
     end
-    love.graphics.print(string.char(chars[2]), VIRTUAL_WIDTH / 2 - 6, VIRTUAL_HEIGHT / 2)
+    love.graphics.print(string.char(chars[2]), Constants.VIRTUAL_WIDTH / 2 - 6, Constants.VIRTUAL_HEIGHT / 2)
     love.graphics.setColor(1, 1, 1)
 
     if highlightedChar == 3 then
         love.graphics.setColor(0.4, 1, 1)
     end
-    love.graphics.print(string.char(chars[3]), VIRTUAL_WIDTH / 2 + 20, VIRTUAL_HEIGHT / 2)
+    love.graphics.print(string.char(chars[3]), Constants.VIRTUAL_WIDTH / 2 + 20, Constants.VIRTUAL_HEIGHT / 2)
     love.graphics.setColor(1, 1, 1)
     
     love.graphics.setFont(Fonts:get('small'))
-    love.graphics.printf('Press Enter to confirm!', 0, VIRTUAL_HEIGHT - 18,
-        VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Press Enter to confirm!', 0, Constants.VIRTUAL_HEIGHT - 18,
+        Constants.VIRTUAL_WIDTH, 'center')
 end
 
 return EnterHighScore

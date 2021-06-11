@@ -26,6 +26,7 @@ local BrickClouds = require 'src/views/BrickClouds'
 local PaddleView = require 'src/views/Paddle'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
+local Constants = require 'src/constants'
 
 local Play = Base()
 
@@ -199,7 +200,7 @@ function Play:update(dt)
     end
 
     -- if ball goes below bounds, revert to serve state and decrease health
-    if self.ball.y >= VIRTUAL_HEIGHT then
+    if self.ball.y >= Constants.VIRTUAL_HEIGHT then
         self.health:decrease()
         gSounds['hurt']:play()
 
@@ -233,7 +234,7 @@ function Play:render()
     -- pause text, if paused
     if self.paused then
         love.graphics.setFont(Fonts:get('large'))
-        love.graphics.printf("PAUSED", 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf("PAUSED", 0, Constants.VIRTUAL_HEIGHT / 2 - 16, Constants.VIRTUAL_WIDTH, 'center')
     end
 end
 
