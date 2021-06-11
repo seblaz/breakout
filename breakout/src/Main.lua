@@ -3,6 +3,8 @@ local Object = require 'src/Object'
 local HighScoreRepo = require 'src/repositories/HighScore'
 local FPSView = require 'src/views/FPS'
 local BackgroundView = require 'src/views/Background'
+local Constants = require 'src/constants'
+local Scenes = require 'src/scenes/Scenes'
 local PaddleSelect = require 'src/scenes/PaddleSelect'
 local EnterHighScore = require 'src/scenes/EnterHighScore'
 local HighScore = require 'src/scenes/HighScore'
@@ -12,7 +14,7 @@ local Scenes = require 'src/scenes/Scenes'
 local Start = require 'src/scenes/Start'
 local Victory = require 'src/scenes/Victory'
 local Serve = require 'src/scenes/Serve'
-local Constants = require 'src/constants'
+
 
 local Main = Object()
 
@@ -23,23 +25,16 @@ function Main:initialize()
     -- set the application title bar
     love.window.setTitle('Breakout')
 
-    -- load up the graphics we'll be using throughout our states
-    gTextures = {
-        ['background'] = love.graphics.newImage('graphics/background.png'),
-        ['main'] = love.graphics.newImage('graphics/breakout.png'),
-        ['arrows'] = love.graphics.newImage('graphics/arrows.png'),
-        ['hearts'] = love.graphics.newImage('graphics/hearts.png'),
-        ['particle'] = love.graphics.newImage('graphics/particle.png')
-    }
+
 
     -- Quads we will generate for all of our textures; Quads allow us
     -- to show only part of a texture and not the entire thing
     gFrames = {
-        ['arrows'] = GenerateQuads(gTextures['arrows'], 24, 24),
-        ['paddles'] = GenerateQuadsPaddles(gTextures['main']),
-        ['balls'] = GenerateQuadsBalls(gTextures['main']),
-        ['bricks'] = GenerateQuadsBricks(gTextures['main']),
-        ['hearts'] = GenerateQuads(gTextures['hearts'], 10, 9)
+        ['arrows'] = GenerateQuads(Constants.gTextures['arrows'], 24, 24),
+        ['paddles'] = GenerateQuadsPaddles(Constants.gTextures['main']),
+        ['balls'] = GenerateQuadsBalls(Constants.gTextures['main']),
+        ['bricks'] = GenerateQuadsBricks(Constants.gTextures['main']),
+        ['hearts'] = GenerateQuads(Constants.gTextures['hearts'], 10, 9)
     }
 
     -- initialize our virtual resolution, which will be rendered within our
@@ -49,27 +44,6 @@ function Main:initialize()
         fullscreen = false,
         resizable = true
     })
-
-    -- set up our sound effects; later, we can just index this table and
-    -- call each entry's `play` method
-    gSounds = {
-        ['paddle-hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'stream'),
-        ['score'] = love.audio.newSource('sounds/score.wav', 'stream'),
-        ['wall-hit'] = love.audio.newSource('sounds/wall_hit.wav', 'stream'),
-        ['confirm'] = love.audio.newSource('sounds/confirm.wav', 'stream'),
-        ['select'] = love.audio.newSource('sounds/select.wav', 'stream'),
-        ['no-select'] = love.audio.newSource('sounds/no-select.wav', 'stream'),
-        ['brick-hit-1'] = love.audio.newSource('sounds/brick-hit-1.wav', 'stream'),
-        ['brick-hit-2'] = love.audio.newSource('sounds/brick-hit-2.wav', 'stream'),
-        ['hurt'] = love.audio.newSource('sounds/hurt.wav', 'stream'),
-        ['victory'] = love.audio.newSource('sounds/victory.wav', 'stream'),
-        ['recover'] = love.audio.newSource('sounds/recover.wav', 'stream'),
-        ['high-score'] = love.audio.newSource('sounds/high_score.wav', 'stream'),
-        ['pause'] = love.audio.newSource('sounds/pause.wav', 'stream'),
-
-        ['music'] = love.audio.newSource('sounds/music.wav', 'stream')
-    }
-
     -- the state machine we'll be using to transition between various states
     -- in our game instead of clumping them together in our update and draw
     -- methods
@@ -81,6 +55,7 @@ function Main:initialize()
     -- 4. 'play' (the ball is in play, bouncing between paddles)
     -- 5. 'victory' (the current level is over, with a victory jingle)
     -- 6. 'game-over' (the player has lost; display score and allow restart)
+
     gStateMachine = Scenes {
         ['start'] = function() return Start() end,
         ['play'] = function() return Play() end,
@@ -99,8 +74,8 @@ function Main:initialize()
     self.views = {BackgroundView(), gStateMachine, FPSView()}
 
     -- play our music outside of all states and set it to looping
-    --gSounds['music']:play()
-    --gSounds['music']:setLooping(true)
+    --Constants.gSounds['music']:play()
+    --Constants.gSounds['music']:setLooping(true)
 end
 
 function Main:resize(...)

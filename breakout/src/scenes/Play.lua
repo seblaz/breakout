@@ -71,13 +71,13 @@ function Play:update(dt)
     if self.paused then
         if love.keyboard.wasPressed('space') then
             self.paused = false
-            gSounds['pause']:play()
+            Constants.gSounds['pause']:play()
         else
             return
         end
     elseif love.keyboard.wasPressed('space') then
         self.paused = true
-        gSounds['pause']:play()
+        Constants.gSounds['pause']:play()
         return
     end
 
@@ -102,7 +102,7 @@ function Play:update(dt)
             self.ball.dx = 50 + (8 * math.abs(self.paddle.x + self.paddle.width / 2 - self.ball.x))
         end
 
-        gSounds['paddle-hit']:play()
+        Constants.gSounds['paddle-hit']:play()
     end
 
     -- detect collision across all bricks with the ball
@@ -127,12 +127,12 @@ function Play:update(dt)
             --    self.recoverPoints = math.min(100000, self.recoverPoints * 2)
             --
             --    -- play recover sound effect
-            --    gSounds['recover']:play()
+            --    Constants.gSounds['recover']:play()
             --end
 
             -- go to our victory screen if there are no more bricks left
             if self:checkVictory() then
-                gSounds['victory']:play()
+                Constants.gSounds['victory']:play()
 
                 EventBus:reset()
 
@@ -202,7 +202,7 @@ function Play:update(dt)
     -- if ball goes below bounds, revert to serve state and decrease health
     if self.ball.y >= Constants.VIRTUAL_HEIGHT then
         self.health:decrease()
-        gSounds['hurt']:play()
+        Constants.gSounds['hurt']:play()
 
         if not self.health:is_alive() then
             gStateMachine:change('game-over', {

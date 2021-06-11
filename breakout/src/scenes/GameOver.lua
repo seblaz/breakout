@@ -38,7 +38,7 @@ function GameOver:update(dt)
         end
 
         if highScore then
-            gSounds['high-score']:play()
+            Constants.gSounds['high-score']:play()
             gStateMachine:change('enter-high-score', {
                 highScores = self.highScores,
                 score = self.score,

@@ -6,10 +6,10 @@ local Background = Object()
 function Background:render()
     -- background should be drawn regardless of state, scaled to fit our
     -- virtual resolution
-    local backgroundWidth = gTextures['background']:getWidth()
-    local backgroundHeight = gTextures['background']:getHeight()
+    local backgroundWidth = Constants.gTextures['background']:getWidth()
+    local backgroundHeight = Constants.gTextures['background']:getHeight()
 
-    love.graphics.draw(gTextures['background'],
+    love.graphics.draw(Constants.gTextures['background'],
         -- draw at coordinates 0, 0
         0, 0,
         -- no rotation

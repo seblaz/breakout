@@ -1,4 +1,5 @@
 local Object = require 'src/Object'
+local Constants = require 'src/constants'
 
 local Paddle = Object()
 
@@ -13,7 +14,7 @@ end
 ]]
 function Paddle:render()
     love.graphics.draw(
-            gTextures['main'],
+            Constants.gTextures['main'],
             self:_color(),
             self.paddle.x,
             self.paddle.y

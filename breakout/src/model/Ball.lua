@@ -67,19 +67,19 @@ function Ball:update(dt)
     if self.x <= 0 then
         self.x = 0
         self.dx = -self.dx
-        gSounds['wall-hit']:play()
+        Constants.gSounds['wall-hit']:play()
     end
 
     if self.x >= Constants.VIRTUAL_WIDTH - 8 then
         self.x = Constants.VIRTUAL_WIDTH - 8
         self.dx = -self.dx
-        gSounds['wall-hit']:play()
+        Constants.gSounds['wall-hit']:play()
     end
 
     if self.y <= 0 then
         self.y = 0
         self.dy = -self.dy
-        gSounds['wall-hit']:play()
+        Constants.gSounds['wall-hit']:play()
     end
 end
 

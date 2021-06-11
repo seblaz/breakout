@@ -36,23 +36,23 @@ end
 function PaddleSelect:update(dt)
     if love.keyboard.wasPressed('left') then
         if self.currentPaddle == 1 then
-            gSounds['no-select']:play()
+            Constants.gSounds['no-select']:play()
         else
-            gSounds['select']:play()
+            Constants.gSounds['select']:play()
             self.currentPaddle = self.currentPaddle - 1
         end
     elseif love.keyboard.wasPressed('right') then
         if self.currentPaddle == 4 then
-            gSounds['no-select']:play()
+            Constants.gSounds['no-select']:play()
         else
-            gSounds['select']:play()
+            Constants.gSounds['select']:play()
             self.currentPaddle = self.currentPaddle + 1
         end
     end
 
     -- select paddle and move on to the serve state, passing in the selection
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
-        gSounds['confirm']:play()
+        Constants.gSounds['confirm']:play()
         paddleModel = Paddle(self.currentPaddle)
         paddleSelectedView = PaddleView(paddleModel)
         gStateMachine:change('serve', {
@@ -88,7 +88,7 @@ function PaddleSelect:render()
         love.graphics.setColor(0.16, 0.16, 0.16, 0.5)
     end
     
-    love.graphics.draw(gTextures['arrows'], gFrames['arrows'][1], Constants.VIRTUAL_WIDTH / 4 - 24,
+    love.graphics.draw(Constants.gTextures['arrows'], gFrames['arrows'][1], Constants.VIRTUAL_WIDTH / 4 - 24,
         Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
    
     -- reset drawing color to full white for proper rendering
@@ -101,14 +101,14 @@ function PaddleSelect:render()
         love.graphics.setColor(0.16, 0.16, 0.16, 0.5)
     end
     
-    love.graphics.draw(gTextures['arrows'], gFrames['arrows'][2], Constants.VIRTUAL_WIDTH - Constants.VIRTUAL_WIDTH / 4,
+    love.graphics.draw(Constants.gTextures['arrows'], gFrames['arrows'][2], Constants.VIRTUAL_WIDTH - Constants.VIRTUAL_WIDTH / 4,
         Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
     
     -- reset drawing color to full white for proper rendering
     love.graphics.setColor(1, 1, 1)
 
     -- draw the paddle itself, based on which we have selected
-    love.graphics.draw(gTextures['main'], gFrames['paddles'][2 + 4 * (self.currentPaddle - 1)],
+    love.graphics.draw(Constants.gTextures['main'], gFrames['paddles'][2 + 4 * (self.currentPaddle - 1)],
         Constants.VIRTUAL_WIDTH / 2 - 32, Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
 end
 

@@ -32,12 +32,12 @@ function Start:update()
     -- toggle highlighted option if we press an arrow key up or down
     if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
         highlighted = highlighted == 1 and 2 or 1
-        gSounds['paddle-hit']:play()
+        Constants.gSounds['paddle-hit']:play()
     end
 
     -- confirm whichever option we have selected to change screens
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        gSounds['confirm']:play()
+        Constants.gSounds['confirm']:play()
 
         if highlighted == 1 then
             gStateMachine:change('paddle-select', {

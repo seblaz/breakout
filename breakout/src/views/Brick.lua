@@ -1,4 +1,5 @@
 local Object = require 'src/Object'
+local Constants = require 'src/constants'
 
 local Brick = Object()
 
@@ -9,7 +10,7 @@ end
 function Brick:render()
     if self.brick:in_play() then
         love.graphics.draw(
-                gTextures['main'],
+                Constants.gTextures['main'],
                 self:_color(),
                 self.brick.x,
                 self.brick.y

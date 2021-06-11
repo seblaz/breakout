@@ -2,6 +2,7 @@ local Object = require 'src/Object'
 local Set = require 'lib/Set'
 local EventBus = require 'src/model/EventBus'
 local Events = require 'src/model/Events'
+local Constants = require 'src/constants'
 
 local BrickCloud = Object()
 
@@ -45,7 +46,7 @@ function BrickCloud:initialize(brick)
     self.brick = brick
 
     -- particle system belonging to the brick, emitted on hit
-    self.psystem = love.graphics.newParticleSystem(gTextures['particle'], 64)
+    self.psystem = love.graphics.newParticleSystem(Constants.gTextures['particle'], 64)
 
     -- various behavior-determining functions for the particle system
     -- https://love2d.org/wiki/ParticleSystem

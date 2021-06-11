@@ -1,4 +1,5 @@
 local Object = require 'src/Object'
+local Constants = require 'src/constants'
 
 local Ball = Object()
 
@@ -27,7 +28,7 @@ function Ball:_getColor()
 end
 
 function Ball:_getTexture()
-    return gTextures['main']
+    return Constants.gTextures['main']
 end
 
 return Ball

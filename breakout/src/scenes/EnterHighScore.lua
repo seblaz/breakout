@@ -61,10 +61,10 @@ function EnterHighScore:update(dt)
     -- scroll through character slots
     if love.keyboard.wasPressed('left') and highlightedChar > 1 then
         highlightedChar = highlightedChar - 1
-        gSounds['select']:play()
+        Constants.gSounds['select']:play()
     elseif love.keyboard.wasPressed('right') and highlightedChar < 3 then
         highlightedChar = highlightedChar + 1
-        gSounds['select']:play()
+        Constants.gSounds['select']:play()
     end
 
     -- scroll through characters
