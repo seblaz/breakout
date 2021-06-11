@@ -25,8 +25,6 @@ function Main:initialize()
     -- set the application title bar
     love.window.setTitle('Breakout')
 
-
-
     -- Quads we will generate for all of our textures; Quads allow us
     -- to show only part of a texture and not the entire thing
     gFrames = {
@@ -44,38 +42,30 @@ function Main:initialize()
         fullscreen = false,
         resizable = true
     })
-    -- the state machine we'll be using to transition between various states
-    -- in our game instead of clumping them together in our update and draw
-    -- methods
-    --
-    -- our current game state can be any of the following:
-    -- 1. 'start' (the beginning of the game, where we're told to press Enter)
-    -- 2. 'paddle-select' (where we get to choose the color of our paddle)
-    -- 3. 'serve' (waiting on a key press to serve the ball)
-    -- 4. 'play' (the ball is in play, bouncing between paddles)
-    -- 5. 'victory' (the current level is over, with a victory jingle)
-    -- 6. 'game-over' (the player has lost; display score and allow restart)
 
-    gStateMachine = Scenes({})
-    gStateMachine:new_scene('start', function() return Start(gStateMachine) end)
-    gStateMachine:new_scene('play', function() return Play(gStateMachine) end)
-    gStateMachine:new_scene('serve', function() return Serve(gStateMachine) end)
-    gStateMachine:new_scene('game-over', function() return GameOver(gStateMachine) end)
-    gStateMachine:new_scene('victory', function() return Victory(gStateMachine) end)
-    gStateMachine:new_scene('high-scores', function() return HighScore(gStateMachine) end)
-    gStateMachine:new_scene('enter-high-score', function() return EnterHighScore(gStateMachine) end)
-    gStateMachine:new_scene('paddle-select', function() return PaddleSelect(gStateMachine) end)
-
-    gStateMachine:change('start', {
+    self:initialize_scenes()
+    self.scenes:change('start', {
         highScores = HighScoreRepo():load()
     })
 
     -- Views
-    self.views = {BackgroundView(), gStateMachine, FPSView()}
+    self.views = {BackgroundView(), self.scenes, FPSView()}
 
     -- play our music outside of all states and set it to looping
     --Constants.gSounds['music']:play()
     --Constants.gSounds['music']:setLooping(true)
+end
+
+function Main:initialize_scenes()
+    self.scenes = Scenes({})
+    self.scenes:new_scene('start', function() return Start(self.scenes) end)
+    self.scenes:new_scene('play', function() return Play(self.scenes) end)
+    self.scenes:new_scene('serve', function() return Serve(self.scenes) end)
+    self.scenes:new_scene('game-over', function() return GameOver(self.scenes) end)
+    self.scenes:new_scene('victory', function() return Victory(self.scenes) end)
+    self.scenes:new_scene('high-scores', function() return HighScore(self.scenes) end)
+    self.scenes:new_scene('enter-high-score', function() return EnterHighScore(self.scenes) end)
+    self.scenes:new_scene('paddle-select', function() return PaddleSelect(self.scenes) end)
 end
 
 function Main:resize(...)
@@ -84,7 +74,7 @@ end
 
 function Main:update(dt)
     -- this time, we pass in dt to the state object we're currently using
-    gStateMachine:update(dt)
+    self.scenes:update(dt)
 end
 
 function Main:render()
