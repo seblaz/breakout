@@ -24,6 +24,7 @@
 --NONE = 4            -- no blocks this row
 
 local Brick = require 'src/model/Brick'
+local CircularList = require 'lib/CircularList'
 
 local LevelMaker = Class{}
 
@@ -83,64 +84,52 @@ function LevelMaker:_create_map(num_of_rows, num_of_cols, highest_brick_level)
     return bricks
 end
 
+function LevelMaker:_alternate_levels(highest_brick_level)
+    return CircularList {
+        math.random(1, highest_brick_level),
+        math.random(1, highest_brick_level),
+    }
+end
+
 function LevelMaker:_create_row(row_number, num_of_cols, highest_brick_level)
     local bricks = {}
-    local skipPattern = self:_skipping_row()
-    local alternatePattern = self:_alternating_row_level()
+    local skip_pattern_enabled = self:_skipping_row()
+    local alternate_pattern_enabled = self:_alternating_row_level()
 
-    -- choose two tiers to alternate between
-    local alternateTier1 = math.random(1, highest_brick_level)
-    local alternateTier2 = math.random(1, highest_brick_level)
+    local alternate_levels = self:_alternate_levels(highest_brick_level)
 
     -- used only when we want to skip a block, for skip pattern
-    local skipFlag = math.random(2) == 1 and true or false
-
-    -- used only when we want to alternate a block, for alternate pattern
-    local alternateFlag = math.random(2) == 1 and true or false
+    local skip_block = math.random(2) == 1 and true or false
 
     for x = 1, num_of_cols do
-        -- if skipping is turned on and we're on a skip iteration...
-        if skipPattern and skipFlag then
-            -- turn skipping off for the next iteration
-            skipFlag = not skipFlag
+        -- if skipping is turned on and we're on a skip iteration don't generate a block
+        if not (skip_pattern_enabled and skip_block) then
 
-            -- Lua doesn't have a continue statement, so this is the workaround
-            goto continue
-        else
-            -- flip the flag to true on an iteration we don't use it
-            skipFlag = not skipFlag
+            local brick_level = alternate_pattern_enabled and alternate_levels:next() or alternate_levels:current()
+
+            local b = Brick(
+                    -- x-coordinate
+                    (x-1)                   -- decrement x by 1 because tables are 1-indexed, coords are 0
+                    * 32                    -- multiply by 32, the brick width
+                    + 8                     -- the screen should have 8 pixels of padding; we can fit 13 cols + 16 pixels total
+                    + (13 - num_of_cols) * 16,  -- left-side padding for when there are fewer than 13 columns
+
+                    -- y-coordinate
+                    row_number * 16,                 -- just use y * 16, since we need top padding anyway
+
+                    -- brick level
+                    brick_level
+            )
+
+            table.insert(bricks, b)
         end
 
-        -- if we're alternating, figure out which color/tier we're on
-        local brick_level
-        if alternatePattern and alternateFlag then
-            brick_level = alternateTier1
-            alternateFlag = not alternateFlag
-        else
-            brick_level = alternateTier2
-            alternateFlag = not alternateFlag
-        end
-
-        local b = Brick(
-                -- x-coordinate
-                (x-1)                   -- decrement x by 1 because tables are 1-indexed, coords are 0
-                * 32                    -- multiply by 32, the brick width
-                + 8                     -- the screen should have 8 pixels of padding; we can fit 13 cols + 16 pixels total
-                + (13 - num_of_cols) * 16,  -- left-side padding for when there are fewer than 13 columns
-
-                -- y-coordinate
-                row_number * 16,                 -- just use y * 16, since we need top padding anyway
-
-                -- brick level
-                brick_level
-        )
-
-        table.insert(bricks, b)
-
-        -- Lua's version of the 'continue' statement
-        ::continue::
+        -- flip the flag to true on an iteration we don't use it
+        skip_block = not skip_block
     end
     return bricks
 end
+
+
 
 return LevelMaker
