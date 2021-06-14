@@ -41,72 +41,8 @@ function LevelMaker:createMap(level)
 
     -- lay out bricks such that they touch each other and fill the space
     for y = 1, num_of_rows do
-        -- whether we want to enable skipping for this row
-        local skipPattern = math.random(1, 2) == 1 and true or false
-
-        -- whether we want to enable alternating colors for this row
-        local alternatePattern = math.random(1, 2) == 1 and true or false
-
-        -- choose two tiers to alternate between
-        local alternateTier1 = math.random(1, highest_brick_level)
-        local alternateTier2 = math.random(1, highest_brick_level)
-
-        -- used only when we want to skip a block, for skip pattern
-        local skipFlag = math.random(2) == 1 and true or false
-
-        -- used only when we want to alternate a block, for alternate pattern
-        local alternateFlag = math.random(2) == 1 and true or false
-
-        -- solid tier we'll use if we're not skipping or alternating
-        local solidTier = math.random(0, highest_brick_level)
-
-        for x = 1, num_of_cols do
-            -- if skipping is turned on and we're on a skip iteration...
-            if skipPattern and skipFlag then
-                -- turn skipping off for the next iteration
-                skipFlag = not skipFlag
-
-                -- Lua doesn't have a continue statement, so this is the workaround
-                goto continue
-            else
-                -- flip the flag to true on an iteration we don't use it
-                skipFlag = not skipFlag
-            end
-
-            -- if we're alternating, figure out which color/tier we're on
-            local brick_level
-            if alternatePattern and alternateFlag then
-                brick_level = alternateTier1
-                alternateFlag = not alternateFlag
-            else
-                brick_level = alternateTier2
-                alternateFlag = not alternateFlag
-            end
-
-            -- if not alternating and we made it here, use the solid color/tier
-            if not alternatePattern then
-                brick_level = solidTier
-            end
-
-            b = Brick(
-                -- x-coordinate
-                (x-1)                   -- decrement x by 1 because tables are 1-indexed, coords are 0
-                * 32                    -- multiply by 32, the brick width
-                + 8                     -- the screen should have 8 pixels of padding; we can fit 13 cols + 16 pixels total
-                + (13 - num_of_cols) * 16,  -- left-side padding for when there are fewer than 13 columns
-
-                -- y-coordinate
-                y * 16,                 -- just use y * 16, since we need top padding anyway
-
-                -- brick level
-                brick_level
-            )
-
-            table.insert(bricks, b)
-
-            -- Lua's version of the 'continue' statement
-            ::continue::
-        end
+        local row = self:_create_row(y, num_of_cols, highest_brick_level)
+        table.concatenate(bricks, row)
     end
 
     -- in the event we didn't generate any bricks, try again
@@ -133,6 +69,76 @@ function LevelMaker:_highest_brick_level(level)
     -- highest possible spawned brick level in this level; ensure we
     -- don't go above 21
     return math.min(21, math.ceil(level / 5))
+end
+
+function LevelMaker:_skipping_row()
+    -- whether we want to enable skipping for this row
+    return math.random(1, 2) == 1 and true or false
+end
+
+function LevelMaker:_alternating_row_level()
+    -- whether we want to enable alternating levels for this row
+    return math.random(1, 2) == 1 and true or false
+end
+
+function LevelMaker:_create_row(row_number, num_of_cols, highest_brick_level)
+    local bricks = {}
+    local skipPattern = self:_skipping_row()
+    local alternatePattern = self:_alternating_row_level()
+
+    -- choose two tiers to alternate between
+    local alternateTier1 = math.random(1, highest_brick_level)
+    local alternateTier2 = math.random(1, highest_brick_level)
+
+    -- used only when we want to skip a block, for skip pattern
+    local skipFlag = math.random(2) == 1 and true or false
+
+    -- used only when we want to alternate a block, for alternate pattern
+    local alternateFlag = math.random(2) == 1 and true or false
+
+    for x = 1, num_of_cols do
+        -- if skipping is turned on and we're on a skip iteration...
+        if skipPattern and skipFlag then
+            -- turn skipping off for the next iteration
+            skipFlag = not skipFlag
+
+            -- Lua doesn't have a continue statement, so this is the workaround
+            goto continue
+        else
+            -- flip the flag to true on an iteration we don't use it
+            skipFlag = not skipFlag
+        end
+
+        -- if we're alternating, figure out which color/tier we're on
+        local brick_level
+        if alternatePattern and alternateFlag then
+            brick_level = alternateTier1
+            alternateFlag = not alternateFlag
+        else
+            brick_level = alternateTier2
+            alternateFlag = not alternateFlag
+        end
+
+        local b = Brick(
+                -- x-coordinate
+                (x-1)                   -- decrement x by 1 because tables are 1-indexed, coords are 0
+                * 32                    -- multiply by 32, the brick width
+                + 8                     -- the screen should have 8 pixels of padding; we can fit 13 cols + 16 pixels total
+                + (13 - num_of_cols) * 16,  -- left-side padding for when there are fewer than 13 columns
+
+                -- y-coordinate
+                row_number * 16,                 -- just use y * 16, since we need top padding anyway
+
+                -- brick level
+                brick_level
+        )
+
+        table.insert(bricks, b)
+
+        -- Lua's version of the 'continue' statement
+        ::continue::
+    end
+    return bricks
 end
 
 return LevelMaker

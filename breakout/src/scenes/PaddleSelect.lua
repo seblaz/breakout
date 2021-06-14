@@ -59,7 +59,7 @@ function PaddleSelect:update(dt)
         self._scenes:change('serve', {
             paddle = paddleModel,
             paddleView = paddleSelectedView,
-            bricks = LevelMaker:createMap(32),
+            bricks = LevelMaker:createMap(1),
             health = Health(),
             score = Score(10000),
             highScores = self.highScores,
