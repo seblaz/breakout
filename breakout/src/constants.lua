@@ -47,6 +47,7 @@ local Constants = {
         ['no-select'] = love.audio.newSource('sounds/no-select.wav', 'stream'),
         ['brick-hit-1'] = love.audio.newSource('sounds/brick-hit-1.wav', 'stream'),
         ['brick-hit-2'] = love.audio.newSource('sounds/brick-hit-2.wav', 'stream'),
+        ['brick-unbreakable-hit'] = love.audio.newSource('sounds/brick-unbreakable-hit.wav', 'stream'),
         ['hurt'] = love.audio.newSource('sounds/hurt.wav', 'stream'),
         ['victory'] = love.audio.newSource('sounds/victory.wav', 'stream'),
         ['recover'] = love.audio.newSource('sounds/recover.wav', 'stream'),
