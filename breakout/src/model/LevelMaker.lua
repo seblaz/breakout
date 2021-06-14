@@ -37,14 +37,12 @@ function LevelMaker:create_map(level)
     local num_of_rows = self:_number_of_rows()
     local num_of_cols = self:_number_of_columns()
     local highest_brick_level = self:_highest_brick_level(level)
-    local bricks = self:_create_map(num_of_rows, num_of_cols, highest_brick_level)
 
-    -- in the event we didn't generate any bricks, try again
-    if #bricks == 0 then
-        return self:create_map(level)
-    else
-        return bricks
-    end
+    local bricks
+    repeat
+        bricks = self:_create_map(num_of_rows, num_of_cols, highest_brick_level)
+    until #bricks ~= 0
+    return bricks
 end
 
 function LevelMaker:_number_of_rows()
@@ -65,16 +63,6 @@ function LevelMaker:_highest_brick_level(level)
     return math.min(21, math.ceil(level / 5))
 end
 
-function LevelMaker:_skipping_row()
-    -- whether we want to enable skipping for this row
-    return math.random(1, 2) == 1 and true or false
-end
-
-function LevelMaker:_alternating_row_level()
-    -- whether we want to enable alternating levels for this row
-    return math.random(1, 2) == 1 and true or false
-end
-
 function LevelMaker:_create_map(num_of_rows, num_of_cols, highest_brick_level)
     local bricks = {}
     for y = 1, num_of_rows do
@@ -84,52 +72,55 @@ function LevelMaker:_create_map(num_of_rows, num_of_cols, highest_brick_level)
     return bricks
 end
 
-function LevelMaker:_alternate_levels(highest_brick_level)
-    return CircularList {
-        math.random(1, highest_brick_level),
-        math.random(1, highest_brick_level),
-    }
-end
-
 function LevelMaker:_create_row(row_number, num_of_cols, highest_brick_level)
     local bricks = {}
-    local skip_pattern_enabled = self:_skipping_row()
-    local alternate_pattern_enabled = self:_alternating_row_level()
 
-    local alternate_levels = self:_alternate_levels(highest_brick_level)
-
-    -- used only when we want to skip a block, for skip pattern
-    local skip_block = math.random(2) == 1 and true or false
+    local brick_levels = self:_brick_levels(highest_brick_level)
+    local brick_skip = self:_brick_skip()
 
     for x = 1, num_of_cols do
-        -- if skipping is turned on and we're on a skip iteration don't generate a block
-        if not (skip_pattern_enabled and skip_block) then
-
-            local brick_level = alternate_pattern_enabled and alternate_levels:next() or alternate_levels:current()
-
-            local b = Brick(
-                    -- x-coordinate
-                    (x-1)                   -- decrement x by 1 because tables are 1-indexed, coords are 0
-                    * 32                    -- multiply by 32, the brick width
-                    + 8                     -- the screen should have 8 pixels of padding; we can fit 13 cols + 16 pixels total
-                    + (13 - num_of_cols) * 16,  -- left-side padding for when there are fewer than 13 columns
-
-                    -- y-coordinate
-                    row_number * 16,                 -- just use y * 16, since we need top padding anyway
-
-                    -- brick level
-                    brick_level
-            )
-
-            table.insert(bricks, b)
+        if not brick_skip:next() then
+            table.insert(bricks, self:_create_brick(x, num_of_cols, row_number, brick_levels:next()))
         end
-
-        -- flip the flag to true on an iteration we don't use it
-        skip_block = not skip_block
     end
     return bricks
 end
 
+function LevelMaker:_random_boolean()
+    return math.random(1, 2) == 1 and true or false
+end
 
+function LevelMaker:_brick_levels(highest_brick_level)
+    if self:_random_boolean() then
+        return CircularList {
+            math.random(1, highest_brick_level),
+            math.random(1, highest_brick_level),
+        }
+    end
+    return CircularList { math.random(1, highest_brick_level) }
+end
+
+function LevelMaker:_brick_skip()
+    if self:_random_boolean() then
+        local skip_block = self:_random_boolean()
+        return CircularList {skip_block, not skip_block}
+    end
+    return CircularList {false}
+end
+
+function LevelMaker:_create_brick(x, num_of_cols, row_number, brick_level)
+    return Brick(
+            -- x-coordinate
+            (x-1)                       -- decrement x by 1 because tables are 1-indexed, coords are 0
+            * 32                        -- multiply by 32, the brick width
+            + 8                         -- the screen should have 8 pixels of padding; we can fit 13 cols + 16 pixels total
+            + (13 - num_of_cols) * 16,  -- left-side padding for when there are fewer than 13 columns
+            -- y-coordinate
+            row_number * 16,            -- just use y * 16, since we need top padding anyway
+            -- brick level
+            brick_level
+    )
+
+end
 
 return LevelMaker
