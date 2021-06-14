@@ -35,19 +35,12 @@ local LevelMaker = Class{}
 function LevelMaker:createMap(level)
     local bricks = {}
 
-    -- randomly choose the number of rows
-    local numRows = math.random(1, 5)
-
-    -- randomly choose the number of columns, ensuring odd
-    local numCols = math.random(7, 13)
-    numCols = numCols % 2 == 0 and (numCols + 1) or numCols
-
-    -- highest possible spawned brick color in this level; ensure we
-    -- don't go above 3
-    local highestTier = math.min(21, math.ceil(level / 5))
+    local num_of_rows = self:_number_of_rows()
+    local num_of_cols = self:_number_of_columns()
+    local highest_brick_level = self:_highest_brick_level(level)
 
     -- lay out bricks such that they touch each other and fill the space
-    for y = 1, numRows do
+    for y = 1, num_of_rows do
         -- whether we want to enable skipping for this row
         local skipPattern = math.random(1, 2) == 1 and true or false
 
@@ -55,8 +48,8 @@ function LevelMaker:createMap(level)
         local alternatePattern = math.random(1, 2) == 1 and true or false
 
         -- choose two tiers to alternate between
-        local alternateTier1 = math.random(1, highestTier)
-        local alternateTier2 = math.random(1, highestTier)
+        local alternateTier1 = math.random(1, highest_brick_level)
+        local alternateTier2 = math.random(1, highest_brick_level)
 
         -- used only when we want to skip a block, for skip pattern
         local skipFlag = math.random(2) == 1 and true or false
@@ -65,9 +58,9 @@ function LevelMaker:createMap(level)
         local alternateFlag = math.random(2) == 1 and true or false
 
         -- solid tier we'll use if we're not skipping or alternating
-        local solidTier = math.random(0, highestTier)
+        local solidTier = math.random(0, highest_brick_level)
 
-        for x = 1, numCols do
+        for x = 1, num_of_cols do
             -- if skipping is turned on and we're on a skip iteration...
             if skipPattern and skipFlag then
                 -- turn skipping off for the next iteration
@@ -100,7 +93,7 @@ function LevelMaker:createMap(level)
                 (x-1)                   -- decrement x by 1 because tables are 1-indexed, coords are 0
                 * 32                    -- multiply by 32, the brick width
                 + 8                     -- the screen should have 8 pixels of padding; we can fit 13 cols + 16 pixels total
-                + (13 - numCols) * 16,  -- left-side padding for when there are fewer than 13 columns
+                + (13 - num_of_cols) * 16,  -- left-side padding for when there are fewer than 13 columns
 
                 -- y-coordinate
                 y * 16,                 -- just use y * 16, since we need top padding anyway
@@ -122,5 +115,24 @@ function LevelMaker:createMap(level)
     else
         return bricks
     end
-    end
-    return LevelMaker
+end
+
+function LevelMaker:_number_of_rows()
+    -- randomly choose the number of rows
+    return math.random(1, 5)
+end
+
+function LevelMaker:_number_of_columns()
+    -- randomly choose the number of columns, ensuring odd
+    local n = math.random(7, 13)
+    n = n % 2 == 0 and (n + 1) or n
+    return n
+end
+
+function LevelMaker:_highest_brick_level(level)
+    -- highest possible spawned brick level in this level; ensure we
+    -- don't go above 21
+    return math.min(21, math.ceil(level / 5))
+end
+
+return LevelMaker
