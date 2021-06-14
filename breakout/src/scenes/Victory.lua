@@ -52,7 +52,7 @@ function Victory:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         self._scenes:change('serve', {
             level = self.level + 1,
-            bricks = LevelMaker:createMap(self.level + 1),
+            bricks = LevelMaker:create_map(self.level + 1),
             paddle = self.paddle,
             paddleView = self.paddleView,
             health = self.health,

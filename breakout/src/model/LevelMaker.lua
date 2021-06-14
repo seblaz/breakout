@@ -32,22 +32,15 @@ local LevelMaker = Class{}
     possible ways of randomizing rows and columns of bricks. Calculates the
     brick colors and tiers to choose based on the level passed in.
 ]]
-function LevelMaker:createMap(level)
-    local bricks = {}
-
+function LevelMaker:create_map(level)
     local num_of_rows = self:_number_of_rows()
     local num_of_cols = self:_number_of_columns()
     local highest_brick_level = self:_highest_brick_level(level)
-
-    -- lay out bricks such that they touch each other and fill the space
-    for y = 1, num_of_rows do
-        local row = self:_create_row(y, num_of_cols, highest_brick_level)
-        table.concatenate(bricks, row)
-    end
+    local bricks = self:_create_map(num_of_rows, num_of_cols, highest_brick_level)
 
     -- in the event we didn't generate any bricks, try again
     if #bricks == 0 then
-        return self:createMap(level)
+        return self:create_map(level)
     else
         return bricks
     end
@@ -79,6 +72,15 @@ end
 function LevelMaker:_alternating_row_level()
     -- whether we want to enable alternating levels for this row
     return math.random(1, 2) == 1 and true or false
+end
+
+function LevelMaker:_create_map(num_of_rows, num_of_cols, highest_brick_level)
+    local bricks = {}
+    for y = 1, num_of_rows do
+        local row = self:_create_row(y, num_of_cols, highest_brick_level)
+        table.concatenate(bricks, row)
+    end
+    return bricks
 end
 
 function LevelMaker:_create_row(row_number, num_of_cols, highest_brick_level)
