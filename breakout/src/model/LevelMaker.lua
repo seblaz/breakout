@@ -12,21 +12,12 @@
     in the game.
 ]]
 
--- global patterns (used to make the entire map a certain shape)
---NONE = 1
---SINGLE_PYRAMID = 2
---MULTI_PYRAMID = 3
-
--- per-row patterns
---SOLID = 1           -- all colors the same in this row
---ALTERNATE = 2       -- alternate colors
---SKIP = 3            -- skip every other block
---NONE = 4            -- no blocks this row
-
-local Brick = require 'src/model/Brick'
 local CircularList = require 'lib/CircularList'
 
-local LevelMaker = Class{}
+local Brick = require 'src/model/Brick'
+local Object = require 'src/Object'
+
+local LevelMaker = Object()
 
 --[[
     Creates a table of Bricks to be returned to the main game, with different

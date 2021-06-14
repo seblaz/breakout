@@ -68,22 +68,35 @@ function Play:enter(params)
 end
 
 function Play:update(dt)
+    if self:_paused() then return end
+
+    self:_update_model(dt)
+
+    self:_detect_collisions()
+end
+
+function Play:_paused()
     if self.paused then
         if love.keyboard.wasPressed('space') then
             self.paused = false
             Constants.gSounds['pause']:play()
+            return false
         else
-            return
+            return true
         end
     elseif love.keyboard.wasPressed('space') then
         self.paused = true
         Constants.gSounds['pause']:play()
-        return
+        return true
     end
+    return false
+end
 
-    -- update model based on velocity
+function Play:_update_model(dt)
     table.apply(self.models, function(model) model:update(dt) end)
+end
 
+function Play:_detect_collisions()
     if self.ball:collides(self.paddle) then
         -- raise ball above paddle in case it goes below it, then reverse dy
         self.ball.y = self.paddle.y - 8
@@ -97,7 +110,7 @@ function Play:update(dt)
         if self.ball.x < self.paddle.x + (self.paddle.width / 2) and self.paddle.dx < 0 then
             self.ball.dx = -50 + -(8 * (self.paddle.x + self.paddle.width / 2 - self.ball.x))
 
-        -- else if we hit the paddle on its right side while moving right...
+            -- else if we hit the paddle on its right side while moving right...
         elseif self.ball.x > self.paddle.x + (self.paddle.width / 2) and self.paddle.dx > 0 then
             self.ball.dx = 50 + (8 * math.abs(self.paddle.x + self.paddle.width / 2 - self.ball.x))
         end
@@ -155,7 +168,7 @@ function Play:update(dt)
             -- we check to see if the opposite side of our velocity is outside of the brick;
             -- if it is, we trigger a collision on that side. else we're within the X + width of
             -- the brick and should check to see if the top or bottom edge is outside of the brick,
-            -- colliding on the top or bottom accordingly 
+            -- colliding on the top or bottom accordingly
             --
 
             -- left edge; only check if we're moving right, and offset the check by a couple of pixels
@@ -166,22 +179,22 @@ function Play:update(dt)
                 self.ball.dx = -self.ball.dx
                 self.ball.x = brick.x - 8
 
-            -- right edge; only check if we're moving left, , and offset the check by a couple of pixels
-            -- so that flush corner hits register as Y flips, not X flips
+                -- right edge; only check if we're moving left, , and offset the check by a couple of pixels
+                -- so that flush corner hits register as Y flips, not X flips
             elseif self.ball.x + 6 > brick.x + brick.width and self.ball.dx < 0 then
 
                 -- flip x velocity and reset position outside of brick
                 self.ball.dx = -self.ball.dx
                 self.ball.x = brick.x + 32
 
-            -- top edge if no X collisions, always check
+                -- top edge if no X collisions, always check
             elseif self.ball.y < brick.y then
 
                 -- flip y velocity and reset position outside of brick
                 self.ball.dy = -self.ball.dy
                 self.ball.y = brick.y - 8
 
-            -- bottom edge if no X collisions or top collision, last possibility
+                -- bottom edge if no X collisions or top collision, last possibility
             else
 
                 -- flip y velocity and reset position outside of brick
