@@ -36,15 +36,15 @@ function LevelMaker:createMap(level)
     local bricks = {}
 
     -- randomly choose the number of rows
-    local numRows = math.random(1, 1)
+    local numRows = math.random(1, 5)
 
     -- randomly choose the number of columns, ensuring odd
-    local numCols = math.random(1, 1)
+    local numCols = math.random(7, 13)
     numCols = numCols % 2 == 0 and (numCols + 1) or numCols
 
     -- highest possible spawned brick color in this level; ensure we
     -- don't go above 3
-    local highestTier = math.min(1, math.ceil(level / 5))
+    local highestTier = math.min(21, math.ceil(level / 5))
 
     -- lay out bricks such that they touch each other and fill the space
     for y = 1, numRows do
