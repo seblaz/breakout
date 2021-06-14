@@ -54,8 +54,8 @@ function PaddleSelect:update(dt)
     -- select paddle and move on to the serve state, passing in the selection
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
         Constants.gSounds['confirm']:play()
-        paddleModel = Paddle(self.currentPaddle)
-        paddleSelectedView = PaddleView(paddleModel)
+        local paddleModel = Paddle(self.currentPaddle)
+        local paddleSelectedView = PaddleView(paddleModel)
         self._scenes:change('serve', {
             paddle = paddleModel,
             paddleView = paddleSelectedView,
