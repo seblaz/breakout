@@ -1,4 +1,6 @@
 local Object = require 'src/Object'
+local EventBus = require 'src/model/EventBus'
+local Events = require 'src/model/Events'
 
 local Health = Object()
 
@@ -7,6 +9,7 @@ function Health:initialize()
 end
 
 function Health:decrease()
+    EventBus:notify(Events.HEALTH_DECREASED)
     self._points = self._points - 1
 end
 

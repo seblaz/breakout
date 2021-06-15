@@ -16,17 +16,17 @@
 
 local table = require 'table'
 local EventBus = require 'src/model/EventBus'
+local Events = require 'src/model/Events'
+local Pause = require 'src/model/Pause'
 local Base = require 'src/scenes/Base'
 
-local Fonts = require 'src/assets/Fonts'
 local PlaySounds = require 'src/sounds/Play'
 
 local BrickView = require 'src/views/Brick'
 local BrickClouds = require 'src/views/BrickClouds'
-local PaddleView = require 'src/views/Paddle'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
-local Constants = require 'src/constants'
+local PauseView = require 'src/views/Pause'
 
 local Play = Base()
 
@@ -44,6 +44,7 @@ function Play:enter(params)
     self.ball = params.ball
     self.ballView = params.ballView
     self.level = params.level
+    self.pause = Pause()
 
     self.recoverPoints = 5000
 
@@ -59,54 +60,43 @@ function Play:enter(params)
     table.insert(self.views, self.ballView) -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
     table.insert(self.views, ScoreView(self.score))
     table.insert(self.views, HealthView(self.health))
+    table.insert(self.views, PauseView(self.pause))
 
     -- Models
-    self.models = {self.paddle, self.ball, clouds}
+    self.models = { self.paddle, self.ball, clouds }
 
     -- Sounds
     self.sounds = PlaySounds()
 end
 
 function Play:update(dt)
-    if self:_paused() then return end
-
+    self.pause:update()
+    if self.pause:paused() then return end
     self:_update_model(dt)
-
     self:_detect_collisions()
 end
 
-function Play:_paused()
-    if self.paused then
-        if love.keyboard.wasPressed('space') then
-            self.paused = false
-            Constants.gSounds['pause']:play()
-            return false
-        else
-            return true
-        end
-    elseif love.keyboard.wasPressed('space') then
-        self.paused = true
-        Constants.gSounds['pause']:play()
-        return true
-    end
-    return false
-end
-
 function Play:_update_model(dt)
-    table.apply(self.models, function(model) model:update(dt) end)
+    table.apply(self.models, function(model)
+        model:update(dt)
+    end)
 end
 
 function Play:_detect_collisions()
     self.ball:collision_with_paddle(self.paddle)
 
-    -- detect collision across all bricks with the ball
-    for k, brick in pairs(self.bricks) do
+    for _, brick in pairs(self.bricks) do
         self.ball:collision_with_brick(brick, self.score)
     end
 
-    -- go to our victory screen if there are no more bricks left
-    if self:checkVictory() then
-        Constants.gSounds['victory']:play()
+    self.ball:collision_with_window(self.health)
+
+    self:_change_scene()
+end
+
+function Play:_change_scene()
+    if self:_level_completed() then
+        EventBus:notify(Events.LEVEL_COMPLETED)
 
         EventBus:reset()
 
@@ -123,17 +113,8 @@ function Play:_detect_collisions()
         })
     end
 
-    -- if ball goes below bounds, revert to serve state and decrease health
     if self.ball:out_of_bounds() then
-        self.health:decrease()
-        Constants.gSounds['hurt']:play()
-
-        if not self.health:is_alive() then
-            self._scenes:change('game-over', {
-                score = self.score,
-                highScores = self.highScores
-            })
-        else
+        if self.health:is_alive() then
             self._scenes:change('serve', {
                 paddle = self.paddle,
                 paddleView = self.paddleView,
@@ -144,6 +125,11 @@ function Play:_detect_collisions()
                 level = self.level,
                 recoverPoints = self.recoverPoints
             })
+        else
+            self._scenes:change('game-over', {
+                score = self.score,
+                highScores = self.highScores
+            })
         end
     end
 
@@ -152,24 +138,20 @@ function Play:_detect_collisions()
     end
 end
 
-function Play:render()
-    table.apply(self.views, function(view) view:render() end)
-
-    -- pause text, if paused
-    if self.paused then
-        love.graphics.setFont(Fonts:get('large'))
-        love.graphics.printf("PAUSED", 0, Constants.VIRTUAL_HEIGHT / 2 - 16, Constants.VIRTUAL_WIDTH, 'center')
-    end
-end
-
-function Play:checkVictory()
-    for k, brick in pairs(self.bricks) do
+function Play:_level_completed()
+    for _, brick in pairs(self.bricks) do
         if brick:in_play() then
             return false
         end
     end
 
     return true
+end
+
+function Play:render()
+    table.apply(self.views, function(view)
+        view:render()
+    end)
 end
 
 return Play

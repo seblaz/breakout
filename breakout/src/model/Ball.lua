@@ -140,6 +140,12 @@ function Ball:collision_with_brick(brick, score)
     end
 end
 
+function Ball:collision_with_window(health)
+    if self:out_of_bounds() then
+        health:decrease()
+    end
+end
+
 function Ball:out_of_bounds()
     return self.y >= Constants.VIRTUAL_HEIGHT
 end
