@@ -76,7 +76,7 @@ function Ball:collision_with_brick(brick, score)
     -- only check collision if we're in play
     if brick:in_play() and self:collides(brick) then
 
-        score:add(brick:level() * 25)
+        score:add(brick:points())
 
         brick:hit()
 

@@ -31,7 +31,7 @@ function BrickUnbreakable:hit()
     EventBus:notify(Events.BRICK_UNBREAKABLE_HIT, self)
 end
 
-function BrickUnbreakable:level()
+function BrickUnbreakable:points()
     return 0
 end
 

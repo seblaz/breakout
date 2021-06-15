@@ -46,6 +46,10 @@ function Brick:level()
     return self._level
 end
 
+function Brick:points()
+    return self:level() * 25
+end
+
 function Brick:in_play()
     return self._level ~= 0
 end
