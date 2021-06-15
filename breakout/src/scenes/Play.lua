@@ -15,14 +15,15 @@
 ]]
 
 local table = require 'table'
+local List = require 'lib/List'
+local Base = require 'src/scenes/Base'
+local PlaySounds = require 'src/sounds/Play'
+
 local EventBus = require 'src/model/EventBus'
 local Events = require 'src/model/Events'
 local Pause = require 'src/model/Pause'
 local Brick = require 'src/model/Brick'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
-local Base = require 'src/scenes/Base'
-
-local PlaySounds = require 'src/sounds/Play'
 
 local BrickView = require 'src/views/Brick'
 local BrickUnbreakableView = require 'src/views/BrickUnbreakable'
@@ -55,27 +56,26 @@ function Play:enter(params)
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
 
-    -- Views
     local clouds = BrickClouds()
-    self.views = {}
-    table.concatenate(
-            self.views,
-            table.map(table.filter(self.bricks, function(brick)
-                return brick:is_a(Brick)
-            end), BrickView)
+
+    -- Views
+    self.views = List({
+        self.paddleView,
+        self.ballView, -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
+        ScoreView(self.score),
+        HealthView(self.health),
+        PauseView(self.pause),
+    })
+    self.views:add(List(self.bricks)
+            :select(function(brick) return brick:is_a(Brick) end)
+            :map(BrickView)
     )
-    table.concatenate(
-            self.views,
-            table.map(table.filter(self.bricks, function(brick)
-                return brick:is_a(BrickUnbreakable)
-            end), BrickUnbreakableView)
+
+    self.views:add(List(self.bricks)
+            :select(function(brick) return brick:is_a(BrickUnbreakable) end)
+            :map(BrickUnbreakableView)
     )
-    table.insert(self.views, clouds)
-    table.insert(self.views, self.paddleView)
-    table.insert(self.views, self.ballView) -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
-    table.insert(self.views, ScoreView(self.score))
-    table.insert(self.views, HealthView(self.health))
-    table.insert(self.views, PauseView(self.pause))
+    self.views:insert(clouds) -- Insert it last to be on top of the bricks
 
     -- Models
     self.models = { self.paddle, self.ball, clouds }
@@ -166,7 +166,7 @@ function Play:_level_completed()
 end
 
 function Play:render()
-    table.apply(self.views, function(view)
+    self.views:foreach(function(view)
         view:render()
     end)
 end

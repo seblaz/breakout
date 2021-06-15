@@ -14,20 +14,20 @@
     well as the level we're on.
 ]]
 
-local Set = require 'lib/Set'
+local List = require 'lib/List'
 local Base = require 'src/scenes/Base'
-
 local Fonts = require 'src/assets/Fonts'
 
+local Ball = require 'src/model/Ball'
+local Brick = require 'src/model/Brick'
+local BrickUnbreakable = require 'src/model/BrickUnbreakable'
+
 local BrickView = require 'src/views/Brick'
+local BrickUnbreakableView = require 'src/views/BrickUnbreakable'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 local BallView = require 'src/views/Ball'
-local PaddleView = require 'src/views/Paddle'
-local Ball = require 'src/model/Ball'
 local Constants = require 'src/constants'
-
-
 
 local Serve = Base()
 
@@ -47,27 +47,22 @@ function Serve:enter(params)
     self.ballView = BallView(self.ball)
 
     -- Views
-    self.views = Set({
+    self.views = List({
         self.paddleView,
         self.ballView,
         ScoreView(self.score),
         HealthView(self.health),
-        unpack(table.map(self.bricks, BrickView)),
     })
 
-    --table.concatenate(
-    --        self.views,
-    --        table.map(table.filter(self.bricks, function(brick)
-    --            return brick:is_a(Brick)
-    --        end), BrickView)
-    --)
-    --table.concatenate(
-    --        self.views,
-    --        table.map(table.filter(self.bricks, function(brick)
-    --            return brick:is_a(BrickUnbreakable)
-    --        end), BrickUnbreakableView)
-    --)
+    self.views:add(List(self.bricks)
+            :select(function(brick) return brick:is_a(Brick) end)
+            :map(BrickView)
+    )
 
+    self.views:add(List(self.bricks)
+            :select(function(brick) return brick:is_a(BrickUnbreakable) end)
+            :map(BrickUnbreakableView)
+    )
 end
 
 function Serve:update(dt)
@@ -98,15 +93,17 @@ function Serve:update(dt)
 end
 
 function Serve:render()
-    self.views:foreach(function(view) view:render() end)
+    self.views:foreach(function(view)
+        view:render()
+    end)
 
     love.graphics.setFont(Fonts:get('large'))
     love.graphics.printf('Level ' .. tostring(self.level), 0, Constants.VIRTUAL_HEIGHT / 3,
-        Constants.VIRTUAL_WIDTH, 'center')
+            Constants.VIRTUAL_WIDTH, 'center')
 
     love.graphics.setFont(Fonts:get('medium'))
     love.graphics.printf('Press Enter to serve!', 0, Constants.VIRTUAL_HEIGHT / 2,
-        Constants.VIRTUAL_WIDTH, 'center')
+            Constants.VIRTUAL_WIDTH, 'center')
 end
 
 return Serve

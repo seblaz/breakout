@@ -24,7 +24,7 @@ function List:elements()
 end
 
 function List:foreach(f)
-    for e in self:elements() do
+    for _, e in self:elements() do
         f(e)
     end
 end
@@ -37,6 +37,20 @@ function List:select(f)
         end
     end)
     return result
+end
+
+function List:map(f)
+    local result = List()
+    self:foreach(function(element)
+        result:insert(f(element))
+    end)
+    return result
+end
+
+function List:add(list)
+    list:foreach(function(element)
+        self:insert(element)
+    end)
 end
 
 return List
