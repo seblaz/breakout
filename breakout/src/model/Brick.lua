@@ -55,4 +55,8 @@ function Brick:in_play()
     return self._level ~= 0
 end
 
+function Brick:is_alive()
+    return self:in_play()
+end
+
 return Brick

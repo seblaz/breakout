@@ -157,7 +157,7 @@ end
 
 function Play:_level_completed()
     for _, brick in pairs(self.bricks) do
-        if brick:in_play() then
+        if brick:is_alive() then
             return false
         end
     end

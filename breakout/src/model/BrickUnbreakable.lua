@@ -19,6 +19,10 @@ function BrickUnbreakable:points()
     return 0
 end
 
+function BrickUnbreakable:is_alive()
+    return false
+end
+
 function BrickUnbreakable:in_play()
     return true
 end

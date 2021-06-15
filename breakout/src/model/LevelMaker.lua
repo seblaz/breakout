@@ -69,17 +69,25 @@ function LevelMaker:_create_row(row_number, num_of_cols, highest_brick_level)
 
     local brick_levels = self:_brick_levels(highest_brick_level)
     local brick_skip = self:_brick_skip()
+    local brick_types = self:_brick_types()
 
     for x = 1, num_of_cols do
         if not brick_skip:next() then
-            table.insert(bricks, self:_create_brick(x, num_of_cols, row_number, brick_levels:next()))
+            table.insert(bricks, self:_create_brick(
+                    x,
+                    num_of_cols,
+                    row_number,
+                    brick_levels:next(),
+                    brick_types:next()
+            ))
         end
     end
     return bricks
 end
 
-function LevelMaker:_random_boolean()
-    return math.random(1, 2) == 1 and true or false
+function LevelMaker:_random_boolean(probability)
+    probability = probability or 0.5
+    return math.random(0, 1) < probability
 end
 
 function LevelMaker:_brick_levels(highest_brick_level)
@@ -92,6 +100,19 @@ function LevelMaker:_brick_levels(highest_brick_level)
     return CircularList { math.random(1, highest_brick_level) }
 end
 
+function LevelMaker:_brick_types()
+    if self:_random_boolean(0.2) then
+        return CircularList {
+            Brick,
+            Brick,
+            BrickUnbreakable,
+            Brick,
+            Brick,
+        }
+    end
+    return CircularList { Brick }
+end
+
 function LevelMaker:_brick_skip()
     if self:_random_boolean() then
         local skip_block = self:_random_boolean()
@@ -100,8 +121,8 @@ function LevelMaker:_brick_skip()
     return CircularList {false}
 end
 
-function LevelMaker:_create_brick(x, num_of_cols, row_number, brick_level)
-    return Brick(
+function LevelMaker:_create_brick(x, num_of_cols, row_number, brick_level, type)
+    return type(
             -- x-coordinate
             (x-1)                       -- decrement x by 1 because tables are 1-indexed, coords are 0
             * 32                        -- multiply by 32, the brick width
