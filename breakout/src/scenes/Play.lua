@@ -18,11 +18,14 @@ local table = require 'table'
 local EventBus = require 'src/model/EventBus'
 local Events = require 'src/model/Events'
 local Pause = require 'src/model/Pause'
+local Brick = require 'src/model/Brick'
+local BrickUnbreakable = require 'src/model/BrickUnbreakable'
 local Base = require 'src/scenes/Base'
 
 local PlaySounds = require 'src/sounds/Play'
 
 local BrickView = require 'src/views/Brick'
+local BrickUnbreakableView = require 'src/views/BrickUnbreakable'
 local BrickClouds = require 'src/views/BrickClouds'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
@@ -54,7 +57,19 @@ function Play:enter(params)
 
     -- Views
     local clouds = BrickClouds()
-    self.views = table.map(self.bricks, BrickView)
+    self.views = {}
+    table.concatenate(
+            self.views,
+            table.map(table.filter(self.bricks, function(brick)
+                return brick:is_a(Brick)
+            end), BrickView)
+    )
+    table.concatenate(
+            self.views,
+            table.map(table.filter(self.bricks, function(brick)
+                return brick:is_a(BrickUnbreakable)
+            end), BrickUnbreakableView)
+    )
     table.insert(self.views, clouds)
     table.insert(self.views, self.paddleView)
     table.insert(self.views, self.ballView) -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
@@ -71,7 +86,9 @@ end
 
 function Play:update(dt)
     self.pause:update()
-    if self.pause:paused() then return end
+    if self.pause:paused() then
+        return
+    end
     self:_update_model(dt)
     self:_detect_collisions()
 end

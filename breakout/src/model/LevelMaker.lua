@@ -13,9 +13,10 @@
 ]]
 
 local CircularList = require 'lib/CircularList'
+local Object = require 'src/Object'
 
 local Brick = require 'src/model/Brick'
-local Object = require 'src/Object'
+local BrickUnbreakable = require 'src/model/BrickUnbreakable'
 
 local LevelMaker = Object()
 

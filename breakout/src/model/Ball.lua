@@ -13,10 +13,11 @@
     for visual variety.
 ]]
 local Constants = require 'src/constants'
+local Object = require 'src/Object'
 
-local Ball = Class{}
+local Ball = Object()
 
-function Ball:init()
+function Ball:initialize()
     -- simple positional and dimensional variables
     self.width = 8
     self.height = 8

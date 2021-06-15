@@ -14,13 +14,14 @@
     layout of bricks.
 ]]
 
+local Object = require 'src/Object'
 local EventBus = require 'src/model/EventBus'
 local Events = require 'src/model/Events'
 
-local Brick = Class{}
+local Brick = Object()
 
 
-function Brick:init(x, y, level)
+function Brick:initialize(x, y, level)
     -- level is the number of hits required to destroy the brick.
     self._level = level
 

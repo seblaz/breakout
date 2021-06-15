@@ -1,0 +1,42 @@
+local Object = require 'src/Object'
+
+local List = Object()
+
+function List:initialize(table)
+    self._elements = {}
+    if table then
+        for _, l in ipairs(table) do
+            self:insert(l)
+        end
+    end
+end
+
+function List:insert(element)
+    self._elements[self:count() + 1] = element
+end
+
+function List:count()
+    return #self._elements
+end
+
+function List:elements()
+    return ipairs(self._elements)
+end
+
+function List:foreach(f)
+    for e in self:elements() do
+        f(e)
+    end
+end
+
+function List:select(f)
+    local result = List()
+    self:foreach(function(element)
+        if f(element) then
+            result:insert(element)
+        end
+    end)
+    return result
+end
+
+return List

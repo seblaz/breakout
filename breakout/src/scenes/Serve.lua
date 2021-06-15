@@ -54,6 +54,20 @@ function Serve:enter(params)
         HealthView(self.health),
         unpack(table.map(self.bricks, BrickView)),
     })
+
+    --table.concatenate(
+    --        self.views,
+    --        table.map(table.filter(self.bricks, function(brick)
+    --            return brick:is_a(Brick)
+    --        end), BrickView)
+    --)
+    --table.concatenate(
+    --        self.views,
+    --        table.map(table.filter(self.bricks, function(brick)
+    --            return brick:is_a(BrickUnbreakable)
+    --        end), BrickUnbreakableView)
+    --)
+
 end
 
 function Serve:update(dt)

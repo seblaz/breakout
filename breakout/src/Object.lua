@@ -14,6 +14,18 @@ function Object:proto()
     return getmetatable(getmetatable(self))
 end
 
+function Object:is_a(proto)
+    if self == proto then
+        return true
+    end
+
+    if not getmetatable(self) or not getmetatable(self).is_a then
+        return false
+    end
+
+    return getmetatable(self):is_a(proto)
+end
+
 setmetatable(Object, {__call = Object.new})
 
 return Object
