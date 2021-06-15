@@ -124,7 +124,7 @@ function Play:_detect_collisions()
     end
 
     -- if ball goes below bounds, revert to serve state and decrease health
-    if self.ball.y >= Constants.VIRTUAL_HEIGHT then
+    if self.ball:out_of_bounds() then
         self.health:decrease()
         Constants.gSounds['hurt']:play()
 

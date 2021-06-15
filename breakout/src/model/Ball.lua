@@ -140,6 +140,9 @@ function Ball:collision_with_brick(brick, score)
     end
 end
 
+function Ball:out_of_bounds()
+    return self.y >= Constants.VIRTUAL_HEIGHT
+end
 
 --[[
     Places the ball in the middle of the screen, with no movement.
