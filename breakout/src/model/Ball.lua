@@ -54,21 +54,36 @@ function Ball:collision_with_paddle(paddle)
     if self:collides(paddle) then
         -- raise ball above paddle in case it goes below it, then reverse dy
         self.y = paddle.y - 8
-        self.dy = -self.dy
-
-        --
-        -- tweak angle of bounce based on where it hits the paddle
-        --
-
-        -- if we hit the paddle on its left side while moving left...
-        if self.x < paddle.x + (paddle.width / 2) and paddle.dx < 0 then
-            self.dx = -50 + -(8 * (paddle.x + paddle.width / 2 - self.x))
-
-            -- else if we hit the paddle on its right side while moving right...
-        elseif self.x > paddle.x + (paddle.width / 2) and paddle.dx > 0 then
-            self.dx = 50 + (8 * math.abs(paddle.x + paddle.width / 2 - self.x))
+        if math.abs(self.dy) < 150 then
+            self.dy = -self.dy * 1.04
         end
 
+        -- tweak angle of bounce based on where it hits the paddle
+
+        -- if we hit the paddle on its left side
+        if self.x < paddle.x + (paddle.width / 2) then
+            if (self.dx < 0) then
+                self.dx = (4 * math.abs(paddle.x + paddle.width / 2 - self.x))
+            elseif (self.dx > 0) then
+                if (paddle.dx < 0) then
+                    self.dx = -(2 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                elseif (paddle.dx > 0) then
+                    self.dx = (2 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                end
+            end
+
+        -- else if we hit the paddle on its right side
+        elseif self.x > paddle.x + (paddle.width / 2) then
+            if (self.dx > 0) then
+                self.dx = -(4 * math.abs(paddle.x + paddle.width / 2 - self.x))
+            elseif (self.dx < 0) then
+                if (paddle.dx < 0) then
+                    self.dx = -(2 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                elseif (paddle.dx > 0) then
+                    self.dx = -(1 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                end
+            end
+        end
         Constants.gSounds['paddle-hit']:play()
     end
 end
