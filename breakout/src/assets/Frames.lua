@@ -5,10 +5,8 @@
 -- Time: 14:16
 -- To change this template use File | Settings | File Templates.
 --
-local Object = require 'src/Object'
-local Constants = require 'src/constants'
 
-local Frames = Object()
+local Constants = require 'src/constants'
 
 --[[
     Given an "atlas" (a texture with multiple sprites), as well as a
