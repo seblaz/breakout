@@ -20,6 +20,7 @@ local Paddle = require 'src/model/Paddle'
 local PaddleView = require 'src/views/Paddle'
 local Constants = require 'src/constants'
 local LevelMaker = require 'src/model/LevelMaker'
+local Frames = require 'src/assets/Frames'
 
 local PaddleSelect = Base()
 
@@ -89,7 +90,7 @@ function PaddleSelect:render()
         love.graphics.setColor(0.16, 0.16, 0.16, 0.5)
     end
     
-    love.graphics.draw(Constants.gTextures['arrows'], gFrames['arrows'][1], Constants.VIRTUAL_WIDTH / 4 - 24,
+    love.graphics.draw(Constants.gTextures['arrows'], Frames['arrows'][1], Constants.VIRTUAL_WIDTH / 4 - 24,
         Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
    
     -- reset drawing color to full white for proper rendering
@@ -102,14 +103,14 @@ function PaddleSelect:render()
         love.graphics.setColor(0.16, 0.16, 0.16, 0.5)
     end
     
-    love.graphics.draw(Constants.gTextures['arrows'], gFrames['arrows'][2], Constants.VIRTUAL_WIDTH - Constants.VIRTUAL_WIDTH / 4,
+    love.graphics.draw(Constants.gTextures['arrows'], Frames['arrows'][2], Constants.VIRTUAL_WIDTH - Constants.VIRTUAL_WIDTH / 4,
         Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
     
     -- reset drawing color to full white for proper rendering
     love.graphics.setColor(1, 1, 1)
 
     -- draw the paddle itself, based on which we have selected
-    love.graphics.draw(Constants.gTextures['main'], gFrames['paddles'][2 + 4 * (self.currentPaddle - 1)],
+    love.graphics.draw(Constants.gTextures['main'], Frames['paddles'][2 + 4 * (self.currentPaddle - 1)],
         Constants.VIRTUAL_WIDTH / 2 - 32, Constants.VIRTUAL_HEIGHT - Constants.VIRTUAL_HEIGHT / 3)
 end
 

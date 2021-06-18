@@ -1,5 +1,6 @@
 local Object = require 'src/Object'
 local Constants = require 'src/constants'
+local Frames = require 'src/assets/Frames'
 
 local Paddle = Object()
 
@@ -22,7 +23,7 @@ function Paddle:render()
 end
 
 function Paddle:_color()
-    return gFrames['paddles'][self.paddle.size + 4 * (self.paddle.skin - 1)]
+    return Frames['paddles'][self.paddle.size + 4 * (self.paddle.skin - 1)]
 end
 
 return Paddle

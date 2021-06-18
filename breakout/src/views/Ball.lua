@@ -1,5 +1,6 @@
 local Object = require 'src/Object'
 local Constants = require 'src/constants'
+local Frames = require 'src/assets/Frames'
 
 local Ball = Object()
 
@@ -24,7 +25,7 @@ end
 
 
 function Ball:_getColor()
-    return gFrames['balls'][self.color]
+    return Frames['balls'][self.color]
 end
 
 function Ball:_getTexture()

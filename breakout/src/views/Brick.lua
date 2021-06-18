@@ -1,5 +1,6 @@
 local Object = require 'src/Object'
 local Constants = require 'src/constants'
+local Frames = require 'src/assets/Frames'
 
 local Brick = Object()
 
@@ -19,7 +20,7 @@ function Brick:render()
 end
 
 function Brick:_color()
-    return gFrames['bricks'][self.brick:level()]
+    return Frames['bricks'][self.brick:level()]
 end
 
 return Brick

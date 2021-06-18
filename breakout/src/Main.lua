@@ -25,15 +25,6 @@ function Main:initialize()
     -- set the application title bar
     love.window.setTitle('Breakout')
 
-    -- Quads we will generate for all of our textures; Quads allow us
-    -- to show only part of a texture and not the entire thing
-    gFrames = {
-        ['arrows'] = GenerateQuads(Constants.gTextures['arrows'], 24, 24),
-        ['paddles'] = GenerateQuadsPaddles(Constants.gTextures['main']),
-        ['balls'] = GenerateQuadsBalls(Constants.gTextures['main']),
-        ['bricks'] = GenerateQuadsBricks(Constants.gTextures['main']),
-        ['hearts'] = GenerateQuads(Constants.gTextures['hearts'], 10, 9)
-    }
 
     -- initialize our virtual resolution, which will be rendered within our
     -- actual window no matter its dimensions
