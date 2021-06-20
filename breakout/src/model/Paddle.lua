@@ -13,25 +13,24 @@
     which the player gets to choose upon starting the game.
 ]]
 local Constants = require 'src/constants'
+local Collidable = require 'src/model/Collidable'
 
-local Paddle = Class{}
+local Paddle = Collidable()
 
 --[[
     Our Paddle will initialize at the same spot every time, in the middle
     of the world horizontally, toward the bottom.
 ]]
-function Paddle:init(skin)
-    -- x is placed in the middle
-    -- y is placed a little above the bottom edge of the screen
-    self.x = Constants.VIRTUAL_WIDTH / 2 - 32
-    self.y = Constants.VIRTUAL_HEIGHT - 32
+function Paddle:initialize(skin)
+    self:upper():initialize(
+            Constants.VIRTUAL_WIDTH / 2 - 32, -- x
+            Constants.VIRTUAL_HEIGHT - 32,    -- y
+            64,                               -- width
+            16                                -- height
+    )
 
     -- start us off with no velocity
     self.dx = 0
-
-    -- starting dimensions
-    self.width = 64
-    self.height = 16
 
     -- the skin only has the effect of changing our color, used to offset us
     -- into the gPaddleSkins table later

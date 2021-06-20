@@ -11,6 +11,8 @@
     Very similar to the ServeState, except here we increment the level 
 ]]
 
+local List = require 'lib/List'
+
 local Base = require 'src/scenes/Base'
 
 local Fonts = require 'src/assets/Fonts'
@@ -33,7 +35,7 @@ function Victory:enter(params)
     self.ballView = params.ballView -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
     self.recoverPoints = params.recoverPoints
 
-    self.views = {
+    self.views = List {
         HealthView(self.health),
         ScoreView(self.score),
         self.paddleView,
@@ -64,7 +66,7 @@ function Victory:update(dt)
 end
 
 function Victory:render()
-    table.apply(self.views, function(view) view:render() end)
+    self.views:foreach(function(view) view:render() end)
 
     -- level complete text
     love.graphics.setFont(Fonts:get('large'))

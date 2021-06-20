@@ -4,15 +4,21 @@ local FasterBall = require 'src/model/PowerUpFasterBall'
 local Generator = Object()
 
 function Generator:initialize()
-    self._counter = 300
+    self:_reset()
 end
 
-function Generator:update()
-    self._counter = self._counter + 1
+function Generator:_reset()
+    self._elapsed_time = 0
+    self._remaining_time = math.random(7, 13)
+end
+
+function Generator:update(dt)
+    self._elapsed_time = self._elapsed_time + dt
 end
 
 function Generator:generate()
-    if self._counter % 310 == 0 then
+    if self._elapsed_time > self._remaining_time then
+        self:_reset()
         return FasterBall()
     end
 end

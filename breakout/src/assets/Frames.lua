@@ -9,6 +9,22 @@
 local Constants = require 'src/constants'
 
 --[[
+    Utility function for slicing tables, a la Python.
+
+    https://stackoverflow.com/questions/24821045/does-lua-have-something-like-pythons-slice
+]]
+local function slice(tbl, first, last, step)
+    local sliced = {}
+
+    for i = first or 1, last or #tbl, step or 1 do
+        sliced[#sliced+1] = tbl[i]
+    end
+
+    return sliced
+end
+
+
+--[[
     Given an "atlas" (a texture with multiple sprites), as well as a
     width and a height for the tiles therein, split the texture into
     all of the quads by simply dividing it evenly.
@@ -39,11 +55,11 @@ end
 ]]
 
 local function GenerateQuadsBricks(atlas)
-    return table.slice(GenerateQuads(atlas, 32, 16), 1, 21)
+    return slice(GenerateQuads(atlas, 32, 16), 1, 21)
 end
 
 local function GenerateQuadsPowerUps(atlas)
-    return table.slice(GenerateQuads(atlas, 16, 16), 145, 154)
+    return slice(GenerateQuads(atlas, 16, 16), 145, 154)
 end
 
 --[[

@@ -39,6 +39,24 @@ function List:select(f)
     return result
 end
 
+function List:any_satisfy(f)
+    for _, e in self:elements() do
+        if f(e) then
+            return true
+        end
+    end
+    return false
+end
+
+function List:all_satisfy(f)
+    for _, e in self:elements() do
+        if not f(e) then
+            return false
+        end
+    end
+    return true
+end
+
 function List:map(f)
     local result = List()
     self:foreach(function(element)

@@ -1,10 +1,11 @@
 local Object = require 'src/Object'
+local push = require 'lib/Push'
+local Constants = require 'src/constants'
 
 local HighScoreRepo = require 'src/repositories/HighScore'
 local FPSView = require 'src/views/FPS'
 local BackgroundView = require 'src/views/Background'
-local Constants = require 'src/constants'
-local Scenes = require 'src/scenes/Scenes'
+
 local PaddleSelect = require 'src/scenes/PaddleSelect'
 local EnterHighScore = require 'src/scenes/EnterHighScore'
 local HighScore = require 'src/scenes/HighScore'
@@ -14,7 +15,7 @@ local Scenes = require 'src/scenes/Scenes'
 local Start = require 'src/scenes/Start'
 local Victory = require 'src/scenes/Victory'
 local Serve = require 'src/scenes/Serve'
-
+local List = require 'lib/List'
 
 local Main = Object()
 
@@ -40,7 +41,7 @@ function Main:initialize()
     })
 
     -- Views
-    self.views = {BackgroundView(), self.scenes, FPSView()}
+    self.views = List {BackgroundView(), self.scenes, FPSView()}
 
     -- play our music outside of all states and set it to looping
     --Constants.gSounds['music']:play()
@@ -72,7 +73,7 @@ function Main:render()
     -- begin drawing with push, in our virtual resolution
     push:apply('start')
 
-    table.apply(self.views, function(view) view:render() end)
+    self.views:foreach(function(view) view:render() end)
 
     push:apply('end')
 end

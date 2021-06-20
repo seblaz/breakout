@@ -31,8 +31,9 @@ function Ball:collision_with_paddle(paddle)
         -- raise ball above paddle in case it goes below it, then reverse dy
         self.y = paddle.y - self.height
         if math.abs(self.dy) < 150 then
-            self.dy = -self.dy * 1.04
+            self.dy = self.dy * 1.04
         end
+        self.dy = -math.abs(self.dy)
 
         -- if we hit the paddle on its left side
         if self.x < paddle.x + (paddle.width / 2) then
@@ -62,11 +63,11 @@ function Ball:collision_with_paddle(paddle)
     end
 end
 
-function Ball:collision_with_brick(brick, score)
+function Ball:collision_with_brick(brick, world)
     -- only check collision if we're in play
     if brick:in_play() and self:collides(brick) then
 
-        score:add(brick:points())
+        world.score:add(brick:points())
 
         brick:hit()
 
@@ -130,9 +131,9 @@ function Ball:collision_with_brick(brick, score)
     end
 end
 
-function Ball:collision_with_window(health)
+function Ball:collision_with_window(world)
     if self:out_of_bounds() then
-        health:decrease()
+        world.health:decrease()
     end
 end
 

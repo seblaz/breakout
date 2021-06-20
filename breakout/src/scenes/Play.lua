@@ -76,15 +76,16 @@ function Play:enter(params)
         HealthView(self.health),
         PauseView(self.pause),
     })
-    self.views:add(List(self.bricks)
+    self.views:add(self.bricks
             :select(function(brick) return brick:is_a(Brick) end)
             :map(BrickView)
     )
 
-    self.views:add(List(self.bricks)
-            :select(function(brick) return brick:is_a(BrickUnbreakable) end)
-            :map(BrickUnbreakableView)
+    self.views:add(self.bricks
+        :select(function(brick) return brick:is_a(BrickUnbreakable) end)
+        :map(BrickUnbreakableView)
     )
+
     self.views:insert(clouds) -- Insert it last to be on top of the bricks
 
     -- Models
@@ -113,11 +114,11 @@ end
 function Play:_detect_collisions()
     self.ball:collision_with_paddle(self.paddle)
 
-    for _, brick in pairs(self.bricks) do
-        self.ball:collision_with_brick(brick, self.score)
-    end
+    self.bricks:foreach(function(brick)
+        self.ball:collision_with_brick(brick, self.world)
+    end)
 
-    self.ball:collision_with_window(self.health)
+    self.ball:collision_with_window(self.world)
 
     self.power_ups:foreach(function(power_up)
         power_up:collision_with_paddle(self.paddle, self.world)
@@ -171,13 +172,9 @@ function Play:_change_scene()
 end
 
 function Play:_level_completed()
-    for _, brick in pairs(self.bricks) do
-        if brick:is_alive() then
-            return false
-        end
-    end
-
-    return true
+    return self.bricks:all_satisfy(function(brick)
+        return not brick:is_alive()
+    end)
 end
 
 function Play:_generate_power_ups()

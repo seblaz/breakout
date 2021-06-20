@@ -54,12 +54,12 @@ function Serve:enter(params)
         HealthView(self.health),
     })
 
-    self.views:add(List(self.bricks)
+    self.views:add(self.bricks
             :select(function(brick) return brick:is_a(Brick) end)
             :map(BrickView)
     )
 
-    self.views:add(List(self.bricks)
+    self.views:add(self.bricks
             :select(function(brick) return brick:is_a(BrickUnbreakable) end)
             :map(BrickUnbreakableView)
     )

@@ -36,9 +36,6 @@ function love.load()
     -- important for a nice crisp, 2D look
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
-    -- Should blow after the global variables are deleted
-    require 'src/Dependencies'
-
     -- Our game, require it after the setDefaultFilter
     main = require 'src/Main'()
 

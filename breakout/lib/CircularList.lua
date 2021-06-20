@@ -1,5 +1,4 @@
 local Object = require 'src/Object'
-local table = require 'lib/table'
 
 local CircularList = Object()
 

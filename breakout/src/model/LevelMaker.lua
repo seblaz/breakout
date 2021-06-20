@@ -14,6 +14,7 @@
 
 local CircularList = require 'lib/CircularList'
 local Object = require 'src/Object'
+local List = require 'lib/List'
 
 local Brick = require 'src/model/Brick'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
@@ -33,7 +34,7 @@ function LevelMaker:create_map(level)
     local bricks
     repeat
         bricks = self:_create_map(num_of_rows, num_of_cols, highest_brick_level)
-    until #bricks ~= 0
+    until bricks:count() ~= 0
     return bricks
 end
 
@@ -56,16 +57,16 @@ function LevelMaker:_highest_brick_level(level)
 end
 
 function LevelMaker:_create_map(num_of_rows, num_of_cols, highest_brick_level)
-    local bricks = {}
+    local bricks = List()
     for y = 1, num_of_rows do
         local row = self:_create_row(y, num_of_cols, highest_brick_level)
-        table.concatenate(bricks, row)
+        bricks:add(row)
     end
     return bricks
 end
 
 function LevelMaker:_create_row(row_number, num_of_cols, highest_brick_level)
-    local bricks = {}
+    local bricks = List()
 
     local brick_levels = self:_brick_levels(highest_brick_level)
     local brick_skip = self:_brick_skip()
@@ -73,7 +74,7 @@ function LevelMaker:_create_row(row_number, num_of_cols, highest_brick_level)
 
     for x = 1, num_of_cols do
         if not brick_skip:next() then
-            table.insert(bricks, self:_create_brick(
+            bricks:insert(self:_create_brick(
                     x,
                     num_of_cols,
                     row_number,
