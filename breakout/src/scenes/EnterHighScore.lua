@@ -28,7 +28,7 @@ local chars = {
 local highlightedChar = 1
 
 function EnterHighScore:initialize(scenes)
-    self:proto():initialize(scenes)
+    self:upper():initialize(scenes)
     self._high_score_repo = HighScoreRepo()
 end
 
@@ -38,7 +38,7 @@ function EnterHighScore:enter(params)
     self.scoreIndex = params.scoreIndex
 end
 
-function EnterHighScore:update(dt)
+function EnterHighScore:update(_)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         -- update scores table
 

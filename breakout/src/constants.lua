@@ -10,9 +10,6 @@
     Some global constants for our application.
 ]]
 
-local Util = require 'src/model/Util'
-
-
 local Constants = {
     -- size of our actual window
     WINDOW_WIDTH = 1280,
@@ -27,11 +24,11 @@ local Constants = {
 
     -- load up the graphics we'll be using throughout our states
     gTextures = {
-    ['background'] = love.graphics.newImage('graphics/background.png'),
-    ['main'] = love.graphics.newImage('graphics/breakout.png'),
-    ['arrows'] = love.graphics.newImage('graphics/arrows.png'),
-    ['hearts'] = love.graphics.newImage('graphics/hearts.png'),
-    ['particle'] = love.graphics.newImage('graphics/particle.png')
+        ['background'] = love.graphics.newImage('graphics/background.png'),
+        ['main'] = love.graphics.newImage('graphics/breakout.png'),
+        ['arrows'] = love.graphics.newImage('graphics/arrows.png'),
+        ['hearts'] = love.graphics.newImage('graphics/hearts.png'),
+        ['particle'] = love.graphics.newImage('graphics/particle.png')
     },
 
     -- set up our sound effects; later, we can just index this table and
@@ -53,6 +50,7 @@ local Constants = {
         ['recover'] = love.audio.newSource('sounds/recover.wav', 'stream'),
         ['high-score'] = love.audio.newSource('sounds/high_score.wav', 'stream'),
         ['pause'] = love.audio.newSource('sounds/pause.wav', 'stream'),
+        ['power-up-activated'] = love.audio.newSource('sounds/power-up-activated.wav', 'stream'),
 
         ['music'] = love.audio.newSource('sounds/music.wav', 'stream')
     },

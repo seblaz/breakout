@@ -14,7 +14,6 @@
     Over screen if at 0 health or the Serve screen otherwise.
 ]]
 
-local table = require 'table'
 local List = require 'lib/List'
 local Base = require 'src/scenes/Base'
 local PlaySounds = require 'src/sounds/Play'
@@ -24,6 +23,7 @@ local Events = require 'src/model/Events'
 local Pause = require 'src/model/Pause'
 local Brick = require 'src/model/Brick'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
+local PowerUpGenerator = require 'src/model/PowerUpGenerator'
 
 local BrickView = require 'src/views/Brick'
 local BrickUnbreakableView = require 'src/views/BrickUnbreakable'
@@ -31,6 +31,7 @@ local BrickClouds = require 'src/views/BrickClouds'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 local PauseView = require 'src/views/Pause'
+local PowerUpFasterBallView = require 'src/views/PowerUpFasterBall'
 
 local Play = Base()
 
@@ -49,6 +50,15 @@ function Play:enter(params)
     self.ballView = params.ballView
     self.level = params.level
     self.pause = Pause()
+    self.power_ups = List()
+    self.power_up_generator = PowerUpGenerator()
+
+    self.world = {
+        paddle = params.paddle,
+        health = params.health,
+        score = params.score,
+        ball = params.ball
+    }
 
     self.recoverPoints = 5000
 
@@ -78,7 +88,7 @@ function Play:enter(params)
     self.views:insert(clouds) -- Insert it last to be on top of the bricks
 
     -- Models
-    self.models = { self.paddle, self.ball, clouds }
+    self.models = List { self.paddle, self.ball, clouds, self.power_up_generator }
 
     -- Sounds
     self.sounds = PlaySounds()
@@ -91,10 +101,11 @@ function Play:update(dt)
     end
     self:_update_model(dt)
     self:_detect_collisions()
+    self:_generate_power_ups()
 end
 
 function Play:_update_model(dt)
-    table.apply(self.models, function(model)
+    self.models:foreach(function(model)
         model:update(dt)
     end)
 end
@@ -107,6 +118,10 @@ function Play:_detect_collisions()
     end
 
     self.ball:collision_with_window(self.health)
+
+    self.power_ups:foreach(function(power_up)
+        power_up:collision_with_paddle(self.paddle, self.world)
+    end)
 
     self:_change_scene()
 end
@@ -163,6 +178,15 @@ function Play:_level_completed()
     end
 
     return true
+end
+
+function Play:_generate_power_ups()
+    local power_up = self.power_up_generator:generate()
+    if power_up then
+        self.models:insert(power_up)
+        self.power_ups:insert(power_up)
+        self.views:insert(PowerUpFasterBallView(power_up))
+    end
 end
 
 function Play:render()

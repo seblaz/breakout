@@ -13,52 +13,26 @@
     for visual variety.
 ]]
 local Constants = require 'src/constants'
-local Object = require 'src/Object'
+local Collidable = require 'src/model/Collidable'
 
-local Ball = Object()
+local Ball = Collidable()
 
 function Ball:initialize()
-    -- simple positional and dimensional variables
-    self.width = 8
-    self.height = 8
+    self:upper():initialize(0, 0, 8, 8)
 
     -- these variables are for keeping track of our velocity on both the
     -- X and Y axis, since the ball can move in two dimensions
     self.dy = 0
     self.dx = 0
-
-end
-
---[[
-    Expects an argument with a bounding box, be that a paddle or a brick,
-    and returns true if the bounding boxes of this and the argument overlap.
-]]
-function Ball:collides(target)
-    -- first, check to see if the left edge of either is farther to the right
-    -- than the right edge of the other
-    if self.x > target.x + target.width or target.x > self.x + self.width then
-        return false
-    end
-
-    -- then check to see if the bottom edge of either is higher than the top
-    -- edge of the other
-    if self.y > target.y + target.height or target.y > self.y + self.height then
-        return false
-    end 
-
-    -- if the above aren't true, they're overlapping
-    return true
 end
 
 function Ball:collision_with_paddle(paddle)
     if self:collides(paddle) then
         -- raise ball above paddle in case it goes below it, then reverse dy
-        self.y = paddle.y - 8
+        self.y = paddle.y - self.height
         if math.abs(self.dy) < 150 then
             self.dy = -self.dy * 1.04
         end
-
-        -- tweak angle of bounce based on where it hits the paddle
 
         -- if we hit the paddle on its left side
         if self.x < paddle.x + (paddle.width / 2) then

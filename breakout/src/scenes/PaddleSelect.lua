@@ -29,13 +29,13 @@ function PaddleSelect:enter(params)
 end
 
 function PaddleSelect:initialize(scenes)
-    self:proto():initialize(scenes)
+    self:upper():initialize(scenes)
     -- the paddle we're highlighting; will be passed to the ServeState
     -- when we press Enter
     self.currentPaddle = 1
 end
 
-function PaddleSelect:update(dt)
+function PaddleSelect:update(_)
     if love.keyboard.wasPressed('left') then
         if self.currentPaddle == 1 then
             Constants.gSounds['no-select']:play()

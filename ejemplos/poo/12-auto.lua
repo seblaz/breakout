@@ -1,4 +1,4 @@
---- Otra sintaxis de creación.
+--- Fix bug en proto.
 
 -- Object
 local Object = {}
@@ -15,6 +15,16 @@ function Object:initialize() end
 
 function Object:proto()
     return getmetatable(getmetatable(self))
+end
+
+function Object:upper()
+    return setmetatable({}, {
+        __index = function(_, method)
+            return function(_, ...)
+                return self:proto()[method](self, ...)
+            end
+        end
+    })
 end
 
 function Object:is_a(proto)
@@ -50,14 +60,14 @@ end
 local Ferrari = Auto()
 
 function Ferrari:initialize(modelo)
-    self:proto():initialize('ferrari ' .. modelo)
+    self:upper():initialize('ferrari ' .. modelo)
 end
 
 -- Lamborgini
 local Lamborgini = Auto()
 
 function Lamborgini:initialize(modelo)
-    self:proto():initialize('lamborgini ' .. modelo)
+    self:upper():initialize('lamborgini ' .. modelo)
 end
 
 -- Redefinición y llamada al método de la clase anterior
