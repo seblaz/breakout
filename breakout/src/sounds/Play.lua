@@ -14,6 +14,7 @@ function Play:initialize()
     EventBus:subscribe(Events.HEALTH_DECREASED, function() self:health_decreased() end)
     EventBus:subscribe(Events.GAME_PAUSED_OR_UNPAUSED, function() self:game_paused_or_unpaused() end)
     EventBus:subscribe(Events.POWER_UP_ACTIVATED, function() self:power_up_activated() end)
+    EventBus:subscribe(Events.BRICK_PADDLESIZE_HIT, function() self:brick_paddlesize_hit() end)
 end
 
 function Play:brick_hit()
@@ -45,6 +46,10 @@ end
 
 function Play:power_up_activated()
     Constants.gSounds['power-up-activated']:play()
+end
+
+function Play:brick_paddlesize_hit()
+    Constants.gSounds['brick-paddlesize-hit']:play()
 end
 
 return Play

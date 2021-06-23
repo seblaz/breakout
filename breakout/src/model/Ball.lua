@@ -29,6 +29,7 @@ end
 function Ball:collision_with_paddle(paddle)
     if self:collides(paddle) then
         -- raise ball above paddle in case it goes below it, then reverse dy
+        local paddleWidth = paddle:getWidth()
         self.y = paddle.y - self.height
         if math.abs(self.dy) < 150 then
             self.dy = self.dy * 1.04
@@ -36,26 +37,26 @@ function Ball:collision_with_paddle(paddle)
         self.dy = -math.abs(self.dy)
 
         -- if we hit the paddle on its left side
-        if self.x < paddle.x + (paddle.width / 2) then
+        if self.x < paddle.x + (paddleWidth / 2) then
             if (self.dx < 0) then
-                self.dx = (4 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                self.dx = (4 * math.abs(paddle.x + paddleWidth / 2 - self.x))
             elseif (self.dx > 0) then
                 if (paddle.dx < 0) then
-                    self.dx = -(2 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                    self.dx = -(2 * math.abs(paddle.x + paddleWidth / 2 - self.x))
                 elseif (paddle.dx > 0) then
-                    self.dx = (2 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                    self.dx = (2 * math.abs(paddle.x + paddleWidth / 2 - self.x))
                 end
             end
 
         -- else if we hit the paddle on its right side
-        elseif self.x > paddle.x + (paddle.width / 2) then
+        elseif self.x > paddle.x + (paddleWidth / 2) then
             if (self.dx > 0) then
-                self.dx = -(4 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                self.dx = -(4 * math.abs(paddle.x + paddleWidth / 2 - self.x))
             elseif (self.dx < 0) then
                 if (paddle.dx < 0) then
-                    self.dx = -(2 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                    self.dx = -(2 * math.abs(paddle.x + paddleWidth / 2 - self.x))
                 elseif (paddle.dx > 0) then
-                    self.dx = -(1 * math.abs(paddle.x + paddle.width / 2 - self.x))
+                    self.dx = -(1 * math.abs(paddle.x + paddleWidth / 2 - self.x))
                 end
             end
         end
@@ -69,7 +70,7 @@ function Ball:collision_with_brick(brick, world)
 
         world.score:add(brick:points())
 
-        brick:hit()
+        brick:hit(world)
 
         -- if we have enough points, recover a point of health
         -- this had a bug because it always added one more health above xxx points

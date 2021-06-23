@@ -51,6 +51,7 @@ local Constants = {
         ['high-score'] = love.audio.newSource('sounds/high_score.wav', 'stream'),
         ['pause'] = love.audio.newSource('sounds/pause.wav', 'stream'),
         ['power-up-activated'] = love.audio.newSource('sounds/power-up-activated.wav', 'stream'),
+        ['brick-paddlesize-hit'] = love.audio.newSource('sounds/brick-paddlesize-hit.mp3', 'stream'),
 
         ['music'] = love.audio.newSource('sounds/music.wav', 'stream')
     },

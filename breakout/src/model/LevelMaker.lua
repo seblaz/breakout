@@ -18,6 +18,7 @@ local List = require 'lib/List'
 
 local Brick = require 'src/model/Brick'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
+local BrickPaddleSize = require 'src/model/BrickPaddleSize'
 
 local LevelMaker = Object()
 
@@ -104,9 +105,11 @@ end
 function LevelMaker:_brick_types()
     if self:_random_boolean(0.2) then
         return CircularList {
-            Brick,
-            Brick,
+            --Brick,
+            --Brick,
             BrickUnbreakable,
+            --Brick,
+            BrickPaddleSize,
             Brick,
             Brick,
         }

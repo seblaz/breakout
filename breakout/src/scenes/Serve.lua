@@ -21,9 +21,11 @@ local Fonts = require 'src/assets/Fonts'
 local Ball = require 'src/model/Ball'
 local Brick = require 'src/model/Brick'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
+local BrickPaddleSize = require 'src/model/BrickPaddleSize'
 
 local BrickView = require 'src/views/Brick'
 local BrickUnbreakableView = require 'src/views/BrickUnbreakable'
+local BrickPaddleSizeView = require 'src/views/BrickPaddleSize'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 local BallView = require 'src/views/Ball'
@@ -63,12 +65,19 @@ function Serve:enter(params)
             :select(function(brick) return brick:is_a(BrickUnbreakable) end)
             :map(BrickUnbreakableView)
     )
+
+    self.views:add(self.bricks
+            :select(function(brick) return brick:is_a(BrickPaddleSize) end)
+            :map(BrickPaddleSizeView)
+    )
 end
 
 function Serve:update(dt)
     -- have the ball track the player
     self.paddle:update(dt)
-    self.ball.x = self.paddle.x + (self.paddle.width / 2) - 4
+    self.paddle:resetSize()
+    local paddleWidth = self.paddle:getWidth()
+    self.ball.x = self.paddle.x + (paddleWidth / 2) - 4
     self.ball.y = self.paddle.y - 8
 
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then

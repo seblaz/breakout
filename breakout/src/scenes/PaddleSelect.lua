@@ -62,7 +62,7 @@ function PaddleSelect:update(_)
             paddleView = paddleSelectedView,
             bricks = LevelMaker:create_map(1),
             health = Health(),
-            score = Score(10000),
+            score = Score(),
             highScores = self.highScores,
             level = 1,
             recoverPoints = 5000

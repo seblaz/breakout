@@ -14,6 +14,8 @@
 ]]
 local Constants = require 'src/constants'
 local Collidable = require 'src/model/Collidable'
+local PaddleSize = require 'src/model/PaddleSize'
+local List = require 'lib/List'
 
 local Paddle = Collidable()
 
@@ -22,6 +24,10 @@ local Paddle = Collidable()
     of the world horizontally, toward the bottom.
 ]]
 function Paddle:initialize(skin)
+
+    -- the variant is which of the four paddle sizes we currently are;
+    self.size = 2
+
     self:upper():initialize(
             Constants.VIRTUAL_WIDTH / 2 - 32, -- x
             Constants.VIRTUAL_HEIGHT - 32,    -- y
@@ -35,10 +41,7 @@ function Paddle:initialize(skin)
     -- the skin only has the effect of changing our color, used to offset us
     -- into the gPaddleSkins table later
     self.skin = skin
-
-    -- the variant is which of the four paddle sizes we currently are; 2
-    -- is the starting size, as the smallest is too tough to start with
-    self.size = 2
+    
 end
 
 function Paddle:update(dt)
@@ -62,9 +65,24 @@ function Paddle:update(dt)
     -- height (or else it will go partially below, since position is
     -- based on its top left corner)
     else
-        self.x = math.min(Constants.VIRTUAL_WIDTH - self.width, self.x + self.dx * dt)
+        self.x = math.min(Constants.VIRTUAL_WIDTH - self:getWidth(), self.x + self.dx * dt)
     end
 end
 
+function Paddle:change_size(score)
+    --if (score:points() >= 50) then
+        self.size = 1
+        self.width = 32
+    --end
+end
+
+function Paddle:getWidth()
+    return self.width
+end
+
+function Paddle:resetSize()
+    self.size = 2
+    self.width = 64
+end
 
 return Paddle

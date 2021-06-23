@@ -23,10 +23,12 @@ local Events = require 'src/model/Events'
 local Pause = require 'src/model/Pause'
 local Brick = require 'src/model/Brick'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
+local BrickPaddleSize = require 'src/model/BrickPaddleSize'
 local PowerUpGenerator = require 'src/model/PowerUpGenerator'
 
 local BrickView = require 'src/views/Brick'
 local BrickUnbreakableView = require 'src/views/BrickUnbreakable'
+local BrickPaddleSizeView = require 'src/views/BrickPaddleSize'
 local BrickClouds = require 'src/views/BrickClouds'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
@@ -77,13 +79,18 @@ function Play:enter(params)
         PauseView(self.pause),
     })
     self.views:add(self.bricks
-            :select(function(brick) return brick:is_a(Brick) end)
-            :map(BrickView)
+        :select(function(brick) return brick:is_a(Brick) end)
+        :map(BrickView)
     )
 
     self.views:add(self.bricks
         :select(function(brick) return brick:is_a(BrickUnbreakable) end)
         :map(BrickUnbreakableView)
+    )
+
+    self.views:add(self.bricks
+        :select(function(brick) return brick:is_a(BrickPaddleSize) end)
+        :map(BrickPaddleSizeView)
     )
 
     self.views:insert(clouds) -- Insert it last to be on top of the bricks
