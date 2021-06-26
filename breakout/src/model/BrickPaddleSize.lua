@@ -4,7 +4,7 @@ local Events = require 'src/model/Events'
 
 local BrickPaddleSize = SpecialBrick()
 
-function SpecialBrick:hit(world)
+function BrickPaddleSize:hit(world)
     --EventBus:notify(Events.BRICK_PADDLESIZE_HIT, self)
 
     world.paddle:change_size(world.score);
