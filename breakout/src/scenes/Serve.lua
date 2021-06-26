@@ -22,10 +22,12 @@ local Ball = require 'src/model/Ball'
 local Brick = require 'src/model/Brick'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
 local BrickPaddleSize = require 'src/model/BrickPaddleSize'
+local BrickMultiball = require 'src/model/BrickMultiball'
 
 local BrickView = require 'src/views/Brick'
 local BrickUnbreakableView = require 'src/views/BrickUnbreakable'
 local BrickPaddleSizeView = require 'src/views/BrickPaddleSize'
+local BrickMultiballView = require 'src/views/BrickMultiball'
 local ScoreView = require 'src/views/Score'
 local HealthView = require 'src/views/Health'
 local BallView = require 'src/views/Ball'
@@ -70,6 +72,12 @@ function Serve:enter(params)
             :select(function(brick) return brick:is_a(BrickPaddleSize) end)
             :map(BrickPaddleSizeView)
     )
+
+    self.views:add(self.bricks
+            :select(function (brick) return brick:is_a(BrickMultiball) end)
+            :map(BrickMultiballView)
+        )
+
 end
 
 function Serve:update(dt)
@@ -90,7 +98,7 @@ function Serve:update(dt)
             score = self.score,
             highScores = self.highScores,
             ball = self.ball,
-            ballView = self.ballView, -- Le paso el ballView al play para que mantenga la misma vista y no inicialice otra
+            ballView = self.ballView,
             level = self.level,
             recoverPoints = self.recoverPoints
         })

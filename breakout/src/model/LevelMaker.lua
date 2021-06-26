@@ -19,6 +19,7 @@ local List = require 'lib/List'
 local Brick = require 'src/model/Brick'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
 local BrickPaddleSize = require 'src/model/BrickPaddleSize'
+local BrickMultiball = require 'src/model/BrickMultiball'
 
 local LevelMaker = Object()
 
@@ -112,6 +113,7 @@ function LevelMaker:_brick_types()
             BrickPaddleSize,
             Brick,
             Brick,
+            BrickMultiball,
         }
     end
     return CircularList { Brick }
