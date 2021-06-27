@@ -11,6 +11,10 @@ function List:initialize(table)
     end
 end
 
+function List:get(index)
+    return self._elements[index]
+end
+
 function List:insert(element)
     self._elements[self:count() + 1] = element
 end

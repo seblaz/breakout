@@ -176,4 +176,14 @@ function Ball:update(dt)
     end
 end
 
+function Ball:clone(anotherBall)
+    self.dy = anotherBall.dy
+    -- x direction is changed
+    self.dx = anotherBall.dx * - 1
+    self.y = anotherBall.y
+    self.x = anotherBall.x
+    self.width = anotherBall.width
+    self.height = anotherBall.height
+end
+
 return Ball

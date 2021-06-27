@@ -22,12 +22,14 @@ local EventBus = require 'src/model/EventBus'
 local Events = require 'src/model/Events'
 local Pause = require 'src/model/Pause'
 local Brick = require 'src/model/Brick'
+local Ball = require 'src/model/Ball'
 local BrickUnbreakable = require 'src/model/BrickUnbreakable'
 local BrickPaddleSize = require 'src/model/BrickPaddleSize'
 local BrickMultiball = require 'src/model/BrickMultiball'
 local PowerUpGenerator = require 'src/model/PowerUpGenerator'
 
 local BrickView = require 'src/views/Brick'
+local BallView = require 'src/views/Ball'
 local BrickUnbreakableView = require 'src/views/BrickUnbreakable'
 local BrickPaddleSizeView = require 'src/views/BrickPaddleSize'
 local BrickMultiballView = require 'src/views/BrickMultiball'
@@ -50,36 +52,46 @@ function Play:enter(params)
     self.health = params.health
     self.score = params.score
     self.highScores = params.highScores
-    self.ball = params.ball
-    self.ballView = params.ballView
+    -- TODO: Balls borrar esta asociacion
+    --self.ball = params.ball
+    self.balls = params.balls
+    --self.ballView = params.ballView
+    --self.ballViews = params.ballViews
     self.level = params.level
     self.pause = Pause()
     self.power_ups = List()
     self.power_up_generator = PowerUpGenerator()
 
-    self.world = {
-        paddle = params.paddle,
-        health = params.health,
-        score = params.score,
-        ball = params.ball
-    }
 
     self.recoverPoints = 5000
 
     -- give ball random starting velocity
-    self.ball.dx = math.random(-200, 200)
-    self.ball.dy = math.random(-50, -60)
+    -- TODO: Ball borrar esta asignacion
+    --self.ball.dx = math.random(-200, 200)
+    --self.ball.dy = math.random(-50, -60)
+    self.balls:foreach(function(ball)
+        ball.dx = math.random(-200, 200)
+        ball.dy = math.random(-50, -60)
+    end)
 
     local clouds = BrickClouds()
 
     -- Views
     self.views = List({
         self.paddleView,
-        self.ballView, -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
+        -- TODO: Ball borrar esta asignacion
+        --self.ballView, -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
         ScoreView(self.score),
         HealthView(self.health),
         PauseView(self.pause),
     })
+
+    -- TODO: Ball revisar si solo hace falta hacer un map y no un select ya que la lista es de balls
+    self.views:add(self.balls
+        :select(function(ball) return ball:is_a(Ball) end)
+        :map(BallView)
+    )
+
     self.views:add(self.bricks
         :select(function(brick) return brick:is_a(Brick) end)
         :map(BrickView)
@@ -103,10 +115,22 @@ function Play:enter(params)
     self.views:insert(clouds) -- Insert it last to be on top of the bricks
 
     -- Models
-    self.models = List { self.paddle, self.ball, clouds, self.power_up_generator }
+    -- TODO: Balls models borrar
+    -- TODO: Ball Analizar si crear ballManager model que maneje adentro la lista de balls
+    --self.models = List { self.paddle, self.ball, clouds, self.power_up_generator }
+    self.models = List { self.paddle, self.balls, clouds, self.power_up_generator }
 
     -- Sounds
     self.sounds = PlaySounds()
+
+    self.world = {
+        paddle = params.paddle,
+        health = params.health,
+        score = params.score,
+        --ball = params.ball,
+        balls = params.balls,
+        views = self.views
+    }
 end
 
 function Play:update(dt)
@@ -119,13 +143,28 @@ function Play:update(dt)
     self:_generate_power_ups()
 end
 
-function Play:_update_model(dt)
+-- TODO: Ball borrar esta funcion por la de abajo
+--[[function Play:_update_model(dt)
     self.models:foreach(function(model)
         model:update(dt)
     end)
+end--]]
+
+-- TODO: Ball update models --> Analizar ball manager para manejar la ballList
+function Play:_update_model(dt)
+    self.models:foreach(function(model)
+        if model:is_a(List) then
+            model:foreach(function (ball)
+                ball:update(dt)
+            end)
+        else
+            model:update(dt)
+        end
+    end)
 end
 
-function Play:_detect_collisions()
+-- TODO: Ball borrar esta funcion por la de abajo
+--[[function Play:_detect_collisions()
     self.ball:collision_with_paddle(self.paddle)
 
     self.bricks:foreach(function(brick)
@@ -139,6 +178,27 @@ function Play:_detect_collisions()
     end)
 
     self:_change_scene()
+end--]]
+
+-- TODO: Balls detect collistions
+function Play:_detect_collisions()
+
+    self.balls:foreach(function (ball)
+
+        ball:collision_with_paddle(self.paddle)
+
+        self.bricks:foreach(function (brick)
+            ball:collision_with_brick(brick, self.world)
+        end)
+
+        ball:collision_with_window(self.world)
+
+        self.power_ups:foreach(function (power_up)
+            power_up:collision_with_paddle(self.paddle, self.world)
+        end)
+
+        self:_change_scene()
+    end)
 end
 
 function Play:_change_scene()
@@ -154,13 +214,18 @@ function Play:_change_scene()
             health = self.health,
             score = self.score,
             highScores = self.highScores,
-            ball = self.ball,
-            ballView = self.ballView, -- Le paso el ballView al victory para que mantenga la misma vista y no inicialice otra
+            --ball = self.ball,
+            -- TODO: Ball borrar el ball
+            -- TODO: Ball revisar victory recibiendo las balls
+            balls = self.balls,
+            -- ballView = self.ballView, -- Le paso el ballView al victory para que mantenga la misma vista y no inicialice otra
             recoverPoints = self.recoverPoints
         })
     end
 
-    if self.ball:out_of_bounds() then
+    -- TODO: Ball borrar if para usar la funcion detect_balls_out_of...
+    self:_detect_balls_out_of_bounds()
+    --[[if self.ball:out_of_bounds() then
         if self.health:is_alive() then
             self._scenes:change('serve', {
                 paddle = self.paddle,
@@ -178,11 +243,37 @@ function Play:_change_scene()
                 highScores = self.highScores
             })
         end
-    end
+    end]]--
 
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
     end
+end
+
+function Play:_detect_balls_out_of_bounds()
+    self.balls:foreach(function (ball)
+
+        -- TODO: Ball Revisar esto para permitir que si se cae una no se pierda
+        if ball:out_of_bounds() then
+            if self.health:is_alive() then
+                self._scenes:change('serve', {
+                    paddle = self.paddle,
+                    paddleView = self.paddleView,
+                    bricks = self.bricks,
+                    health = self.health,
+                    score = self.score,
+                    highScores = self.highScores,
+                    level = self.level,
+                    recoverPoints = self.recoverPoints
+                })
+            else
+                self._scenes:change('game-over', {
+                    score = self.score,
+                    highScores = self.highScores
+                })
+            end
+        end
+    end)
 end
 
 function Play:_level_completed()
