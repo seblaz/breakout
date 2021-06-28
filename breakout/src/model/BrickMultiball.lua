@@ -5,10 +5,6 @@ local Ball = require 'src/model/Ball'
 local BallView = require 'src/views/Ball'
 local List = require 'lib/List'
 
-
-
-local SecondBall = Ball()
-local SecondBallView = BallView(SecondBall)
 local BrickMultiball = SpecialBrick()
 
 function BrickMultiball:hit(world)
