@@ -11,12 +11,27 @@ function List:initialize(table)
     end
 end
 
+-- TODO: Ball revisar eliminar esta funcion
 function List:get(index)
     return self._elements[index]
 end
 
+--[[function List:remove(index)
+    print(self._elements)
+    print(index)
+    table.remove(self._elements, index)
+end--]]
+
+function List:remove(element)
+    self._elements[element] = nil
+end
+
 function List:insert(element)
     self._elements[self:count() + 1] = element
+end
+
+function List:is_empty()
+    return self:count() == 0
 end
 
 function List:count()

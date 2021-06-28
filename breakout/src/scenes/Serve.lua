@@ -46,24 +46,17 @@ function Serve:enter(params)
     self.level = params.level
     self.recoverPoints = params.recoverPoints
 
-    -- TODO: Ball - iniciar las bolas en serve
-    --self.ball = Ball()
-    --self.ballView = BallView(self.ball)
     self.balls = List()
     self.balls:insert(Ball())
 
     -- Views
     self.views = List({
         self.paddleView,
-        --self.ballView,
         ScoreView(self.score),
         HealthView(self.health),
     })
 
-    self.views:add(self.balls
-        :select(function(ball) return ball:is_a(Ball) end)
-        :map(BallView)
-    )
+    self.views:add(self.balls:map(BallView))
 
     self.views:add(self.bricks
             :select(function(brick) return brick:is_a(Brick) end)
@@ -92,9 +85,6 @@ function Serve:update(dt)
     self.paddle:update(dt)
     self.paddle:resetSize()
     local paddleWidth = self.paddle:getWidth()
-    --TODO: Ball borrar esta inicializacion
-    --self.ball.x = self.paddle.x + (paddleWidth / 2) - 4
-    --self.ball.y = self.paddle.y - 8
     self.balls:foreach(function (ball)
         ball.x = self.paddle.x + (paddleWidth / 2) - 4
         ball.y = self.paddle.y - 8

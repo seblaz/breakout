@@ -38,9 +38,7 @@ end
 function FasterBal:activate(world)
     EventBus:notify(Events.POWER_UP_ACTIVATED)
     self._active = false
-    -- TODO: Ball borrar esta asignacion
-    --world.ball.dx = world.ball.dx * 1.3
-    --world.ball.dy = world.ball.dy * 1.3
+
     world.balls:foreach(function (ball)
         ball.dx = ball.dx * 1.3
         ball.dy = ball.dy * 1.3

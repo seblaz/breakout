@@ -133,9 +133,11 @@ function Ball:collision_with_brick(brick, world)
 end
 
 function Ball:collision_with_window(world)
+    -- TODO: Ball revisar para evitar que cada bola saque una vida
     if self:out_of_bounds() then
         world.health:decrease()
     end
+
 end
 
 function Ball:out_of_bounds()
@@ -177,9 +179,8 @@ function Ball:update(dt)
 end
 
 function Ball:clone(anotherBall)
-    self.dy = anotherBall.dy
-    -- x direction is changed
-    self.dx = anotherBall.dx * - 1
+    self.dy = anotherBall.dy * 0.9
+    self.dx = anotherBall.dx * 0-9
     self.y = anotherBall.y
     self.x = anotherBall.x
     self.width = anotherBall.width

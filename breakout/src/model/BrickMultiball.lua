@@ -3,6 +3,8 @@ local EventBus = require 'src/model/EventBus'
 local Events = require 'src/model/Events'
 local Ball = require 'src/model/Ball'
 local BallView = require 'src/views/Ball'
+local List = require 'lib/List'
+
 
 
 local SecondBall = Ball()
@@ -11,8 +13,8 @@ local BrickMultiball = SpecialBrick()
 
 function BrickMultiball:hit(world)
 
+    --TODO: Ball revisar si implementar ball manager
     --world.ballManager:multiply();
-    print("Se golpeo el ladrillo Multiball")
     self:activate(world)
 
     if self:in_play() then
@@ -28,13 +30,21 @@ end
 function BrickMultiball:activate(world)
 
     -- TODO: Ball revisar cambiar si clonar el primer elemento de la lista
-    -- TODO: Ball revisar iterar sobre la lista de bolas y generar una ball nueva para cada una de las bolas
-    --SecondBall:clone(world.balls:get(0))
-    world.balls:foreach(function (ball)
-        SecondBall:clone(ball)
-    end)
-    world.balls:insert(SecondBall)
-    world.views:insert(SecondBallView)
+    if world.balls:count() < 4 then
+        local NewBalls = List()
+        local NewBallViews = List()
+
+        world.balls:foreach(function (ball)
+            local ClonedBall = Ball()
+            ClonedBall:clone(ball)
+            NewBalls:insert(ClonedBall)
+            NewBallViews:insert(BallView(ClonedBall))
+        end)
+
+        world.balls:add(NewBalls)
+        world.views:add(NewBallViews)
+    end
+    
 end
 
 return BrickMultiball

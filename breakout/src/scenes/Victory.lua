@@ -22,7 +22,6 @@ local BallView = require 'src/views/Ball'
 local HealthView = require 'src/views/Health'
 local Constants = require 'src/constants'
 local LevelMaker = require 'src/model/LevelMaker'
-local Ball = require 'src/model/Ball' --TODO: Ball Revisar select si no hace falta map (Borrar este import)
 
 local Victory = Base()
 
@@ -33,10 +32,7 @@ function Victory:enter(params)
     self.paddleView = params.paddleView
     self.paddle = params.paddle
     self.health = params.health
-    -- TODO: Ball borrar esta asociacion
-    --self.ball = params.ball
     self.balls = params.balls
-    -- TODO: Ball revisar si no hace falta resetear las balls para que se vuelva a tener una sola
     --self.ballView = params.ballView -- Recibo el ballView de otra escena para que mantenga la misma vista y no inicialice otra
     self.recoverPoints = params.recoverPoints
 
@@ -44,15 +40,9 @@ function Victory:enter(params)
         HealthView(self.health),
         ScoreView(self.score),
         self.paddleView,
-        -- TODO: Ball borrar esta asociacion
-        --self.ballView,
     }
 
-    -- TODO: Ball revisar si solo hace falta hacer un map y no un select ya que la lista es de balls - Se repite en Play
-    self.views:add(self.balls
-        :select(function(ball) return ball:is_a(Ball) end)
-        :map(BallView)
-    )
+    self.views:add(self.balls:map(BallView))
 end
 
 function Victory:update(dt)
@@ -60,9 +50,6 @@ function Victory:update(dt)
 
     -- have the ball track the player
     local paddleWidth = self.paddle:getWidth()
-    -- TODO: Ball borrar esta asignacion
-    --self.ball.x = self.paddle.x + (paddleWidth / 2) - 4
-    --self.ball.y = self.paddle.y - 8
     -- TODO: Ball revisar si habilitar funcion para actualizar posicion x,y (Este codigo se repite en Serve)
     self.balls:foreach(function (ball)
         ball.x = self.paddle.x + (paddleWidth / 2) - 4
