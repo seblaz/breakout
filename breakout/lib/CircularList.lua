@@ -33,4 +33,6 @@ function CircularList:_total()
     return #self._elements
 end
 
+CircularList:_set_type('CircularList')
+
 return CircularList

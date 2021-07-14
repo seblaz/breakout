@@ -90,4 +90,6 @@ function List:add(list)
     end)
 end
 
+List:_set_type('List')
+
 return List

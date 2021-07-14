@@ -33,4 +33,6 @@ function Score:set_name(name)
     self._name = name
 end
 
+Score:_set_type('Score')
+
 return Score

@@ -36,6 +36,16 @@ function Object:is_a(proto)
     return getmetatable(self):is_a(proto)
 end
 
+function Object:_set_type(type)
+    self._type = type
+end
+
+function Object:type()
+    return self._type
+end
+
 setmetatable(Object, Object)
+
+Object:_set_type('Object')
 
 return Object

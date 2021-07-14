@@ -65,4 +65,6 @@ function Set.__mul (a,b)
     return result
 end
 
+Set:_set_type('Set')
+
 return Set

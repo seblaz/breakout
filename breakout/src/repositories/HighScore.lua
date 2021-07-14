@@ -1,6 +1,8 @@
 local Object = require 'src/Object'
 local Score = require 'src/model/Score'
 
+local Serializer = require 'src/repositories/Serializer'
+
 local HighScore = Object()
 
 function HighScore:save(highScores)
@@ -11,7 +13,16 @@ function HighScore:save(highScores)
         scoresStr = scoresStr .. tostring(highScores[i]:points()) .. '\n'
     end
 
-    love.filesystem.write('breakout.lst', scoresStr)
+    local file1 = love.filesystem.newFile('breakout.lst')
+    file1:open("w")
+    file1:write(scoresStr)
+    file1:close()
+
+    local serializer = Serializer()
+    local file2 = love.filesystem.newFile('breakout_score_format.lst')
+    file2:open("w")
+    serializer:serialize(highScores, file2)
+    file2:close()
 end
 
 function HighScore:load()
@@ -48,6 +59,7 @@ function HighScore:load()
         name = not name
     end
 
+    self:save(scores)
     return scores
 end
 
