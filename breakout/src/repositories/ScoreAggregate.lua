@@ -7,7 +7,9 @@ function Score()
     count = count + 1
 end
 
-dofile('/Users/sebastian.olivera/Library/Application Support/LOVE/breakout/breakout_score_format.lst')
+local f = loadfile('/Users/sebastian.olivera/Library/Application Support/LOVE/breakout/breakout_score_format.lst')
+
+f()
 
 print('count:', count)
 
