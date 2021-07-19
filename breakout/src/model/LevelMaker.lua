@@ -106,10 +106,10 @@ end
 function LevelMaker:_brick_types()
     if self:_random_boolean(0.2) then
         return CircularList {
-            --Brick,
-            --Brick,
+            Brick,
+            Brick,
             BrickUnbreakable,
-            --Brick,
+            Brick,
             BrickPaddleSize,
             Brick,
             Brick,
