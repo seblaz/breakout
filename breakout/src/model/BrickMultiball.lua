@@ -9,7 +9,6 @@ local BrickMultiball = SpecialBrick()
 
 function BrickMultiball:hit(world)
 
-    --TODO: Ball revisar si implementar ball manager
     --world.ballManager:multiply();
     self:activate(world)
 
@@ -25,22 +24,31 @@ end
 
 function BrickMultiball:activate(world)
 
-    -- TODO: Ball revisar cambiar si clonar el primer elemento de la lista
-    if world.balls:count() < 4 then
-        local NewBalls = List()
-        local NewBallViews = List()
+    local status, err = pcall(BallMultiplication, world)
 
-        world.balls:foreach(function (ball)
-            local ClonedBall = Ball()
-            ClonedBall:clone(ball)
-            NewBalls:insert(ClonedBall)
-            NewBallViews:insert(BallView(ClonedBall))
-        end)
-
-        world.balls:add(NewBalls)
-        world.views:add(NewBallViews)
+    if status == true then
+        print("No hubo ningun error")
+    else
+        print("Hubo un error")
+        print(err)
     end
-    
+
 end
+
+
+--[[ world: { Lista de balls, lista de views } ]]
+
+function BallMultiplication(world)
+    if world.balls:count() < 2 then
+
+        local existentBall = world.balls:get(1)
+        local newBall = Ball()
+        newBall:clone(existentBall)
+
+        world.balls:insert(newBall)
+        world.views:insert(BallView(newBall))
+    end
+end
+
 
 return BrickMultiball
